@@ -18,8 +18,7 @@ function App() {
             <Route path="albums" element={<GetItems />} />
             <Route path="photos" element={<GetItems />} />
             <Route path="todos" element={<GetItems />} />
-            <Route path="info" element={<UserInformation />} />
-
+            {/* <Route path="info" element={<UserInformation />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>
