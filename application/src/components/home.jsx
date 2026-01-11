@@ -5,7 +5,7 @@ function Home() {
     return (
         <>
             <h2>home</h2>
-              <div>user name: {userDetails?.username || 'No user data'}</div>
+            <div>user name: {userDetails?.username || 'No user data'}</div>
             <div>user id: {userId}</div>
             <nav>
                 <Link to={"albums"}
