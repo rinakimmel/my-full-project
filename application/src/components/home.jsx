@@ -1,19 +1,18 @@
 import { useParams, Link, Outlet } from "react-router-dom";
 function Home() {
-    //const useId = useParams();
-    const useId = 3;
-    const userDetails = JSON.parse(localStorage.getItem("userId"));
+    const {userId} = useParams();
+    const userDetails = JSON.parse(localStorage.getItem(userId));
     return (
         <>
-            <div>home</div>
-            {/* <div>{userDetails.userName}</div> */}
-            <div>user id is: {useId}</div>
+            <h2>home</h2>
+              <div>user name: {userDetails?.username || 'No user data'}</div>
+            <div>user id: {userId}</div>
             <nav>
-                <Link to="users/:useId/albums"
+                <Link to={"albums"}
                 state={{from:"albums"}}>albums  </Link>
-                <Link to="users/:useId/photos"
+                <Link to="photos"
                 state={{from:"photos"}}>photos  </Link>
-                <Link to="users/:useId/todos"
+                <Link to="todos"
                 state={{from:"todos"}}>todos  </Link>
                 <Link to="info">info  </Link>
                 <Link to="logout">logout  </Link>
@@ -22,4 +21,4 @@ function Home() {
         </>
     )
 }
-export default Home;
+export default Home;          

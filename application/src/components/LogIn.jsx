@@ -30,8 +30,10 @@ function LogIn() {
             }
             if (response.data[0].website === formData.password) {
                 console.log('Login successful:', response.data);
-                localStorage.setItem("userId", JSON.stringify(response.data[0]));
-                navigate('/home');
+                const userId=response.data[0].id
+                localStorage.setItem(userId, JSON.stringify(response.data[0]));
+                console.log(userId);
+                navigate(`/home/users/${userId}`);
             }
             else {
                 alert("password is wrong")
