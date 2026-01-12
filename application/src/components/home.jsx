@@ -11,7 +11,7 @@ function Home() {
             <nav>
                 <Link to={resource}> albums  </Link>
                 <Link to={resource}> photos  </Link>
-                <Link to={resource}> todos  </Link>
+                <Link to="todos"> todos  </Link>
                 <Link to="info">info  </Link>
                 <Link to="logout">logout  </Link>
             </nav>

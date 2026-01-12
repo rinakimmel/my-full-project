@@ -7,6 +7,7 @@ import Home from './components/home'
 import GetItems from './components/GetItems'
 import ShowUserInformation from './components/ShowUserInformation'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Todos from './components/Todos'
 function App() {
 
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path="/home/users/:userId" element={<Home />}>
             <Route path="logout" element={<LogOut />} />
             <Route path="info" element={<ShowUserInformation />} />
-            <Route path=":resource" element={<GetItems />} />
+            <Route path="todos" element={<Todos />} />
+
+            {/* <Route path=":resource" element={<GetItems />} /> */}
             {/* <Route path="albums" element={<GetItems />} />
             <Route path="photos" element={<GetItems />} />
             <Route path="todos" element={<GetItems />} />
