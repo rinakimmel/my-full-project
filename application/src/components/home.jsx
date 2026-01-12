@@ -10,7 +10,7 @@ function Home() {
             <div>user id: {userId}</div>
             <nav>
                 <Link to={resource}> albums  </Link>
-                <Link to={resource}> photos  </Link>
+                <Link to="posts"> posts  </Link>
                 <Link to="todos"> todos  </Link>
                 <Link to="info">info  </Link>
                 <Link to="logout">logout  </Link>
