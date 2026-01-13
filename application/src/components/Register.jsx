@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useApi from "../useApi";
 import BasicUserInformation from "./BasicUserInformation";
 import AdditionalUserInformation from "./AdditionalUserInformation";
 
@@ -8,6 +8,7 @@ function Register() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [error, setError] = useState("");
+    const { data: users, getItems, addItem } = useApi("users");
 
     const [basicData, setBasicData] = useState({
         username: "",
@@ -49,8 +50,8 @@ function Register() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:3000/users?username=${basicData.username}`);
-            if (response.data.length > 0) {
+            await getItems({ username: basicData.username });
+            if (users.length > 0) {
                 setError("Username already exists");
             } else {
                 setStep(2);
@@ -87,8 +88,8 @@ function Register() {
         };
 
         try {
-            const response = await axios.post("http://localhost:3000/users", finalUserObject);
-            localStorage.setItem("currentUser", JSON.stringify(response.data));
+            const newUser = await addItem(finalUserObject);
+            localStorage.setItem("currentUser", JSON.stringify(newUser));
             navigate("/home");
         } catch (err) {
             setError("Error creating user");

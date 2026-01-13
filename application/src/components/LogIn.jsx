@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import useApi from "../useApi";
 function LogIn() {
     const navigate = useNavigate();
+    const { data: users, getItems } = useApi("users");
     const [formData, setFormData] = useState({
         userName: "",
         password: ""
@@ -20,18 +21,18 @@ function LogIn() {
         e.preventDefault();
         
         try {
-            const response = await axios.get(`http://localhost:3000/users?username=${formData.userName}`);
+            await getItems({ username: formData.userName });
             console.log("Searching for user:", formData.userName);
-            console.log("response data", response.data);
+            console.log("response data", users);
 
-            if (response.data.length === 0) {
+            if (users.length === 0) {
                 alert("User not found");
                 return;
             }
-            if (response.data[0].website === formData.password) {
-                console.log('Login successful:', response.data);
-                const userId=response.data[0].id
-                localStorage.setItem(userId, JSON.stringify(response.data[0]));
+            if (users[0].website === formData.password) {
+                console.log('Login successful:', users);
+                const userId = users[0].id
+                localStorage.setItem(userId, JSON.stringify(users[0]));
                 console.log(userId);
                 navigate(`/home/users/${userId}`);
             }
@@ -43,12 +44,8 @@ function LogIn() {
                 }));
             }
         } catch (error) {
-            if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-                alert('Server is not running or connection failed');
-            } else {
-                console.error('Error during login:', error);
-                alert('Login failed. Please try again.');
-            }
+            console.error('Error during login:', error);
+            alert('Login failed. Please try again.');
         }
     };
 

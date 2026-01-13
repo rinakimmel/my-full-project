@@ -32,7 +32,6 @@ function Posts() {
         <div>
             <h2>פוסטים</h2>
             
-            {/* כפתורי סינון לפי דרישתך */}
             <div >
                 <button 
                     onClick={() => setShowMyPosts(true)} 
@@ -48,7 +47,6 @@ function Posts() {
                 </button>
             </div>
 
-            {/* אזור החיפוש -  */}
             <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
                 <option value="">בחר קריטריון חיפוש</option>
                 <option value="id">חיפוש לפי ID</option>

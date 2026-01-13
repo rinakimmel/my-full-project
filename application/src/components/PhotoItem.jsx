@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function PhotoItem({ photo, deleteItem, updateItem, isOwner }) {
+function PhotoItem({ photo, deleteItem, updateItem }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState(photo.title);
     const [imageError, setImageError] = useState(false);
@@ -18,10 +18,10 @@ function PhotoItem({ photo, deleteItem, updateItem, isOwner }) {
 
     return (
         <div >
-            <div >
+            {/* <div >
                 URL: {photo.url}<br/>
                 Thumbnail: {photo.thumbnailUrl}
-            </div>
+            </div> */}
             {imageError ? (
                 <div >
                     Image failed to load
@@ -50,20 +50,18 @@ function PhotoItem({ photo, deleteItem, updateItem, isOwner }) {
                 </div>
             )}
             
-            {isOwner && (
-                <div >
-                    <button 
-                        onClick={() => setIsEditing(!isEditing)}
-                    >
-                        {isEditing ? 'Cancel' : 'Edit'}
-                    </button>
-                    <button 
-                        onClick={handleDelete}
-                    >
-                        Delete
-                    </button>
-                </div>
-            )}
+            <div >
+                <button 
+                    onClick={() => setIsEditing(!isEditing)}
+                >
+                    {isEditing ? 'Cancel' : 'Edit'}
+                </button>
+                <button 
+                    onClick={handleDelete}
+                >
+                    Delete
+                </button>
+            </div>
         </div>
     );
 }
