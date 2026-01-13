@@ -64,22 +64,24 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApi from '../useApi';
+import  TodoItem from './TodoItem';
 
 function Todos() {
     const { userId } = useParams();
     const [sortBy, setSortBy] = useState('id');
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const [editingTodo, setEditingTodo] = useState(null);
-    const { data: todos, getItems, deleteItem,updateItem } = useApi("todos");
-    const saveUpdate = () => {
-        console.log(editingTodo)
-        updateItem(editingTodo.id, {
-            title: editingTodo.title,
-            completed: editingTodo.completed
-        });
-        setEditingTodo(null);
-    };
+    // const [editingTodo, setEditingTodo] = useState(null);
+    const { data: todos, getItems, deleteItem,updateItem ,addItem} = useApi("todos");
+
+    // const saveUpdate = () => {
+    //     console.log(editingTodo)
+    //     updateItem(editingTodo.id, {
+    //         title: editingTodo.title,
+    //         completed: editingTodo.completed
+    //     });
+    //     setEditingTodo(null);
+    // };
 
     useEffect(() => {
         const params = {
@@ -114,7 +116,7 @@ function Todos() {
                 placeholder="הכנס ערך לחיפוש"
             />}
 
-
+{/* 
             {editingTodo && <div>
                 <input type='text' placeholder='update title' value={editingTodo.title}
                     onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}></input>
@@ -124,21 +126,11 @@ function Todos() {
                     completed
                 </label>
                 <button onClick={() => saveUpdate()}>save updating</button>
-            </div>}
+            </div>} */}
 
 
             {todos.map(todo => (
-                <div key={todo.id}>
-                    <p>ID: {todo.id}</p>
-                    <span>{todo.title}</span>
-                    <label>
-                        <input type="checkbox" checked={todo.completed} readOnly />
-                        {todo.completed ? 'completed' : 'not completed'}
-                    </label>
-                    <button onClick={() => deleteItem(todo.id)}>delete</button>
-                    <button onClick={() => setEditingTodo(todo)}>update todo</button>
-
-                </div>
+                <TodoItem key={todo.id} todo={todo} onDelete={deleteItem} onUpdate={updateItem} />
             ))}
         </>
     );

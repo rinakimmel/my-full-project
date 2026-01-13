@@ -8,7 +8,7 @@ node_modules/
 .env.test.local
 .env.production.local
 
-# Build outputs (קבצים שנוצרים אוטומטית ע"י המערכת)
+# Build outputs (קבצים שנוצריאיןם אוטומטית ע"י המערכת)
 build/
 dist/
 

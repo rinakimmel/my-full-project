@@ -4,7 +4,7 @@
   "description": "Fake Reat API",
   "main": "index.js",
   "scripts": {
-    "json:server": "json-server --watch db.json"
+    "json:server": "json-server db.json"
   },
   "author": "",
   "license": "ISC",

@@ -1,54 +1,83 @@
-import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import useApi from '../useApi';
-function Posts() {
+import PostItem from './PostItem';
 
+function Posts() {
     const { userId } = useParams();
+    const currentUser = JSON.parse(localStorage.getItem(userId) || '{}');
+    const currentUserEmail = currentUser.email;
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const [showContent, setShowContent] = useState(false);
+    const [showMyPosts, setShowMyPosts] = useState(true); 
+
     const { data: posts, getItems, deleteItem, updateItem } = useApi("posts");
-    // const showContent = () => {
-
-    // }
-
     useEffect(() => {
-        const params = {
-            userId: userId,
-        };
+        const params = {};
+        
+        if (showMyPosts) {
+            params.userId = userId;
+        } else {
+            params.userId_ne = userId;
+        }
+
         if (searchBy && searchValue) {
             params[searchBy] = searchValue;
         }
+
         getItems(params);
-    }, [userId, searchBy, searchValue, getItems]);
+    }, [showMyPosts, searchBy, searchValue, getItems]);
 
     return (
-        <>
+        <div>
+            <h2>פוסטים</h2>
+            
+            {/* כפתורי סינון לפי דרישתך */}
+            <div >
+                <button 
+                    onClick={() => setShowMyPosts(true)} 
+                    disabled={showMyPosts}
+                >
+                    הפוסטים שלי
+                </button>
+                <button 
+                    onClick={() => setShowMyPosts(false)} 
+                    disabled={!showMyPosts}
+                >
+                    פוסטים של אחרים
+                </button>
+            </div>
 
+            {/* אזור החיפוש -  */}
             <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
                 <option value="">בחר קריטריון חיפוש</option>
                 <option value="id">חיפוש לפי ID</option>
                 <option value="title">חיפוש לפי כותרת</option>
             </select>
 
-            {searchBy && <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="הכנס ערך לחיפוש"
-            />
-            }
-            {posts.map(post => (
-                <div key={post.id}>
-                    <p>ID: {post.id}</p>
-                    <span>{post.title}</span>
-                    <button onClick={() => deleteItem(post.id)}>delete</button>
-                    <button onClick={() => updateItem(post.id)}>update post</button>
-                    <button onClick={() => setShowContent(true)}>choose</button>
-                    {showContent && <p>{post.body}</p>}
-                </div>
-            ))}
-        </>
+            {searchBy && (
+                <input
+                    type="text"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    placeholder="הכנס ערך לחיפוש"
+                />
+            )}
+
+            <div className="posts-list">
+                {posts.map(post => (
+                    <PostItem 
+                        key={post.id} 
+                        post={post} 
+                        isPostOwner={post.userId === parseInt(userId)}
+                        deletePost={deleteItem} 
+                        updatePost={updateItem}
+                        currentUserEmail={currentUserEmail}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
+
 export default Posts;

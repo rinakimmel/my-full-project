@@ -89,8 +89,18 @@ const useApi = (resource) => {
             console.error("Error updating item:", error);
         }
     },[resource])
+
+    const addItem = useCallback(async (newItem) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${resource}`, newItem);
+            setData(prev => [...prev, response.data]);
+        } catch (error) {
+            console.error("Error adding item:", error);
+        }
+    }, [resource]);
+
     // החזרת אובייקט עם הנתונים והפונקציות
-    return { data, getItems, deleteItem, updateItem };
+    return { data, getItems, deleteItem, updateItem, addItem };
 };
 
 export default useApi;
