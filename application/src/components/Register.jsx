@@ -1,35 +1,26 @@
-/**
- * Register
- * Macro: תהליך הרשמה דו-שלבי שמחבר בין BasicUserInformation ל־AdditionalUserInformation,
- * יוצר משתמש חדש באמצעות useApi('users').addItem ומנווט בסיום.
- * State:
- *  - step: שלב בטופס
- *  - error, basicData
- */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
 import BasicUserInformation from "./BasicUserInformation";
 import AdditionalUserInformation from "./AdditionalUserInformation";
+import Notification from "./Notification";
 
 function Register() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
-    const [error, setError] = useState("");
+    const [notification, setNotification] = useState(null);
     const [basicData, setBasicData] = useState(null);
     const { getItems, addItem } = useApi("users");
 
     const handleBasicSubmit = async (formData) => {
-        setError("");
-
         if (formData.password !== formData.verifyPassword) {
-            setError("Passwords do not match");
+            setNotification({ message: "Passwords do not match", type: "error" });
             return;
         }
 
         const foundUsers = await getItems({ username: formData.username });
         if (foundUsers.length > 0) {
-            setError("Username already exists");
+            setNotification({ message: "Username already exists", type: "error" });
         } else {
             setBasicData(formData);
             setStep(2);
@@ -68,11 +59,11 @@ function Register() {
 
     return (
         <div>
-            {error && <div>{error}</div>}
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
 
             {step === 1 && <BasicUserInformation onSubmit={handleBasicSubmit} />}
             {step === 2 && <AdditionalUserInformation onSubmit={handleFinalSubmit} />}
-            
+
             <Link to="/login">login</Link>
         </div>
     );

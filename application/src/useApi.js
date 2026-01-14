@@ -37,7 +37,7 @@ const useApi = (resource) => {
         catch (error) {
             console.error("Error updating item:", error);
         }
-    },[resource])
+    }, [resource])
 
     const addItem = useCallback(async (newItem) => {
         try {

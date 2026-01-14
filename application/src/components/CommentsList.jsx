@@ -1,67 +1,20 @@
-// import { useEffect,useState } from 'react';
-// import useApi from '../useApi'
-// import CommentItem from './CommentItem';
-// function CommentsList({ postId, currentUserEmail = "user@example.com" }) {
-//     const { data: comments, getItems, deleteItem, updateItem ,addItem} = useApi("comments");
-//     const [newCommentForm, setNewCommentForm] = useState(false);    
-//     useEffect(() => {
-//         const params = {
-//             postId: postId,
-//         };
-//         console.log('Fetching comments for postId:', postId);
-//         getItems(params);
-//     }, [postId, getItems]);
-
-//     return (
-//         <div>
-//             <h3>Comments:</h3>
-//             <button onClick={() => setNewCommentForm(!newCommentForm)}>add comment</button>
-//             {newCommentForm && (
-//                 <div>
-//                     <textarea placeholder='Comment body'></textarea>
-//                     <button onClick={addItem({name, email: currentUserEmail, postId:postId, body})}>Submit Comment</button>
-//                 </div>
-//             )}
-//             {comments && comments.length > 0 ? (
-//                 comments.map(comment => (
-//                     <CommentItem 
-//                         key={comment.id} 
-//                         comment={comment} 
-//                         onDelete={deleteItem}
-//                         onUpdate={updateItem}
-//                         currentUserEmail={currentUserEmail}
-//                     />
-//                 ))
-//             ) : (
-//                 <p>No comments found</p>
-//             )}
-//         </div>
-//     );
-// }
-// export default CommentsList;
-
-/**
- * CommentsList
- * Macro: טוען ומציג תגובות לפוסט נתון, מאפשר הוספה/מחיקה/עריכה של תגובות.
- * Props:
- *  - postId: מזהה הפוסט (נדרש)
- *  - currentUserEmail: למטרת בדיקת בעלות על תגובות
- * State:
- *  - showAddForm: האם להראות טופס הוספת תגובה
- * Side-effects:
- *  - קורא ל־useApi('comments').getItems בתוך useEffect כש־postId משתנה
- */
 import { useEffect, useState } from 'react';
 import useApi from '../useApi';
 import CommentItem from './CommentItem';
 import DynamicForm from './DynamicForm';
-import { useLocation, useParams } from 'react-router-dom';
+import Notification from './Notification';
+import { useLocation, useParams, useOutletContext } from 'react-router-dom';
 
-function CommentsList({ postId, currentUserEmail }) {
+function CommentsList({ postId: propPostId, currentUserEmail: propCurrentUserEmail }) {
     const { data: comments, getItems, deleteItem, updateItem, addItem } = useApi("comments");
     const location = useLocation();
     const params = useParams();
+    const outletContext = useOutletContext() || {};
     const [showAddForm, setShowAddForm] = useState(false);
+    const [notification, setNotification] = useState(null);
+
+    const postId = propPostId || outletContext.postId || params.postId;
+    const currentUserEmail = propCurrentUserEmail || outletContext.currentUserEmail;
 
     useEffect(() => {
         console.log('Fetching comments for postId:', postId);
@@ -73,7 +26,7 @@ function CommentsList({ postId, currentUserEmail }) {
 
     const handleAddComment = (formData) => {
         if (!effectiveEmail) {
-            alert('אנא התחבר כדי לשלוח תגובה');
+            setNotification({ message: 'אנא התחבר כדי לשלוח תגובה', type: 'error' });
             return;
         }
         addItem({
@@ -83,16 +36,18 @@ function CommentsList({ postId, currentUserEmail }) {
             body: formData.body
         });
         setShowAddForm(false);
+        setNotification({ message: 'תגובה נוספה בהצלחה', type: 'success' });
     };
 
     return (
         <div>
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <h4>תגובות:</h4>
             <button onClick={() => setShowAddForm(!showAddForm)}>הוסף תגובה חדשה</button>
-            
+
             {showAddForm && (
                 <div>
-                    <DynamicForm 
+                    <DynamicForm
                         fields={[{ name: 'body', placeholder: 'תוכן התגובה...', type: 'text' }]}
                         onSubmit={handleAddComment}
                         submitButtonText="שלח תגובה"
@@ -103,12 +58,12 @@ function CommentsList({ postId, currentUserEmail }) {
 
             {comments && comments.length > 0 ? (
                 comments.map(comment => (
-                    <CommentItem 
-                        key={comment.id} 
-                        comment={comment} 
+                    <CommentItem
+                        key={comment.id}
+                        comment={comment}
                         onDelete={deleteItem}
                         onUpdate={updateItem}
-                        currentUserEmail={currentUserEmail}
+                        currentUserEmail={effectiveEmail}
                     />
                 ))
             ) : (

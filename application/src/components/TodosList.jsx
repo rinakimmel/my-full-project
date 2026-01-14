@@ -1,24 +1,18 @@
-/**
- * Todos
- * Macro: מציג רשימת מטלות למשתמש עם אפשרויות מיון וחיפוש.
- * State:
- *  - sortBy, searchBy, searchValue
- * Side-effects:
- *  - useEffect מפעיל useApi('todos').getItems עם פרמטרים של userId/_sort
- */
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApi from '../useApi';
 import TodoItem from './TodoItem';
 import SortDropdown from './SortDropdown';
 import SearchFilter from './SearchFilter';
+import Notification from './Notification';
 
-function Todos() {
+function TodosList() {
     const { userId } = useParams();
     const [sortBy, setSortBy] = useState('id');
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const { data: todos, getItems, deleteItem,updateItem ,addItem} = useApi("todos");
+    const [notification, setNotification] = useState(null);
+    const { data: todos, getItems, deleteItem, updateItem, addItem } = useApi("todos");
 
     useEffect(() => {
         const params = {
@@ -43,10 +37,21 @@ function Todos() {
         { value: 'completed', label: 'חיפוש לפי מצב ביצוע' }
     ];
 
+    const handleDelete = async (id) => {
+        await deleteItem(id);
+        setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+    };
+
+    const handleUpdate = async (id, data) => {
+        await updateItem(id, data);
+        setNotification({ message: 'משימה עודכנה בהצלחה', type: 'success' });
+    };
+
     return (
         <>
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <SortDropdown sortOptions={sortOptions} sortBy={sortBy} setSortBy={setSortBy} />
-            <SearchFilter 
+            <SearchFilter
                 searchOptions={searchOptions}
                 searchBy={searchBy}
                 setSearchBy={setSearchBy}
@@ -55,9 +60,9 @@ function Todos() {
             />
 
             {todos.map(todo => (
-                <TodoItem key={todo.id} todo={todo} onDelete={deleteItem} onUpdate={updateItem} />
+                <TodoItem key={todo.id} todo={todo} onDelete={handleDelete} onUpdate={handleUpdate} />
             ))}
         </>
     );
 }
-export default Todos;
+export default TodosList;

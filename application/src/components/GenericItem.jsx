@@ -1,16 +1,6 @@
-/**
- * GenericItem
- * Macro: מעטפת לשימוש חוזר שמנהלת מצב עריכה מקומי של פריט וביצוע שמירה/ביטול/מחיקה.
- * Props:
- *  - item: האובייקט שמוצג/נערך (מכיל id)
- *  - onDelete(id), onUpdate(id,data)
- *  - renderView(item): פונקציית רינדור לתצוגה
- *  - renderEdit(editData,setEditData): פונקציית רינדור לעריכה
- *  - canEdit: האם להראות כפתורי עריכה/מחיקה
- * State:
- *  - isEditing, editData (עותק מקומי של item)
- */
 import { useState } from 'react';
+import ConfirmDialog from './ConfirmDialog';
+import Notification from './Notification';
 
 function GenericItem({ 
     item, 
@@ -18,14 +8,26 @@ function GenericItem({
     onUpdate, 
     renderView, 
     renderEdit, 
-    canEdit = true 
+    canEdit = true,
+    editableFields = ['title']
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState(item);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const handleDelete = () => {
+        setShowConfirm(true);
+    };
+
+    const confirmDelete = () => {
+        onDelete(item.id);
+        setShowConfirm(false);
+    };
 
     const handleSave = () => {
         onUpdate(editData.id, editData);
         setIsEditing(false);
+        setNotification({ message: 'נשמר בהצלחה', type: 'success' });
     };
 
     const handleCancel = () => {
@@ -33,27 +35,61 @@ function GenericItem({
         setIsEditing(false);
     };
 
+    const defaultRenderView = (item) => (
+        <div>
+            {editableFields.map(field => (
+                <div key={field}>
+                    <strong>{field}:</strong> {item[field]}
+                </div>
+            ))}
+        </div>
+    );
+
+    const defaultRenderEdit = (editData, setEditData) => (
+        <div>
+            {editableFields.map(field => (
+                <input
+                    key={field}
+                    placeholder={field}
+                    value={editData[field] || ''}
+                    onChange={(e) => setEditData({ ...editData, [field]: e.target.value })}
+                />
+            ))}
+        </div>
+    );
+
+    const finalRenderView = renderView || defaultRenderView;
+    const finalRenderEdit = renderEdit || defaultRenderEdit;
+
     return (
         <div>
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {showConfirm && (
+                <ConfirmDialog
+                    onConfirm={confirmDelete}
+                    onCancel={() => setShowConfirm(false)}
+                />
+            )}
             {isEditing ? (
                 <div>
-                    {renderEdit(editData, setEditData)}
+                    {renderEdit ? renderEdit(editData, setEditData, defaultRenderEdit) : finalRenderEdit(editData, setEditData)}
                     <button onClick={handleSave}>שמור</button>
                     <button onClick={handleCancel}>ביטול</button>
                 </div>
             ) : (
                 <div>
-                    {renderView(item)}
+                    {renderView ? renderView(item, defaultRenderView) : finalRenderView(item)}
                     {canEdit && (
                         <div>
                             <button onClick={() => setIsEditing(true)}>ערוך</button>
-                            <button onClick={() => onDelete(item.id)}>מחק</button>
+                         <button onClick={handleDelete}>מחק</button>
                         </div>
                     )}
                 </div>
             )}
         </div>
     );
+
 }
 
 export default GenericItem;

@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-/**
- * ShowUserInformation
- * Macro: קורא נתוני משתמש מתוך localStorage לפי userId ומציג שדות חשובים (address, company).
- * State:
- *  - userDetails: האובייקט של המשתמש
- *  - error: דגל שגיאה בפענוח JSON
- */
 function ShowUserInformation() {
     const { userId } = useParams();
     const [userDetails, setUserDetails] = useState(null);
@@ -17,7 +10,7 @@ function ShowUserInformation() {
         if (!userId) return;
 
         const userData = localStorage.getItem(userId);
-        
+
         if (userData) {
             try {
                 const parsedData = JSON.parse(userData);
@@ -39,7 +32,7 @@ function ShowUserInformation() {
     return (
         <div className="user-info">
             <h2>User Information</h2>
-            
+
             <div className="basic-info">
                 <h3>Basic Information</h3>
                 <InfoField label="Name" value={userDetails.name} />

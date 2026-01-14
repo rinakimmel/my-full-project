@@ -1,17 +1,13 @@
-/**
- * LogIn
- * Macro: טופס התחברות פשוט — בודק משתמש בעזרת useApi('users').getItems
- * Props/State: משתמש ב־DynamicForm להצגת שדות והעברת תוצאת הטופס ל־handleSubmit.
- * Side-effects: במידה וההתחברות מוצלחת שומר פרטי משתמש ב־localStorage ומנווט ל־/home/users/:id
- */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
 import DynamicForm from './DynamicForm';
+import Notification from './Notification';
 
 function LogIn() {
     const navigate = useNavigate();
     const { getItems } = useApi("users");
+    const [notification, setNotification] = useState(null);
 
     const fields = [
         { name: "userName", placeholder: "user name", required: true },
@@ -21,7 +17,7 @@ function LogIn() {
     const handleSubmit = async (formData) => {
         const foundUsers = await getItems({ username: formData.userName });
         if (foundUsers.length === 0) {
-            alert("User not found");
+            setNotification({ message: 'User not found', type: 'error' });
             return;
         }
         if (foundUsers[0].website === formData.password) {
@@ -30,13 +26,14 @@ function LogIn() {
             localStorage.setItem(userId, JSON.stringify(userWithoutPassword));
             navigate(`/home/users/${userId}`);
         } else {
-            alert("password is wrong");
+            setNotification({ message: 'password is wrong', type: 'error' });
         }
     };
 
     return (
         <>
-            <DynamicForm 
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            <DynamicForm
                 fields={fields}
                 onSubmit={handleSubmit}
                 submitButtonText="Log In"

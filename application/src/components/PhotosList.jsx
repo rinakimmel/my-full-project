@@ -1,32 +1,25 @@
-/**
- * PhotosList
- * Macro: מציג תמונות של אלבום נתון עם pagination פשוט ותמיכה בהוספת תמונה.
- * State:
- *  - currentPage, photosPerPage, showAddForm
- * Side-effects:
- *  - useEffect קורא ל־useApi('photos') ו־useApi('albums') כש־albumId משתנה
- */
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import useApi from '../useApi';
 import PhotoItem from './PhotoItem';
 import DynamicForm from './DynamicForm';
+import Pagination from './Pagination';
+import Notification from './Notification';
 
 function PhotosList() {
-    const { userId, albumId } = useParams();
+    const { albumId } = useParams();
+    const location = useLocation();
+    const { album } = location.state || {};
     const [currentPage, setCurrentPage] = useState(0);
     const [photosPerPage] = useState(6);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [notification, setNotification] = useState(null);
 
     const { data: photos, getItems, deleteItem, updateItem, addItem } = useApi("photos");
-    const { data: albums, getItems: getAlbums } = useApi("albums");
-
-    const currentAlbum = albums.find(album => album.id === albumId);
 
     useEffect(() => {
         getItems({ albumId: albumId });
-        getAlbums({ id: albumId });
-    }, [albumId, getItems, getAlbums]);
+    }, [albumId, getItems]);
 
     const startIndex = currentPage * photosPerPage;
     const endIndex = startIndex + photosPerPage;
@@ -35,18 +28,29 @@ function PhotosList() {
 
     const handleAddPhoto = async (formData) => {
         await addItem({
-            ...formData,
+        ...formData,
             albumId: parseInt(albumId)
         });
         setShowAddForm(false);
+        setNotification({ message: 'תמונה נוספה בהצלחה', type: 'success' });
+    };
+
+    const handleDelete = async (id) => {
+        await deleteItem(id);
+        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
+    };
+
+    const handleUpdate = async (id, data) => {
+        await updateItem(id, data);
+        setNotification({ message: 'תמונה עודכנה בהצלחה', type: 'success' });
     };
 
     return (
         <div>
-            <Link to={`/home/users/${userId}/albums`}>← Back to Albums</Link>
-
-            <h2>Album: {currentAlbum?.title || 'Loading...'}</h2>
-
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+           
+            <h2>Album: {album?.title || 'Loading...'}</h2>
+            
             <div>
                 <button onClick={() => setShowAddForm(!showAddForm)}>
                     {showAddForm ? 'Cancel' : 'Add Photo'}
@@ -66,38 +70,24 @@ function PhotosList() {
 
             <div >
                 {currentPhotos.map(photo => (
-                    <PhotoItem
-                        key={photo.id}
-                        photo={photo}
-                        deleteItem={deleteItem}
-                        updateItem={updateItem}
+                    photo && (
+                        <PhotoItem
+                            key={photo.id}
+                            photo={photo}
+                            deleteItem={handleDelete}
+                            updateItem={handleUpdate}
                     />
+                    )
                 ))}
             </div>
 
             {photos.length === 0 && <p>No photos in this album</p>}
 
-            {totalPages > 1 && (
-                <div>
-                    <button
-                        onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
-                        disabled={currentPage === 0}
-                    >
-                        הקודם
-                    </button>
-
-                    <span >
-                        עמוד {currentPage + 1} מתוך {totalPages}
-                    </span>
-
-                    <button
-                        onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
-                        disabled={currentPage === totalPages - 1}
-                    >
-                        הבא
-                    </button>
-                </div>
-            )}
+            <Pagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 }

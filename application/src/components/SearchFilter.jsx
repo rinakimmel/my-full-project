@@ -1,10 +1,3 @@
-/**
- * SearchFilter
- * Macro: קומפוננטה פשוטה לבחירת קריטריון חיפוש והזנת ערך לחיפוש.
- * Props:
- *  - searchOptions: array של אפשרויות { value, label }
- *  - searchBy, setSearchBy, searchValue, setSearchValue
- */
 function SearchFilter({ searchOptions, searchBy, setSearchBy, searchValue, setSearchValue }) {
     return (
         <>

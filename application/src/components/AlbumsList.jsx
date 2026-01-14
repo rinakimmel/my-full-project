@@ -1,27 +1,22 @@
-/**
- * AlbumsList
- * Macro: מסדר ומציג רשימת אלבומים עבור משתמש מסוים; תומך בחיפוש ויצירה.
- * Hooks/State:
- *  - searchBy, searchValue: ערכי חיפוש
- *  - showCreateForm: האם להציג טופס יצירה
- *  - useApi('albums') מספק את המידע והפעולות (getItems, addItem, ...)
- */
 import { useEffect, useState } from "react";
-import AlbumItem from "./AlbumItem";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import useApi from "../useApi";
 import SearchFilter from './SearchFilter';
 import DynamicForm from './DynamicForm';
+import Notification from './Notification';
+import ConfirmDialog from './ConfirmDialog';
 
 function AlbumsList(){
     const { userId } = useParams();
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const [deleteAlbumId, setDeleteAlbumId] = useState(null);
     const { data: albums, getItems, deleteItem, updateItem, addItem } = useApi("albums");
 
     useEffect(() => {
-        const params = { userId: userId };
+        const params = {userId};
 
         if (searchBy && searchValue) {
             params[searchBy] = searchValue;
@@ -35,6 +30,18 @@ function AlbumsList(){
             userId: parseInt(userId)
         });
         setShowCreateForm(false);
+        setNotification({ message: 'אלבום נוצר בהצלחה', type: 'success' });
+    };
+
+    const handleDeleteClick = (e, albumId) => {
+        e.preventDefault();
+        setDeleteAlbumId(albumId);
+    };
+
+    const confirmDelete = () => {
+        deleteItem(deleteAlbumId);
+        setDeleteAlbumId(null);
+        setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
     };
 
     const searchOptions = [
@@ -48,6 +55,13 @@ function AlbumsList(){
 
     return (
         <div>
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {deleteAlbumId && (
+                <ConfirmDialog
+                    onConfirm={confirmDelete}
+                    onCancel={() => setDeleteAlbumId(null)}
+                />
+            )}
             <h2>Albums</h2>
             
             <button onClick={() => setShowCreateForm(!showCreateForm)}>
@@ -70,15 +84,20 @@ function AlbumsList(){
                 setSearchValue={setSearchValue}
             />
 
-            <div className="albums-list">
+            <div>
                 {albums.map(album => (
-                    <AlbumItem 
-                        key={album.id} 
-                        album={album} 
-                        deleteItem={deleteItem} 
-                        updateItem={updateItem}
-                        isOwner={album.userId === parseInt(userId)}
-                    />
+                    <div key={album.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Link
+                            to={`/home/users/${userId}/albums/${album.id}/photos`}
+                            state={album}
+                        >
+                            <div>
+                                <p>id: {album.id}</p>
+                                <p>{album.title}</p>
+                            </div>
+                        </Link>
+                        <button onClick={(e) => handleDeleteClick(e, album.id)}>מחק אלבום</button>
+                    </div>
                 ))}
             </div>
         </div>

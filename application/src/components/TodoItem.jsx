@@ -1,17 +1,24 @@
-/**
- * TodoItem
- * Macro: מציג מטלה בודדת עם תיבת סימון למצב הושלם ועריכה/מחיקה דרך GenericItem.
- * Props:
- *  - todo: { id, title, completed }
- *  - onDelete(id), onUpdate(id,data)
- */
 import GenericItem from './GenericItem';
+import ConfirmDialog from './ConfirmDialog';
+import Notification from './Notification';
+import { useState } from 'react';
 
 function TodoItem({ todo, onDelete, onUpdate }) {
-    const renderView = (item) => (
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [notification, setNotification] = useState(null);
+
+    const handleDelete = (id) => {
+        setShowConfirm(true);
+    };
+
+    const confirmDelete = () => {
+        onDelete(todo.id);
+        setShowConfirm(false);
+        setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+    };
+    const renderView = (item, defaultRender) => (
         <>
-            <p>ID: {item.id}</p>
-            <span>{item.title}</span>
+            {defaultRender(item)}
             <label>
                 <input type="checkbox" checked={item.completed} readOnly />
                 {item.completed ? 'completed' : 'not completed'}
@@ -19,17 +26,12 @@ function TodoItem({ todo, onDelete, onUpdate }) {
         </>
     );
 
-    const renderEdit = (editData, setEditData) => (
+    const renderEdit = (editData, setEditData, defaultRender) => (
         <>
-            <input 
-                type='text' 
-                placeholder='update title' 
-                value={editData.title}
-                onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-            />
+            {defaultRender(editData, setEditData)}
             <label>
-                <input 
-                    type="checkbox" 
+                <input
+                    type="checkbox"
                     checked={editData.completed}
                     onChange={(e) => setEditData({ ...editData, completed: e.target.checked })}
                 />
@@ -39,20 +41,23 @@ function TodoItem({ todo, onDelete, onUpdate }) {
     );
 
     return (
-        <div style={{
-                border: '1px solid black',
-                margin: '10px',
-                padding: '10px',
-            }}>
-        <GenericItem
-            item={todo}
-            onDelete={onDelete}
-            onUpdate={onUpdate}
-            renderView={renderView}
-            renderEdit={renderEdit}
-            
-        />
-        </div>
+        <>
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {showConfirm && (
+                <ConfirmDialog
+                    onConfirm={confirmDelete}
+                    onCancel={() => setShowConfirm(false)}
+                />
+            )}
+            <GenericItem
+                item={todo}
+                onDelete={handleDelete}
+                onUpdate={onUpdate}
+                renderView={renderView}
+                renderEdit={renderEdit}
+                editableFields={['title']}
+            />
+        </>
     );
 }
 
