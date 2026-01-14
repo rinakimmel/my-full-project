@@ -1,3 +1,15 @@
+/**
+ * GenericItem
+ * Macro: מעטפת לשימוש חוזר שמנהלת מצב עריכה מקומי של פריט וביצוע שמירה/ביטול/מחיקה.
+ * Props:
+ *  - item: האובייקט שמוצג/נערך (מכיל id)
+ *  - onDelete(id), onUpdate(id,data)
+ *  - renderView(item): פונקציית רינדור לתצוגה
+ *  - renderEdit(editData,setEditData): פונקציית רינדור לעריכה
+ *  - canEdit: האם להראות כפתורי עריכה/מחיקה
+ * State:
+ *  - isEditing, editData (עותק מקומי של item)
+ */
 import { useState } from 'react';
 
 function GenericItem({ 

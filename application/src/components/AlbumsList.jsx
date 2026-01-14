@@ -1,3 +1,11 @@
+/**
+ * AlbumsList
+ * Macro: מסדר ומציג רשימת אלבומים עבור משתמש מסוים; תומך בחיפוש ויצירה.
+ * Hooks/State:
+ *  - searchBy, searchValue: ערכי חיפוש
+ *  - showCreateForm: האם להציג טופס יצירה
+ *  - useApi('albums') מספק את המידע והפעולות (getItems, addItem, ...)
+ */
 import { useEffect, useState } from "react";
 import AlbumItem from "./AlbumItem";
 import { useParams } from "react-router-dom";

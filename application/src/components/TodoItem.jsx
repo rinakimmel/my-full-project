@@ -1,3 +1,10 @@
+/**
+ * TodoItem
+ * Macro: מציג מטלה בודדת עם תיבת סימון למצב הושלם ועריכה/מחיקה דרך GenericItem.
+ * Props:
+ *  - todo: { id, title, completed }
+ *  - onDelete(id), onUpdate(id,data)
+ */
 import GenericItem from './GenericItem';
 
 function TodoItem({ todo, onDelete, onUpdate }) {
@@ -32,13 +39,20 @@ function TodoItem({ todo, onDelete, onUpdate }) {
     );
 
     return (
+        <div style={{
+                border: '1px solid black',
+                margin: '10px',
+                padding: '10px',
+            }}>
         <GenericItem
             item={todo}
             onDelete={onDelete}
             onUpdate={onUpdate}
             renderView={renderView}
             renderEdit={renderEdit}
+            
         />
+        </div>
     );
 }
 

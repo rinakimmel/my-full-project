@@ -1,3 +1,10 @@
+/**
+ * PhotoItem
+ * Macro: מציג תמונה (thumbnail/url) וטקסט נלווה; מטפל בשגיאת טעינת תמונה ומאפשר עריכה/מחיקה דרך GenericItem.
+ * Props:
+ *  - photo: { id, title, url, thumbnailUrl }
+ *  - deleteItem(id), updateItem(id,data)
+ */
 import { useState } from 'react';
 import GenericItem from './GenericItem';
 

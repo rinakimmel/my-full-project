@@ -1,3 +1,9 @@
+/**
+ * LogIn
+ * Macro: טופס התחברות פשוט — בודק משתמש בעזרת useApi('users').getItems
+ * Props/State: משתמש ב־DynamicForm להצגת שדות והעברת תוצאת הטופס ל־handleSubmit.
+ * Side-effects: במידה וההתחברות מוצלחת שומר פרטי משתמש ב־localStorage ומנווט ל־/home/users/:id
+ */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
@@ -20,7 +26,8 @@ function LogIn() {
         }
         if (foundUsers[0].website === formData.password) {
             const userId = foundUsers[0].id;
-            localStorage.setItem(userId, JSON.stringify(foundUsers[0]));
+            const { website, ...userWithoutPassword } = foundUsers[0];
+            localStorage.setItem(userId, JSON.stringify(userWithoutPassword));
             navigate(`/home/users/${userId}`);
         } else {
             alert("password is wrong");

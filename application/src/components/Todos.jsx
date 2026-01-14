@@ -1,3 +1,11 @@
+/**
+ * Todos
+ * Macro: מציג רשימת מטלות למשתמש עם אפשרויות מיון וחיפוש.
+ * State:
+ *  - sortBy, searchBy, searchValue
+ * Side-effects:
+ *  - useEffect מפעיל useApi('todos').getItems עם פרמטרים של userId/_sort
+ */
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApi from '../useApi';

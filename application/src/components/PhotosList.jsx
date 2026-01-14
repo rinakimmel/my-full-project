@@ -1,3 +1,11 @@
+/**
+ * PhotosList
+ * Macro: מציג תמונות של אלבום נתון עם pagination פשוט ותמיכה בהוספת תמונה.
+ * State:
+ *  - currentPage, photosPerPage, showAddForm
+ * Side-effects:
+ *  - useEffect קורא ל־useApi('photos') ו־useApi('albums') כש־albumId משתנה
+ */
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useApi from '../useApi';

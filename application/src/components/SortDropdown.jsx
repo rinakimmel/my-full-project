@@ -1,3 +1,8 @@
+/**
+ * SortDropdown
+ * Macro: רשימה נפתחת להצבת אופציות מיון.
+ * Props: sortOptions, sortBy, setSortBy
+ */
 function SortDropdown({ sortOptions, sortBy, setSortBy }) {
     return (
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>

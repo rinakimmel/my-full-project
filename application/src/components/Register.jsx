@@ -1,3 +1,11 @@
+/**
+ * Register
+ * Macro: תהליך הרשמה דו-שלבי שמחבר בין BasicUserInformation ל־AdditionalUserInformation,
+ * יוצר משתמש חדש באמצעות useApi('users').addItem ומנווט בסיום.
+ * State:
+ *  - step: שלב בטופס
+ *  - error, basicData
+ */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
@@ -53,7 +61,8 @@ function Register() {
         };
 
         const newUser = await addItem(finalUserObject);
-        localStorage.setItem("currentUser", JSON.stringify(newUser));
+        const { website, ...userWithoutPassword } = newUser;
+        localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword));
         navigate("/home");
     };
 

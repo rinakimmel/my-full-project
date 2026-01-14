@@ -32,6 +32,14 @@
 // }
 // export default CommentItem;
 
+/**
+ * CommentItem
+ * Macro: מציג תגובה בודדת; מאפשר עריכה/מחיקה אם המייל של הכותב תואם ל־currentUserEmail.
+ * Props:
+ *  - comment: { id, name, email, body }
+ *  - onDelete(id), onUpdate(id,data)
+ *  - currentUserEmail: מייל של המשתמש הנוכחי לבדיקת בעלות
+ */
 import GenericItem from './GenericItem';
 
 function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {

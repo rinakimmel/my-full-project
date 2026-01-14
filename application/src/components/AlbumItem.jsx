@@ -1,3 +1,12 @@
+/**
+ * AlbumItem
+ * Macro: הצגה ועריכה של פריט אלבום יחיד באמצעות GenericItem.
+ * Props:
+ *  - album: אובייקט אלבום
+ *  - deleteItem(id): מחיקת פריט
+ *  - updateItem(id,data): עדכון פריט
+ *  - isOwner: האם המשתמש הנוכחי בעל האלבום
+ */
 import { Link, useParams } from 'react-router-dom';
 import GenericItem from './GenericItem';
 
@@ -21,7 +30,11 @@ function AlbumItem({ album, deleteItem, updateItem, isOwner }) {
     );
 
     return (
-        <div>
+        <div style={{
+                border: '1px solid black',
+                margin: '10px',
+                padding: '10px',
+            }}>
             <GenericItem
                 item={album}
                 onDelete={deleteItem}

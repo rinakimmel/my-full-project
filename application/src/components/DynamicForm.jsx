@@ -1,3 +1,15 @@
+/**
+ * DynamicForm
+ * Macro: טופס דינמי כללי שמייצר שדות על פי תיאור ומחזיר את הערכים ב־onSubmit.
+ * Props:
+ *  - fields: [{ name, placeholder, type, required }]
+ *  - onSubmit(formData)
+ *  - submitButtonText: טקסט לכפתור השליחה
+ * State:
+ *  - formData: אובייקט ערכים לשדות
+ * Notes:
+ *  - מאתחל כל שדה למחרוזת ריקה; אפס בסיסי לאחר שליחה.
+ */
 import { useState } from 'react';
 
 function DynamicForm({ fields, onSubmit, submitButtonText }) {

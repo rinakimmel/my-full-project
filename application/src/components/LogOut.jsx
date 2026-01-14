@@ -1,3 +1,9 @@
+/**
+ * LogOut
+ * Macro: מבצע התנתקות פשוטה — מסיר פרטי משתמש מה־localStorage ומנווט חזרה ל־/login
+ * State:
+ *  - showSuccessMessage: בקרה להצגת הודעת הצלחה לפני ניווט
+ */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';

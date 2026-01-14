@@ -1,3 +1,10 @@
+/**
+ * BasicUserInformation
+ * Macro: שלב ראשון בהרשמה — בוחר שם משתמש וסיסמה.
+ * Props:
+ *  - onSubmit(formData)
+ * State: מנוהל ב־DynamicForm
+ */
 import DynamicForm from './DynamicForm';
 
 function BasicUserInformation({ onSubmit }) {

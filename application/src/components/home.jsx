@@ -1,3 +1,8 @@
+/**
+ * Home
+ * Macro: דף הבית של משתמש שמציג פרטי משתמש מקומיים וקישורים למשאבים (albums, posts, todos, info).
+ * Hooks: קורא `localStorage` עבור `userId` להשגת פרטי המשתמש.
+ */
 import { useParams, Link, Outlet } from "react-router-dom";
 function Home() {
     const {userId} = useParams();

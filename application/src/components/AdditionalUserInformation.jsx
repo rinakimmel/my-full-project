@@ -1,3 +1,10 @@
+/**
+ * AdditionalUserInformation
+ * Macro: שלב שני בהרשמה, אוסף שדות נוספים (כתובת, חברה וכו').
+ * Props:
+ *  - onSubmit(formData): callback לקבלת ערכי השדות בסיום.
+ * State: אין (הטופס מנוהל ב־DynamicForm).
+ */
 import React from 'react';
 import DynamicForm from './DynamicForm';
 

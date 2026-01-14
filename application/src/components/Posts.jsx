@@ -1,3 +1,12 @@
+/**
+ * Posts
+ * Macro: מנהל רשימת פוסטים של משתמש, עם אפשרות להצגה של 'הפוסטים שלי' או 'פוסטים של אחרים', חיפוש ועדכון/מחיקה.
+ * Props/State:
+ *  - משתמש ב־useParams() לקבלת userId
+ *  - searchBy, searchValue, showMyPosts
+ * Side-effects:
+ *  - קורא ל־useApi('posts').getItems בהתאם לפרמטרים
+ */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useApi from '../useApi';
