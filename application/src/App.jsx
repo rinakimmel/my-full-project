@@ -12,6 +12,8 @@ import Posts from './components/Posts'
 import AlbumItem from './components/AlbumItem'
 import AlbumsList from './components/AlbumsList'
 import PhotosList from './components/PhotosList'
+import CommentsList from './components/CommentsList'
+import ActivePost from './components/ActivePost'
 
 function App() {
 
@@ -27,6 +29,8 @@ function App() {
             <Route path="info" element={<ShowUserInformation />} />
             <Route path="todos" element={<Todos />} />
             <Route path="posts" element={<Posts />} />
+            {/* <Route path="posts/:postsId" element={<CommentsList />} /> */}
+            <Route path="posts/:postsId" element={<ActivePost />} />
             <Route path="albums" element={<AlbumsList />} />
             <Route path="albums/:albumId" element={<PhotosList />} />
           </Route>
