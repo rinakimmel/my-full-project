@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import useApi from '../useApi';
 import PostItem from './PostItem';
 import SearchFilter from './SearchFilter';
-import DynamicForm from './DynamicForm';
-import { useState } from 'react';
 
 function Posts() {
     const { userId } = useParams();
@@ -14,8 +12,7 @@ function Posts() {
     const [searchValue, setSearchValue] = useState('');
     const [showMyPosts, setShowMyPosts] = useState(true); 
 
-    const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
-    const [showAddForm, setShowAddForm] = useState(false);
+    const { data: posts, getItems, deleteItem, updateItem } = useApi("posts");
     useEffect(() => {
         const params = {};
         
@@ -63,26 +60,6 @@ function Posts() {
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
             />
-
-            <div>
-                <button onClick={() => setShowAddForm(prev => !prev)}>
-                    {showAddForm ? 'Cancel' : 'Add Post'}
-                </button>
-
-                {showAddForm && (
-                    <DynamicForm
-                        fields={[
-                            { name: 'title', placeholder: 'Title', type: 'text', required: true },
-                            { name: 'body', placeholder: 'Body', type: 'text', required: true }
-                        ]}
-                        onSubmit={async (formData) => {
-                            await addItem({ ...formData, userId: parseInt(userId) });
-                            setShowAddForm(false);
-                        }}
-                        submitButtonText="Add Post"
-                    />
-                )}
-            </div>
 
             <div className="posts-list">
                 {posts.map(post => (
