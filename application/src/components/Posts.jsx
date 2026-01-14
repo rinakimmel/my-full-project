@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useApi from '../useApi';
 import PostItem from './PostItem';
+import SearchFilter from './SearchFilter';
+import DynamicForm from './DynamicForm';
+import { useState } from 'react';
 
 function Posts() {
     const { userId } = useParams();
@@ -11,7 +14,8 @@ function Posts() {
     const [searchValue, setSearchValue] = useState('');
     const [showMyPosts, setShowMyPosts] = useState(true); 
 
-    const { data: posts, getItems, deleteItem, updateItem } = useApi("posts");
+    const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
+    const [showAddForm, setShowAddForm] = useState(false);
     useEffect(() => {
         const params = {};
         
@@ -28,11 +32,16 @@ function Posts() {
         getItems(params);
     }, [showMyPosts, searchBy, searchValue, getItems]);
 
+    const searchOptions = [
+        { value: 'id', label: 'חיפוש לפי ID' },
+        { value: 'title', label: 'חיפוש לפי כותרת' }
+    ];
+
     return (
         <div>
             <h2>פוסטים</h2>
             
-            <div >
+            <div>
                 <button 
                     onClick={() => setShowMyPosts(true)} 
                     disabled={showMyPosts}
@@ -47,20 +56,33 @@ function Posts() {
                 </button>
             </div>
 
-            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
-                <option value="">בחר קריטריון חיפוש</option>
-                <option value="id">חיפוש לפי ID</option>
-                <option value="title">חיפוש לפי כותרת</option>
-            </select>
+            <SearchFilter 
+                searchOptions={searchOptions}
+                searchBy={searchBy}
+                setSearchBy={setSearchBy}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+            />
 
-            {searchBy && (
-                <input
-                    type="text"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="הכנס ערך לחיפוש"
-                />
-            )}
+            <div>
+                <button onClick={() => setShowAddForm(prev => !prev)}>
+                    {showAddForm ? 'Cancel' : 'Add Post'}
+                </button>
+
+                {showAddForm && (
+                    <DynamicForm
+                        fields={[
+                            { name: 'title', placeholder: 'Title', type: 'text', required: true },
+                            { name: 'body', placeholder: 'Body', type: 'text', required: true }
+                        ]}
+                        onSubmit={async (formData) => {
+                            await addItem({ ...formData, userId: parseInt(userId) });
+                            setShowAddForm(false);
+                        }}
+                        submitButtonText="Add Post"
+                    />
+                )}
+            </div>
 
             <div className="posts-list">
                 {posts.map(post => (

@@ -43,30 +43,25 @@
 import { useEffect, useState } from 'react';
 import useApi from '../useApi';
 import CommentItem from './CommentItem';
+import DynamicForm from './DynamicForm';
 
 function CommentsList({ postId, currentUserEmail = "user@example.com" }) {
     const { data: comments, getItems, deleteItem, updateItem, addItem } = useApi("comments");
     const [showAddForm, setShowAddForm] = useState(false);
-    const [newCommentBody, setNewCommentBody] = useState("");
 
     useEffect(() => {
         console.log('Fetching comments for postId:', postId);
         getItems({ postId: parseInt(postId) });
     }, [postId, getItems]);
 
-    const handleAddComment = () => {
-        if (!newCommentBody) return;
-        
-        const newComment = {
+    const handleAddComment = (formData) => {
+        addItem({
             name: "My Comment",
             email: currentUserEmail,
             postId: parseInt(postId),
-            body: newCommentBody
-        };
-        
-        addItem(newComment);
-        setNewCommentBody(""); // ניקוי שדה
-        setShowAddForm(false); // סגירת הטופס
+            body: formData.body
+        });
+        setShowAddForm(false);
     };
 
     return (
@@ -75,15 +70,11 @@ function CommentsList({ postId, currentUserEmail = "user@example.com" }) {
             <button onClick={() => setShowAddForm(!showAddForm)}>הוסף תגובה חדשה</button>
             
             {showAddForm && (
-                <div>
-                    <textarea 
-                        placeholder='תוכן התגובה...' 
-                        value={newCommentBody}
-                        onChange={(e) => setNewCommentBody(e.target.value)}
-                    />
-                    <br />
-                    <button onClick={handleAddComment}>שלח תגובה</button>
-                </div>
+                <DynamicForm 
+                    fields={[{ name: 'body', placeholder: 'תוכן התגובה...', type: 'text' }]}
+                    onSubmit={handleAddComment}
+                    submitButtonText="שלח תגובה"
+                />
             )}
 
             {comments && comments.length > 0 ? (

@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import AlbumItem from "./AlbumItem";
 import { useParams } from "react-router-dom";
 import useApi from "../useApi";
+import SearchFilter from './SearchFilter';
+import DynamicForm from './DynamicForm';
 
 function AlbumsList(){
     const { userId } = useParams();
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [showCreateForm, setShowCreateForm] = useState(false);
-    const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const { data: albums, getItems, deleteItem, updateItem, addItem } = useApi("albums");
 
     useEffect(() => {
@@ -20,16 +21,22 @@ function AlbumsList(){
         getItems(params);
     }, [userId, searchBy, searchValue, getItems]);
 
-    const handleCreateAlbum = async () => {
-        if (newAlbumTitle.trim()) {
-            await addItem({
-                title: newAlbumTitle,
-                userId: parseInt(userId)
-            });
-            setNewAlbumTitle('');
-            setShowCreateForm(false);
-        }
+    const handleCreateAlbum = async (formData) => {
+        await addItem({
+            title: formData.title,
+            userId: parseInt(userId)
+        });
+        setShowCreateForm(false);
     };
+
+    const searchOptions = [
+        { value: 'id', label: 'חיפוש לפי ID' },
+        { value: 'title', label: 'חיפוש לפי כותרת' }
+    ];
+
+    const createFields = [
+        { name: 'title', placeholder: 'Album Title', type: 'text' }
+    ];
 
     return (
         <div>
@@ -40,31 +47,20 @@ function AlbumsList(){
             </button>
 
             {showCreateForm && (
-                <div>
-                    <input
-                        type="text"
-                        value={newAlbumTitle}
-                        onChange={(e) => setNewAlbumTitle(e.target.value)}
-                        placeholder="Album Title"
-                    />
-                    <button onClick={handleCreateAlbum}>Create Album</button>
-                </div>
-            )}
-
-            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
-                <option value="">בחר קריטריון חיפוש</option>
-                <option value="id">חיפוש לפי ID</option>
-                <option value="title">חיפוש לפי כותרת</option>
-            </select>
-
-            {searchBy && (
-                <input
-                    type="text"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="הכנס ערך לחיפוש"
+                <DynamicForm 
+                    fields={createFields}
+                    onSubmit={handleCreateAlbum}
+                    submitButtonText="Create Album"
                 />
             )}
+
+            <SearchFilter 
+                searchOptions={searchOptions}
+                searchBy={searchBy}
+                setSearchBy={setSearchBy}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+            />
 
             <div className="albums-list">
                 {albums.map(album => (

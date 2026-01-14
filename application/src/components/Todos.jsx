@@ -1,87 +1,16 @@
-
-// import { useParams } from 'react-router-dom';
-// import { useState } from 'react';
-// import useApi from '../useApi';
-
-// function Todos() {
-//     const { userId } = useParams();
-//     const [sortBy, setSortBy] = useState('id');
-//     const [searchBy, setSearchBy] = useState('');
-//     const [searchValue, setSearchValue] = useState('');
-//     const [url, setUrl] = useState(`http://localhost:3000/todos?userId=${userId}&_sort=${sortBy}&${searchBy}=${searchValue}`);
-//     const [method, setMethod] = useState("get");
-//     //const {responseData, getData, deleteData } = useApi(`http://localhost:3000/todos?userId=${userId}&_sort=${sortBy}&${searchBy}=${searchValue}`);
-
-//     const responseData = useApi(method, url);
-//     const deleteData = (id) => {
-//         setUrl(`http://localhost:3000/todos/${id}`);
-//         setMethod("delete");
-//         setTimeout(() => {
-//             setUrl(`http://localhost:3000/todos?userId=${userId}&_sort=${sortBy}&${searchBy}=${searchValue}`);
-//             setMethod("get");
-//         }, 100);
-//     };
-
-//     return (
-//         <>
-//             <h2>Todos Component</h2>
-//             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-//                 <option value="id">מיון לפי ID</option>
-//                 <option value="title">מיון לפי כותרת</option>
-//                 <option value="completed">מיון לפי ביצוע</option>
-//             </select>
-
-//             <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
-//                 <option value="">בחר קריטריון חיפוש</option>
-//                 <option value="id">חיפוש לפי ID</option>
-//                 <option value="title">חיפוש לפי כותרת</option>
-//                 <option value="completed">חיפוש לפי מצב ביצוע</option>
-//             </select>
-
-//             <input
-//                 type="text"
-//                 value={searchValue}
-//                 onChange={(e) => setSearchValue(e.target.value)}
-//                 placeholder="הכנס ערך לחיפוש"
-//             />
-
-//             {responseData && responseData.map(todo => (
-//                 <div key={todo.id}>
-//                     <p>ID: {todo.id}</p>
-//                     <h3>{todo.title}</h3>
-//                     <label>
-//                         <input type="checkbox" checked={todo.completed} readOnly />
-//                         {todo.completed ? 'הושלם' : 'לא הושלם'}
-//                     </label>
-//                     <button onClick={() => { deleteData(todo.id) }}>delete todo</button>
-//                 </div>
-//             ))}
-//         </>
-//     )
-// }
-
-// export default Todos;
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import useApi from '../useApi';
-import  TodoItem from './TodoItem';
+import TodoItem from './TodoItem';
+import SortDropdown from './SortDropdown';
+import SearchFilter from './SearchFilter';
 
 function Todos() {
     const { userId } = useParams();
     const [sortBy, setSortBy] = useState('id');
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    // const [editingTodo, setEditingTodo] = useState(null);
     const { data: todos, getItems, deleteItem,updateItem ,addItem} = useApi("todos");
-
-    // const saveUpdate = () => {
-    //     console.log(editingTodo)
-    //     updateItem(editingTodo.id, {
-    //         title: editingTodo.title,
-    //         completed: editingTodo.completed
-    //     });
-    //     setEditingTodo(null);
-    // };
 
     useEffect(() => {
         const params = {
@@ -94,40 +23,28 @@ function Todos() {
         getItems(params);
     }, [userId, sortBy, searchBy, searchValue, getItems]);
 
+    const sortOptions = [
+        { value: 'id', label: 'ID' },
+        { value: 'title', label: 'Title' },
+        { value: 'completed', label: 'Status' }
+    ];
+
+    const searchOptions = [
+        { value: 'id', label: 'חיפוש לפי ID' },
+        { value: 'title', label: 'חיפוש לפי כותרת' },
+        { value: 'completed', label: 'חיפוש לפי מצב ביצוע' }
+    ];
+
     return (
         <>
-            <select onChange={(e) => setSortBy(e.target.value)}>
-                <option value="id">ID</option>
-                <option value="title">Title</option>
-                <option value="completed">Status</option>
-            </select>
-
-            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
-                <option value="">בחר קריטריון חיפוש</option>
-                <option value="id">חיפוש לפי ID</option>
-                <option value="title">חיפוש לפי כותרת</option>
-                <option value="completed">חיפוש לפי מצב ביצוע</option>
-            </select>
-
-            {searchBy && < input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="הכנס ערך לחיפוש"
-            />}
-
-{/* 
-            {editingTodo && <div>
-                <input type='text' placeholder='update title' value={editingTodo.title}
-                    onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}></input>
-                <label>
-                    <input type="checkbox" checked={editingTodo.completed}
-                        onChange={(e) => setEditingTodo({ ...editingTodo, completed: e.target.checked })} />
-                    completed
-                </label>
-                <button onClick={() => saveUpdate()}>save updating</button>
-            </div>} */}
-
+            <SortDropdown sortOptions={sortOptions} sortBy={sortBy} setSortBy={setSortBy} />
+            <SearchFilter 
+                searchOptions={searchOptions}
+                searchBy={searchBy}
+                setSearchBy={setSearchBy}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+            />
 
             {todos.map(todo => (
                 <TodoItem key={todo.id} todo={todo} onDelete={deleteItem} onUpdate={updateItem} />

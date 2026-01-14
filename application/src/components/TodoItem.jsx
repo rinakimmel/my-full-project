@@ -1,41 +1,45 @@
-import React from 'react';
-import { useState } from 'react';
+import GenericItem from './GenericItem';
 
-function TodoItem({ id,todo, onDelete, onUpdate }) {
-    const [editingTodo, setEditingTodo] = useState(null);
+function TodoItem({ todo, onDelete, onUpdate }) {
+    const renderView = (item) => (
+        <>
+            <p>ID: {item.id}</p>
+            <span>{item.title}</span>
+            <label>
+                <input type="checkbox" checked={item.completed} readOnly />
+                {item.completed ? 'completed' : 'not completed'}
+            </label>
+        </>
+    );
 
-    const saveUpdate = () => {
-        onUpdate(editingTodo.id, {
-            title: editingTodo.title,
-            completed: editingTodo.completed
-        });
-        setEditingTodo(null);
-    };
+    const renderEdit = (editData, setEditData) => (
+        <>
+            <input 
+                type='text' 
+                placeholder='update title' 
+                value={editData.title}
+                onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+            />
+            <label>
+                <input 
+                    type="checkbox" 
+                    checked={editData.completed}
+                    onChange={(e) => setEditData({ ...editData, completed: e.target.checked })}
+                />
+                completed
+            </label>
+        </>
+    );
 
     return (
-        <>
-            {editingTodo && <div>
-                <input type='text' placeholder='update title' value={editingTodo.title}
-                    onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}></input>
-                <label>
-                    <input type="checkbox" checked={editingTodo.completed}
-                        onChange={(e) => setEditingTodo({ ...editingTodo, completed: e.target.checked })} />
-                    completed
-                </label>
-                <button onClick={saveUpdate}>save updating</button>
-            </div>}
-
-            <div key={todo.id}>
-                <p>ID: {todo.id}</p>
-                <span>{todo.title}</span>
-                <label>
-                    <input type="checkbox" checked={todo.completed} readOnly />
-                    {todo.completed ? 'completed' : 'not completed'}
-                </label>
-                <button onClick={() => onDelete(todo.id)}>delete</button>
-                <button onClick={() => setEditingTodo(todo)}>update todo</button>
-            </div>
-        </>
-    )
+        <GenericItem
+            item={todo}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+            renderView={renderView}
+            renderEdit={renderEdit}
+        />
+    );
 }
+
 export default TodoItem;

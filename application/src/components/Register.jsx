@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
 import BasicUserInformation from "./BasicUserInformation";
 import AdditionalUserInformation from "./AdditionalUserInformation";
@@ -8,113 +8,63 @@ function Register() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [error, setError] = useState("");
-    const { data: users, getItems, addItem } = useApi("users");
+    const [basicData, setBasicData] = useState(null);
+    const { getItems, addItem } = useApi("users");
 
-    const [basicData, setBasicData] = useState({
-        username: "",
-        password: "",
-        verifyPassword: ""
-    });
-
-    const [additionalData, setAdditionalData] = useState({
-        name: "",
-        email: "",
-        street: "",
-        suite: "",
-        city: "",
-        zipcode: "",
-        lat: "",
-        lng: "",
-        phone: "",
-        companyName: "",
-        companyCatchPhrase: "",
-        companyBs: ""
-    });
-
-    const handleChange = (formType) => (e) => {
-        const { name, value } = e.target;
-        if (formType === 'basic') {
-            setBasicData(prev => ({ ...prev, [name]: value }));
-        } else {
-            setAdditionalData(prev => ({ ...prev, [name]: value }));
-        }
-    };
-
-    const handleBasicSubmit = async (e) => {
-        e.preventDefault();
+    const handleBasicSubmit = async (formData) => {
         setError("");
 
-        if (basicData.password !== basicData.verifyPassword) {
+        if (formData.password !== formData.verifyPassword) {
             setError("Passwords do not match");
             return;
         }
 
-        try {
-            await getItems({ username: basicData.username });
-            if (users.length > 0) {
-                setError("Username already exists");
-            } else {
-                setStep(2);
-            }
-        } catch (err) {
-            setError("Network error");
+        const foundUsers = await getItems({ username: formData.username });
+        if (foundUsers.length > 0) {
+            setError("Username already exists");
+        } else {
+            setBasicData(formData);
+            setStep(2);
         }
     };
 
-    const handleFinalSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleFinalSubmit = async (formData) => {
         const finalUserObject = {
-            name: additionalData.name,
+            name: formData.name,
             username: basicData.username,
-            email: additionalData.email,
+            email: formData.email,
             address: {
-                street: additionalData.street,
-                suite: additionalData.suite,
-                city: additionalData.city,
-                zipcode: additionalData.zipcode,
+                street: formData.street,
+                suite: formData.suite,
+                city: formData.city,
+                zipcode: formData.zipcode,
                 geo: {
-                    lat: additionalData.lat,
-                    lng: additionalData.lng
+                    lat: formData.lat,
+                    lng: formData.lng
                 }
             },
-            phone: additionalData.phone,
+            phone: formData.phone,
             website: basicData.password,
             company: {
-                name: additionalData.companyName,
-                catchPhrase: additionalData.companyCatchPhrase,
-                bs: additionalData.companyBs
+                name: formData.companyName,
+                catchPhrase: formData.companyCatchPhrase,
+                bs: formData.companyBs
             }
         };
 
-        try {
-            const newUser = await addItem(finalUserObject);
-            localStorage.setItem("currentUser", JSON.stringify(newUser));
-            navigate("/home");
-        } catch (err) {
-            setError("Error creating user");
-        }
+        const newUser = await addItem(finalUserObject);
+        localStorage.setItem("currentUser", JSON.stringify(newUser));
+        navigate("/home");
     };
 
     return (
         <div>
             {error && <div>{error}</div>}
 
-            {step === 1 && (
-                <BasicUserInformation
-                    formData={basicData}
-                    handleChange={handleChange('basic')}
-                    handleSubmit={handleBasicSubmit}
-                />
-            )}
-
-            {step === 2 && (
-                <AdditionalUserInformation
-                    formData={additionalData}
-                    handleChange={handleChange('additional')}
-                    handleSubmit={handleFinalSubmit}
-                />
-            )}
+            {step === 1 && <BasicUserInformation onSubmit={handleBasicSubmit} />}
+            {step === 2 && <AdditionalUserInformation onSubmit={handleFinalSubmit} />}
+            
+            <Link to="/login">login</Link>
         </div>
     );
 }
