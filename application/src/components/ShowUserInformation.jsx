@@ -3,11 +3,9 @@ import { useParams } from 'react-router-dom';
 
 function ShowUserInformation() {
     const { userId } = useParams();
-    // 1. שימוש ב-State כדי לשמור את הנתונים
     const [userDetails, setUserDetails] = useState(null);
     const [error, setError] = useState(false);
 
-    // 2. שימוש ב-useEffect כדי לבצע את הקריאה הכבדה רק כשה-userId משתנה
     useEffect(() => {
         if (!userId) return;
 
@@ -24,7 +22,9 @@ function ShowUserInformation() {
         } else {
             setUserDetails(null);
         }
-    }, [userId]); // התלות ב-userId מבטיחה שהקוד ירוץ רק כצריך
+    }, [userId]);
+
+    const InfoField = ({ label, value }) => value ? <p><strong>{label}:</strong> {value}</p> : null;
 
     if (error) return <div>Error loading user data</div>;
     if (!userDetails) return <div>No user data available</div>;
@@ -35,28 +35,27 @@ function ShowUserInformation() {
             
             <div className="basic-info">
                 <h3>Basic Information</h3>
-                {/* עדיין משתמשים ב-?. כי ייתכן ששדות מסוימים חסרים בתוך האובייקט */}
-                <p><strong>Name:</strong> {userDetails?.name}</p>
-                <p><strong>Username:</strong> {userDetails?.username}</p>
-                <p><strong>Email:</strong> {userDetails?.email}</p>
-                <p><strong>Phone:</strong> {userDetails?.phone}</p>
-                <p><strong>Website:</strong> {userDetails?.website}</p>
+                <InfoField label="Name" value={userDetails.name} />
+                <InfoField label="Username" value={userDetails.username} />
+                <InfoField label="Email" value={userDetails.email} />
+                <InfoField label="Phone" value={userDetails.phone} />
+                <InfoField label="Website" value={userDetails.website} />
             </div>
 
             <div className="address-info">
                 <h3>Address</h3>
-                <p><strong>Street:</strong> {userDetails?.address?.street}</p>
-                <p><strong>Suite:</strong> {userDetails?.address?.suite}</p>
-                <p><strong>City:</strong> {userDetails?.address?.city}</p>
-                <p><strong>Zipcode:</strong> {userDetails?.address?.zipcode}</p>
-                <p><strong>Coordinates:</strong> {userDetails?.address?.geo?.lat}, {userDetails?.address?.geo?.lng}</p>
+                <InfoField label="Street" value={userDetails.address?.street} />
+                <InfoField label="Suite" value={userDetails.address?.suite} />
+                <InfoField label="City" value={userDetails.address?.city} />
+                <InfoField label="Zipcode" value={userDetails.address?.zipcode} />
+                <InfoField label="Coordinates" value={userDetails.address?.geo && `${userDetails.address.geo.lat}, ${userDetails.address.geo.lng}`} />
             </div>
 
             <div className="company-info">
                 <h3>Company</h3>
-                <p><strong>Name:</strong> {userDetails?.company?.name}</p>
-                <p><strong>Catch Phrase:</strong> {userDetails?.company?.catchPhrase}</p>
-                <p><strong>BS:</strong> {userDetails?.company?.bs}</p>
+                <InfoField label="Name" value={userDetails.company?.name} />
+                <InfoField label="Catch Phrase" value={userDetails.company?.catchPhrase} />
+                <InfoField label="BS" value={userDetails.company?.bs} />
             </div>
         </div>
     );

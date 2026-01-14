@@ -1,31 +1,18 @@
-function BasicUserInformation({ formData, handleChange, handleSubmit }) {
+import DynamicForm from './DynamicForm';
+
+function BasicUserInformation({ onSubmit }) {
+    const fields = [
+        { name: "username", placeholder: "Username", required: true },
+        { name: "password", placeholder: "Password", type: "password", required: true },
+        { name: "verifyPassword", placeholder: "Verify Password", type: "password", required: true }
+    ];
+
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-            />
-            <input
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
-            <input
-                name="verifyPassword"
-                type="password"
-                placeholder="Verify Password"
-                value={formData.verifyPassword}
-                onChange={handleChange}
-                required
-            />
-            <button type="submit">Next</button>
-        </form>
+        <DynamicForm 
+            fields={fields}
+            onSubmit={onSubmit}
+            submitButtonText="Next"
+        />
     );
 }
 

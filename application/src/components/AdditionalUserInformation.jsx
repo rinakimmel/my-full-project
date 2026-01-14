@@ -1,22 +1,28 @@
-function AdditionalUserInformation({ formData, handleChange, handleSubmit }) {
-    return (
-        <form onSubmit={handleSubmit}>
-            
-            <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
-            <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-            <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required />
-            <input name="street" placeholder="Street" value={formData.street} onChange={handleChange} />
-            <input name="suite" placeholder="Suite" value={formData.suite} onChange={handleChange} />
-            <input name="city" placeholder="City" value={formData.city} onChange={handleChange} />
-            <input name="zipcode" placeholder="Zipcode" value={formData.zipcode} onChange={handleChange} />
-            <input name="lat" placeholder="Latitude" value={formData.lat} onChange={handleChange} />
-            <input name="lng" placeholder="Longitude" value={formData.lng} onChange={handleChange} />
-            <input name="companyName" placeholder="Company Name" value={formData.companyName} onChange={handleChange} />
-            <input name="companyCatchPhrase" placeholder="Catch Phrase" value={formData.companyCatchPhrase} onChange={handleChange} />
-            <input name="companyBs" placeholder="BS" value={formData.companyBs} onChange={handleChange} />
+import React from 'react';
+import DynamicForm from './DynamicForm';
 
-            <button type="submit">Finish</button>
-        </form>
+function AdditionalUserInformation({ onSubmit }) {
+    const fields = [
+        { name: "name", placeholder: "Name", required: true },
+        { name: "email", placeholder: "Email", type: "email", required: true },
+        { name: "street", placeholder: "Street", required: true },
+        { name: "suite", placeholder: "Suite" },
+        { name: "city", placeholder: "City", required: true },
+        { name: "zipcode", placeholder: "Zipcode" },
+        { name: "lat", placeholder: "Latitude" },
+        { name: "lng", placeholder: "Longitude" },
+        { name: "phone", placeholder: "Phone", required: true },
+        { name: "companyName", placeholder: "Company Name" },
+        { name: "companyCatchPhrase", placeholder: "Company Catch Phrase" },
+        { name: "companyBs", placeholder: "Company BS" }
+    ];
+
+    return (
+        <DynamicForm 
+            fields={fields}
+            onSubmit={onSubmit}
+            submitButtonText="Register"
+        />
     );
 }
 

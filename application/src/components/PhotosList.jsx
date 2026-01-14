@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useApi from '../useApi';
 import PhotoItem from './PhotoItem';
+import DynamicForm from './DynamicForm';
 
 function PhotosList() {
     const { userId, albumId } = useParams();
     const [currentPage, setCurrentPage] = useState(0);
     const [photosPerPage] = useState(6);
     const [showAddForm, setShowAddForm] = useState(false);
-    const [newPhotoData, setNewPhotoData] = useState({ title: '', url: '' });
 
     const { data: photos, getItems, deleteItem, updateItem, addItem } = useApi("photos");
     const { data: albums, getItems: getAlbums } = useApi("albums");
@@ -25,18 +25,13 @@ function PhotosList() {
     const currentPhotos = photos.slice(startIndex, endIndex);
     const totalPages = Math.ceil(photos.length / photosPerPage);
 
-    const handleAddPhoto = async () => {
-        if (newPhotoData.title.trim() && newPhotoData.url.trim()) {
-            await addItem({
-                ...newPhotoData,
-                albumId: parseInt(albumId)
-            });
-            setNewPhotoData({ title: '', url: '' });
-            setShowAddForm(false);
-        }
+    const handleAddPhoto = async (formData) => {
+        await addItem({
+            ...formData,
+            albumId: parseInt(albumId)
+        });
+        setShowAddForm(false);
     };
-
-
 
     return (
         <div>
@@ -50,21 +45,14 @@ function PhotosList() {
                 </button>
 
                 {showAddForm && (
-                    <div >
-                        <input
-                            type="text"
-                            placeholder="Photo Title"
-                            value={newPhotoData.title}
-                            onChange={(e) => setNewPhotoData({ ...newPhotoData, title: e.target.value })}
-                        />
-                        <input
-                            type="url"
-                            placeholder="Photo URL"
-                            value={newPhotoData.url}
-                            onChange={(e) => setNewPhotoData({ ...newPhotoData, url: e.target.value })}
-                        />
-                        <button onClick={handleAddPhoto}>Add Photo</button>
-                    </div>
+                    <DynamicForm 
+                        fields={[
+                            { name: 'title', placeholder: 'Photo Title', type: 'text' },
+                            { name: 'url', placeholder: 'Photo URL', type: 'url' }
+                        ]}
+                        onSubmit={handleAddPhoto}
+                        submitButtonText="Add Photo"
+                    />
                 )}
             </div>
 

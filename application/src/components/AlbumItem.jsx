@@ -1,45 +1,39 @@
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import GenericItem from './GenericItem';
 
 function AlbumItem({ album, deleteItem, updateItem, isOwner }) {
     const { userId } = useParams();
-    const [isEditing, setIsEditing] = useState(false);
-    const [editTitle, setEditTitle] = useState(album.title);
 
-    const handleUpdate = () => {
-        updateItem(album.id, { title: editTitle });
-        setIsEditing(false);
-    };
+    const renderView = (item) => (
+        <>
+            <div>ID: {item.id}</div>
+            <Link to={`/home/users/${userId}/albums/${item.id}`}>
+                <strong>{item.title}</strong>
+            </Link>
+        </>
+    );
+
+    const renderEdit = (editData, setEditData) => (
+        <input 
+            value={editData.title} 
+            onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+        />
+    );
 
     return (
-        <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
-            <div>ID: {album.id}</div>
-            
-            {isEditing ? (
-                <div>
-                    <input 
-                        value={editTitle} 
-                        onChange={(e) => setEditTitle(e.target.value)}
-                    />
-                    <button onClick={handleUpdate}>Save</button>
-                    <button onClick={() => setIsEditing(false)}>Cancel</button>
-                </div>
-            ) : (
-                <div>
-                    <Link to={`/home/users/${userId}/albums/${album.id}`}>
-                        <strong>{album.title}</strong>
-                    </Link>
-                </div>
-            )}
-            
-            {isOwner && (
-                <div>
-                    <button onClick={() => setIsEditing(!isEditing)}>
-                        {isEditing ? 'Cancel' : 'Edit'}
-                    </button>
-                    <button onClick={() => deleteItem(album.id)}>Delete</button>
-                </div>
-            )}
+        <div style={{
+                border: '1px solid black',
+                margin: '10px',
+                padding: '10px',
+            }}>
+            <GenericItem
+                item={album}
+                onDelete={deleteItem}
+                onUpdate={(id, data) => updateItem(id, { title: data.title })}
+                canEdit={isOwner}
+                renderView={renderView}
+                renderEdit={renderEdit}
+            />
         </div>
     );
 }

@@ -32,47 +32,34 @@
 // }
 // export default CommentItem;
 
-import { useState } from 'react';
+import GenericItem from './GenericItem';
 
 function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {
-    const [editingComment, setEditingComment] = useState(null);
-    
-    // בדיקת בעלות על התגובה
     const isOwner = comment.email === currentUserEmail;
 
-    const saveUpdate = () => {
-        onUpdate(editingComment.id, {
-            body: editingComment.body
-        });
-        setEditingComment(null);
-    };
+    const renderView = (item) => (
+        <>
+            <p><strong>{item.email}</strong> כתב:</p>
+            <p>{item.body}</p>
+        </>
+    );
+
+    const renderEdit = (editData, setEditData) => (
+        <textarea 
+            value={editData.body}
+            onChange={(e) => setEditData({ ...editData, body: e.target.value })}
+        />
+    );
 
     return (
-        <div >
-            {editingComment ? (
-                <div>
-                    <textarea 
-                        value={editingComment.body}
-                        onChange={(e) => setEditingComment({ ...editingComment, body: e.target.value })}
-                    />
-                    <button onClick={saveUpdate}>שמור</button>
-                    <button onClick={() => setEditingComment(null)}>ביטול</button>
-                </div>
-            ) : (
-                <div>
-                    <p><strong>{comment.email}</strong> כתב:</p>
-                    <p>{comment.body}</p>
-                    
-                    {/* כפתורים רק לבעל התגובה  */}
-                    {isOwner && (
-                        <div>
-                            <button onClick={() => onDelete(comment.id)}>מחק תגובה</button>
-                            <button onClick={() => setEditingComment(comment)}>ערוך תגובה</button>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
+        <GenericItem
+            item={comment}
+            onDelete={onDelete}
+            onUpdate={(id, data) => onUpdate(id, { body: data.body })}
+            canEdit={isOwner}
+            renderView={renderView}
+            renderEdit={renderEdit}
+        />
     );
 }
 

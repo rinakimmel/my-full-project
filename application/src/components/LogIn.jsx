@@ -1,73 +1,39 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
+import DynamicForm from './DynamicForm';
+
 function LogIn() {
     const navigate = useNavigate();
-    const { data: users, getItems } = useApi("users");
-    const [formData, setFormData] = useState({
-        userName: "",
-        password: ""
-    });
+    const { getItems } = useApi("users");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+    const fields = [
+        { name: "userName", placeholder: "user name", required: true },
+        { name: "password", placeholder: "password", type: "password", required: true }
+    ];
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        try {
-            await getItems({ username: formData.userName });
-            console.log("Searching for user:", formData.userName);
-            console.log("response data", users);
-
-            if (users.length === 0) {
-                alert("User not found");
-                return;
-            }
-            if (users[0].website === formData.password) {
-                console.log('Login successful:', users);
-                const userId = users[0].id
-                localStorage.setItem(userId, JSON.stringify(users[0]));
-                console.log(userId);
-                navigate(`/home/users/${userId}`);
-            }
-            else {
-                alert("password is wrong")
-                setFormData(prev => ({
-                    ...prev,
-                    password: ""
-                }));
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            alert('Login failed. Please try again.');
+    const handleSubmit = async (formData) => {
+        const foundUsers = await getItems({ username: formData.userName });
+        if (foundUsers.length === 0) {
+            alert("User not found");
+            return;
+        }
+        if (foundUsers[0].website === formData.password) {
+            const userId = foundUsers[0].id;
+            localStorage.setItem(userId, JSON.stringify(foundUsers[0]));
+            navigate(`/home/users/${userId}`);
+        } else {
+            alert("password is wrong");
         }
     };
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input
-                    name="userName"
-                    placeholder="user name"
-                    value={formData.userName}
-                    onChange={handleChange}
-                    required />
-                <input
-                    name="password"
-                    placeholder="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <button type="submit">Log In</button>
-            </form>
+            <DynamicForm 
+                fields={fields}
+                onSubmit={handleSubmit}
+                submitButtonText="Log In"
+            />
             <Link to="/register">register</Link>
         </>
     );

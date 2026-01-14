@@ -4,7 +4,6 @@ import LogIn from './components/LogIn'
 import Register from './components/Register'
 import LogOut from './components/LogOut'
 import Home from './components/home'
-import GetItems from './components/GetItems'
 import ShowUserInformation from './components/ShowUserInformation'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Todos from './components/Todos'
@@ -29,13 +28,14 @@ function App() {
             <Route path="info" element={<ShowUserInformation />} />
             <Route path="todos" element={<Todos />} />
             <Route path="posts" element={<Posts />} />
-            {/* <Route path="posts/:postsId" element={<CommentsList />} /> */}
-            <Route path="posts/:postsId" element={<ActivePost />} />
+            <Route path="posts/:postId" element={<ActivePost />} >
+              <Route path="comments" element={<CommentsList />} />
+            </Route>
             <Route path="albums" element={<AlbumsList />} />
             <Route path="albums/:albumId" element={<PhotosList />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter >
     </>
   )
 }
