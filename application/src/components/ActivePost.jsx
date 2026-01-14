@@ -37,7 +37,7 @@ function ActivePost() {
             {
                 } */}
             </>
-            {isPostOwner && <GenericItem
+            {/* {isPostOwner && <GenericItem
                 item={post}
                 onDelete={deletePost}
                 //onUpdate={(id, data) => updateItem(id, { title: data.title, body: data.body })}
@@ -54,7 +54,23 @@ function ActivePost() {
                     </div>
                 )}
                 renderEdit={renderEdit}
-            />}
+            />} */}
+            <GenericItem
+                item={post}
+                onDelete={deletePost}
+                onUpdate={async (id, data) => {
+                    await updateItem(id, data);
+                    setPost({ ...post, ...data });
+                }}
+                canEdit={isPostOwner}
+                renderView={(item) => (
+                    <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.body}</p>
+                    </div>
+                )}
+                renderEdit={renderEdit}
+            />
 
             {editingPost && (
                 <div style={{ marginTop: '10px', borderTop: '1px dashed grey' }}>

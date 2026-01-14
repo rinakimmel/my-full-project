@@ -21,27 +21,50 @@ function GenericItem({
         setIsEditing(false);
     };
 
+    // return (
+    //     <div>
+    //         {isEditing ? (
+    //             <div>
+    //                 {renderEdit(editData, setEditData)}
+    //                 <button onClick={handleSave}>שמור</button>
+    //                 <button onClick={handleCancel}>ביטול</button>
+    //             </div>
+    //         ) : (
+    //             <div>
+    //                 {renderView(item)}
+    //                 {canEdit && (
+    //                     <div>
+    //                         <button onClick={() => setIsEditing(true)}>ערוך</button>
+    //                         <button onClick={() => onDelete(item.id)}>מחק</button>
+    //                     </div>
+    //                 )}
+    //             </div>
+    //         )}
+    //     </div>
+        
+    // );
     return (
-        <div>
-            {isEditing ? (
-                <div>
-                    {renderEdit(editData, setEditData)}
-                    <button onClick={handleSave}>שמור</button>
-                    <button onClick={handleCancel}>ביטול</button>
-                </div>
-            ) : (
-                <div>
-                    {renderView(item)}
-                    {canEdit && (
-                        <div>
-                            <button onClick={() => setIsEditing(true)}>ערוך</button>
-                            <button onClick={() => onDelete(item.id)}>מחק</button>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    );
+    <div>
+        {renderView(isEditing ? editData : item)}
+        {canEdit && (
+            <div>
+                {isEditing ? (
+                    <>
+                        {renderEdit(editData, setEditData)}
+                        <button onClick={handleSave}>שמור</button>
+                        <button onClick={handleCancel}>ביטול</button>
+                    </>
+                ) : (
+                    <>
+                        <button onClick={() => setIsEditing(true)}>ערוך</button>
+                        <button onClick={() => onDelete(item.id)}>מחק</button>
+                    </>
+                )}
+            </div>
+        )}
+    </div>
+);
+
 }
 
 export default GenericItem;

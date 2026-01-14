@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams ,Outlet,useLocation} from 'react-router-dom';
+import { useParams, Outlet, useLocation ,Link} from 'react-router-dom';
 import useApi from '../useApi';
 import PostItem from './PostItem';
 import SearchFilter from './SearchFilter';
@@ -11,13 +11,13 @@ function Posts() {
     const currentUserEmail = currentUser.email;
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const [showMyPosts, setShowMyPosts] = useState(true); 
+    const [showMyPosts, setShowMyPosts] = useState(true);
 
     const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [showAddPostForm, setShowAddPostForm] = useState(false);
     useEffect(() => {
         const params = {};
-        
+
         if (showMyPosts) {
             params.userId = userId;
         } else {
@@ -39,23 +39,23 @@ function Posts() {
     return (
         <div>
             <h2>פוסטים</h2>
-            
+
             <div>
-                <button 
-                    onClick={() => setShowMyPosts(true)} 
+                <button
+                    onClick={() => setShowMyPosts(true)}
                     disabled={showMyPosts}
                 >
                     הפוסטים שלי
                 </button>
-                <button 
-                    onClick={() => setShowMyPosts(false)} 
+                <button
+                    onClick={() => setShowMyPosts(false)}
                     disabled={!showMyPosts}
                 >
                     פוסטים של אחרים
                 </button>
             </div>
 
-            <SearchFilter 
+            <SearchFilter
                 searchOptions={searchOptions}
                 searchBy={searchBy}
                 setSearchBy={setSearchBy}
@@ -64,11 +64,11 @@ function Posts() {
             />
 
             <div>
-                <button onClick={() => setShowAddForm(prev => !prev)}>
-                    {showAddForm ? 'Cancel' : 'Add Post'}
+                <button onClick={() => setShowAddPostForm(prev => !prev)}>
+                    {showAddPostForm ? 'Cancel' : 'Add Post'}
                 </button>
 
-                {showAddForm && (
+                {showAddPostForm && (
                     <DynamicForm
                         fields={[
                             { name: 'title', placeholder: 'Title', type: 'text', required: true },
@@ -76,14 +76,14 @@ function Posts() {
                         ]}
                         onSubmit={async (formData) => {
                             await addItem({ ...formData, userId: parseInt(userId) });
-                            setShowAddForm(false);
+                            setShowAddPostForm(false);
                         }}
                         submitButtonText="Add Post"
                     />
                 )}
             </div>
 
-            <div className="posts-list">
+            {/* <div className="posts-list">
                 {posts.map(post => (
                     <PostItem 
                         key={post.id} 
@@ -94,8 +94,38 @@ function Posts() {
                         currentUserEmail={currentUserEmail}
                     />
                 ))}
+            </div> */}
+            {/* <div className="posts-list">
+                {posts.map(post => 
+                    (
+                    <>
+                    <p>id: {post.id}</p>
+                    <p>{post.body}</p>
+                    </>
+                ))}
+            </div> */}
+            <div className="posts-list">
+                {posts.map(post => (
+                    <Link
+                        key={post.id}
+                        to={`/home/users/${userId}/posts/${post.id}`}
+                        state={{ post, isPostOwner: post.userId === parseInt(userId), currentUserEmail }}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                        <div style={{
+                            border: '1px solid black',
+                            margin: '10px',
+                            padding: '10px',
+                            cursor: 'pointer'
+                        }}>
+                            <p>id: {post.id}</p>
+                            <p>{post.body}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
-            <Outlet/>
+
+            <Outlet />
         </div>
     );
 }

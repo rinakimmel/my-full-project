@@ -35,7 +35,7 @@ function PhotosList() {
 
     return (
         <div>
-            <Link to={`/home/users/${userId}/albums`}>← Back to Albums</Link>
+           
 
             <h2>Album: {currentAlbum?.title || 'Loading...'}</h2>
 

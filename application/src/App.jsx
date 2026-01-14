@@ -13,6 +13,7 @@ import AlbumsList from './components/AlbumsList'
 import PhotosList from './components/PhotosList'
 import CommentsList from './components/CommentsList'
 import ActivePost from './components/ActivePost'
+import ActiveAlbum from './components/ActiveAlbum'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
               <Route path="comments" element={<CommentsList />} />
             </Route>
             <Route path="albums" element={<AlbumsList />} />
-            <Route path="albums/:albumId" element={<PhotosList />} />
+            <Route path="albums/:albumId/photos" element={<ActiveAlbum />} />
           </Route>
         </Routes>
       </BrowserRouter >

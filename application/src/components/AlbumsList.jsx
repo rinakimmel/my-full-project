@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AlbumItem from "./AlbumItem";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import useApi from "../useApi";
 import SearchFilter from './SearchFilter';
 import DynamicForm from './DynamicForm';
@@ -64,13 +64,22 @@ function AlbumsList(){
 
             <div className="albums-list">
                 {albums.map(album => (
-                    <AlbumItem 
-                        key={album.id} 
-                        album={album} 
-                        deleteItem={deleteItem} 
-                        updateItem={updateItem}
-                        isOwner={album.userId === parseInt(userId)}
-                    />
+                    <Link
+                        key={album.id}
+                        to={`/home/users/${userId}/albums/${album.id}/photos`}
+                        state={album}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                        <div style={{
+                            border: '1px solid black',
+                            margin: '10px',
+                            padding: '10px',
+                            cursor: 'pointer'
+                        }}>
+                            <p>id: {album.id}</p>
+                            <p>{album.title}</p>
+                        </div>
+                    </Link>
                 ))}
             </div>
         </div>
