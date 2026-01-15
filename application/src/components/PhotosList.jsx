@@ -28,7 +28,7 @@ function PhotosList() {
 
     const handleAddPhoto = async (formData) => {
         await addItem({
-        ...formData,
+            ...formData,
             albumId: parseInt(albumId)
         });
         setShowAddForm(false);
@@ -37,20 +37,22 @@ function PhotosList() {
 
     const handleDelete = async (id) => {
         await deleteItem(id);
-        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
+        // setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
     };
 
     const handleUpdate = async (id, data) => {
-        await updateItem(id, data);
-        setNotification({ message: 'תמונה עודכנה בהצלחה', type: 'success' });
+        //await updateItem(id, data);
+        const result = await updateItem(id, data);
+        return result;
+        //setNotification({ message: 'תמונה עודכנה בהצלחה', type: 'success' });
     };
 
     return (
         <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
-           
+
             <h2>Album: {album?.title || 'Loading...'}</h2>
-            
+
             <div className="toolbar">
                 <button onClick={() => setShowAddForm(!showAddForm)}>
                     {showAddForm ? '❌ Cancel' : '➕ Add Photo'}
@@ -59,7 +61,7 @@ function PhotosList() {
 
             {showAddForm && (
                 <div className="card">
-                    <DynamicForm 
+                    <DynamicForm
                         fields={[
                             { name: 'title', placeholder: 'Photo Title', type: 'text' },
                             { name: 'url', placeholder: 'Photo URL', type: 'url' }
@@ -78,14 +80,14 @@ function PhotosList() {
                             photo={photo}
                             deleteItem={handleDelete}
                             updateItem={handleUpdate}
-                    />
+                        />
                     )
                 ))}
             </div>
 
             {photos.length === 0 && <p>No photos in this album</p>}
 
-            <Pagination 
+            <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}

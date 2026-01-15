@@ -4,18 +4,19 @@ import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 
 function PhotoItem({ photo, deleteItem, updateItem }) {
-   const [imageError, setImageError] = useState(false);
-   const [showConfirm, setShowConfirm] = useState(false);
-   const [notification, setNotification] = useState(null);
+    const [imageError, setImageError] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [notification, setNotification] = useState(null);
 
     const handleDelete = (id) => {
-        setShowConfirm(true);
+        deleteItem(id);
+        // setShowConfirm(true);
     };
 
     const confirmDelete = () => {
         deleteItem(photo.id);
-        setShowConfirm(false);
-        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
+        // setShowConfirm(false);
+        // setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
     };
 
     const renderView = (item, defaultRender) => (
@@ -23,9 +24,9 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
             {imageError ? (
                 <div>Image failed to load</div>
             ) : (
-                <img 
-                  src={item.thumbnailUrl || item.url} 
-                  alt={item.title}
+                <img
+                    src={item.thumbnailUrl || item.url}
+                    alt={item.title}
                     onError={() => setImageError(true)}
                 />
             )}
@@ -35,20 +36,20 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
 
     return (
         <>
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
-            {showConfirm && (
+            {/* {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />} */}
+            {/* {showConfirm && (
                 <ConfirmDialog
                     onConfirm={confirmDelete}
                     onCancel={() => setShowConfirm(false)}
                 />
-            )}
+            )} */}
             <GenericItem
-            item={photo}
-            onDelete={handleDelete}
-            onUpdate={(id, data) => updateItem(id, { title: data.title })}
-            renderView={renderView}
-            editableFields={['title']}
-        />
+                item={photo}
+                onDelete={handleDelete}
+                onUpdate={(id, data) => updateItem(id, { title: data.title })}
+                renderView={renderView}
+                editableFields={['title']}
+            />
         </>
     );
 }

@@ -8,7 +8,7 @@ import Notification from "./Notification";
 
 function Register() {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const {login } = useAuth();
     const [step, setStep] = useState(1);
     const [notification, setNotification] = useState(null);
     const [basicData, setBasicData] = useState(null);
@@ -25,8 +25,8 @@ function Register() {
             setNotification({ message: "Username already exists", type: "error" });
         } else {
             setBasicData(formData);
-            setNotification({ message: "שלב ראשון הושלם בהצלחה", : "success" });
-            setStep(2);type
+            setNotification({ message: "שלב ראשון הושלם בהצלחה", type:"success" });
+            setStep(2);
         }
     };
 

@@ -8,12 +8,13 @@ function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {
 
     const handleDelete = async (id) => {
         await onDelete(id);
-        setNotification({ message: 'תגובה נמחקה בהצלחה', type: 'success' });
+       // setNotification({ message: 'תגובה נמחקה בהצלחה', type: 'success' });
     };
 
     const handleUpdate = async (id, data) => {
+        debugger
         await onUpdate(id, data);
-        setNotification({ message: 'תגובה עודכנה בהצלחה', type: 'success' });
+       // setNotification({ message: 'תגובה עודכנה בהצלחה', type: 'success' });
     };
 
     const renderView = (item) => (

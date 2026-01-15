@@ -9,11 +9,11 @@ function Home() {
     
     const isHomePage = location.pathname === `/home/users/${userId}`;
 
-    useEffect(() => {
-        if (!user) {
-            navigate('/login', { replace: true });
-        }
-    }, [user, navigate]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         navigate('/login', { replace: true });
+    //     }
+    // }, [user, navigate]);
 
     return (
         <div className="container">

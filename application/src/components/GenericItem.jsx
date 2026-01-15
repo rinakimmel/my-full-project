@@ -2,12 +2,12 @@ import { useState } from 'react';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 
-function GenericItem({ 
-    item, 
-    onDelete, 
-    onUpdate, 
-    renderView, 
-    renderEdit, 
+function GenericItem({
+    item,
+    onDelete,
+    onUpdate,
+    renderView,
+    renderEdit,
     canEdit = true,
     editableFields = ['title']
 }) {
@@ -24,10 +24,11 @@ function GenericItem({
         setShowConfirm(false);
     };
 
+  
     const handleSave = async () => {
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
-        if (result?.success) {
+        if (result) {
             setNotification({ message: 'נשמר בהצלחה', type: 'success' });
         } else {
             setNotification({ message: 'שגיאה בשמירה', type: 'error' });
@@ -88,7 +89,7 @@ function GenericItem({
                     {canEdit && (
                         <div className="form-actions">
                             <button onClick={() => setIsEditing(true)}>✏️ ערוך</button>
-                         <button onClick={handleDelete}>🗑️ מחק</button>
+                            <button onClick={handleDelete}>🗑️ מחק</button>
                         </div>
                     )}
                 </div>

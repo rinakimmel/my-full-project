@@ -35,6 +35,7 @@ const useApi = (resource) => {
                 item.id === id ? response.data : item
             ));
             return { success: true, data: response.data };
+    
         }
         catch (error) {
             console.error("Error updating item:", error);
