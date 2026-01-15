@@ -6,6 +6,15 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
 
     const handleDelete = (id) => {
         deleteItem(id);
+        // setShowConfirm(true);
+        // const result = await deleteItem(id);
+        // return result;
+    };
+
+    const confirmDelete = () => {
+        deleteItem(photo.id);
+        // setShowConfirm(false);
+        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
     };
 
     const renderView = (item, defaultRender) => (
@@ -24,13 +33,26 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
     );
 
     return (
-        <GenericItem
-            item={photo}
-            onDelete={handleDelete}
-            onUpdate={(id, data) => updateItem(id, { title: data.title })}
-            renderView={renderView}
-            editableFields={['title']}
-        />
+        <>
+            {/* {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />} */}
+            {/* {showConfirm && (
+                <ConfirmDialog
+                    onConfirm={confirmDelete}
+                    onCancel={() => setShowConfirm(false)}
+                />
+            )} */}
+            <GenericItem
+                item={photo}
+                // onDelete={async (id) => {
+                //     const result = await deleteItem(id);
+                //     return result;
+                // }}
+                 onDelete={handleDelete}
+                onUpdate={(id, data) => updateItem(id, { title: data.title })}
+                renderView={renderView}
+                editableFields={['title']}
+            />
+        </>
     );
 }
 

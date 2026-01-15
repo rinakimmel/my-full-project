@@ -61,6 +61,7 @@ function CommentsList({ postId: propPostId }) {
                         comment={comment}
                         onDelete={deleteItem}
                         onUpdate={updateItem}
+                     
                         currentUserEmail={user?.email}
                     />
                 ))
