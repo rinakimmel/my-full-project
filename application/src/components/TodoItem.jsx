@@ -8,17 +8,18 @@ function TodoItem({ todo, onDelete, onUpdate }) {
     const [notification, setNotification] = useState(null);
 
     const handleDelete = (id) => {
-        setShowConfirm(true);
+       
+       // setShowConfirm(true);
     };
 
     const confirmDelete = async () => {
         const result = await onDelete(todo.id);
-        setShowConfirm(false);
-        if (result?.success) {
-            setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
-        } else {
-            setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
-        }
+        // setShowConfirm(false);
+        // if (result?.success) {
+        //     setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+        // } else {
+        //     setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
+        // }
     };
     const renderView = (item, defaultRender) => (
         <>
@@ -47,16 +48,17 @@ function TodoItem({ todo, onDelete, onUpdate }) {
 
     return (
         <>
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
-            {showConfirm && (
+            {/* {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />} */}
+            {/* {showConfirm && (
                 <ConfirmDialog
                     onConfirm={confirmDelete}
                     onCancel={() => setShowConfirm(false)}
                 />
-            )}
+            )} */}
             <GenericItem
                 item={todo}
-                onDelete={handleDelete}
+                //onDelete={handleDelete}
+                onDelete={onDelete}
                 onUpdate={onUpdate}
                 renderView={renderView}
                 renderEdit={renderEdit}

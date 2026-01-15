@@ -28,7 +28,8 @@ function GenericItem({
     const handleSave = async () => {
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
-        if (result) {
+        console.log(result)
+        if (result.success) {
             setNotification({ message: 'נשמר בהצלחה', type: 'success' });
         } else {
             setNotification({ message: 'שגיאה בשמירה', type: 'error' });

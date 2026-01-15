@@ -11,12 +11,14 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
     const handleDelete = (id) => {
         deleteItem(id);
         // setShowConfirm(true);
+        // const result = await deleteItem(id);
+        // return result;
     };
 
     const confirmDelete = () => {
         deleteItem(photo.id);
         // setShowConfirm(false);
-        // setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
+        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
     };
 
     const renderView = (item, defaultRender) => (
@@ -45,7 +47,11 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
             )} */}
             <GenericItem
                 item={photo}
-                onDelete={handleDelete}
+                // onDelete={async (id) => {
+                //     const result = await deleteItem(id);
+                //     return result;
+                // }}
+                 onDelete={handleDelete}
                 onUpdate={(id, data) => updateItem(id, { title: data.title })}
                 renderView={renderView}
                 editableFields={['title']}
