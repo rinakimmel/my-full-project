@@ -7,7 +7,7 @@ import { useLocation, useParams, useOutletContext } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function CommentsList({ postId: propPostId }) {
-    const { data: comments, getItems, deleteItem, updateItem, addItem } = useApi("comments");
+    const { data: comments,error, getItems, deleteItem, updateItem, addItem } = useApi("comments");
     const { user } = useAuth();
     const params = useParams();
     const outletContext = useOutletContext() || {};
@@ -21,7 +21,11 @@ function CommentsList({ postId: propPostId }) {
             getItems({ postId: parseInt(postId) });
         }
     }, [postId, getItems]);
-
+    useEffect(() => {
+        if (error) {
+            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
+        }
+    }, [error])
     const handleAddComment = (formData) => {
         if (!user?.email) {
             setNotification({ message: 'אנא התחבר כדי לשלוח תגובה', type: 'error' });
@@ -59,9 +63,10 @@ function CommentsList({ postId: propPostId }) {
                     <CommentItem
                         key={comment.id}
                         comment={comment}
+                        error={error}
                         onDelete={deleteItem}
                         onUpdate={updateItem}
-                     
+
                         currentUserEmail={user?.email}
                     />
                 ))

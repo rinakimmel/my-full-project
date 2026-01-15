@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost:3000";
 
 const useApi = (resource) => {
     const [data, setData] = useState([]);
-
+    const [error, setError] = useState(null)
     const getItems = useCallback(async (params = {}) => {
         try {
             const response = await axios.get(`${BASE_URL}/${resource}`, { params });
@@ -13,6 +13,8 @@ const useApi = (resource) => {
             return response.data;
         } catch (error) {
             console.error("Error fetching data:", error);
+            // return { success: false, error : "שגיאה בטעינת נתונים"};
+            setError("שגיאה בטעינת נתונים");
             return [];
         }
     }, [resource]);
@@ -24,7 +26,8 @@ const useApi = (resource) => {
             return { success: true };
         } catch (error) {
             console.error("Error deleting item:", error);
-            return { success: false, error };
+            //return { success: false, error };
+            setError("שגיאה במחיקת הפריט")
         }
     }, [resource]);
 
@@ -35,11 +38,10 @@ const useApi = (resource) => {
                 item.id === id ? response.data : item
             ));
             return { success: true, data: response.data };
-    
         }
         catch (error) {
             console.error("Error updating item:", error);
-            return { success: false, error };
+            setError("שגיאה בעדכון הפריט")
         }
     }, [resource])
 
@@ -54,7 +56,7 @@ const useApi = (resource) => {
         }
     }, [resource]);
 
-    return { data, getItems, deleteItem, updateItem, addItem };
+    return { data, error, getItems, deleteItem, updateItem, addItem };
 };
 
 export default useApi;

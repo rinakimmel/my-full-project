@@ -25,11 +25,16 @@ function PostsList() {
     const confirmDelete = async () => {
         const result = await deleteItem(deletePostId);
         setDeletePostId(null);
-        if (result?.success) {
+        // if (result?.success) {
+        //     setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+        // } else {
+        //     setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+        // }
+        if (!error){
             setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
-        } else {
+         } else {
             setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
-        }
+         }
     };
 
     const handleAdd = async (data) => {
@@ -42,7 +47,7 @@ function PostsList() {
         }
     };
 
-    const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
+    const { data: posts, error, getItems, deleteItem, updateItem, addItem } = useApi("posts");
     useEffect(() => {
         const params = {};
 
@@ -60,6 +65,11 @@ function PostsList() {
         setCurrentPage(0);
     }, [showMyPosts, searchBy, searchValue, getItems]);
 
+    useEffect(() => {
+        if (error) {
+            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
+        }
+    }, [error])
     const startIndex = currentPage * postsPerPage;
     const endIndex = startIndex + postsPerPage;
     const currentPosts = posts.slice(startIndex, endIndex);
@@ -117,7 +127,7 @@ function PostsList() {
 
             <div className="list">
                 {currentPosts.map(post => {
-                    const isPostOwner = post.userId === user?.id; 
+                    const isPostOwner = post.userId === user?.id;
                     return (
                         <div key={post.id} className="card">
                             <p>ID: {post.id}</p>

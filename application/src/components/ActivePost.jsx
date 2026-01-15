@@ -6,9 +6,9 @@ import Notification from './Notification';
 
 function ActivePost() {
     const { userId, postId } = useParams();
-    const { deletePost, updateItem } = useApi("posts");
+    const { error, deletePost, updateItem } = useApi("posts");
     const location = useLocation();
- const { post: initialPost, isPostOwner, currentUserEmail } = location.state || {};
+    const { post: initialPost, isPostOwner, currentUserEmail } = location.state || {};
     const [post, setPost] = useState(initialPost);
     const [notification, setNotification] = useState(null);
 
@@ -20,7 +20,12 @@ function ActivePost() {
     const handleUpdate = async (id, data) => {
         await updateItem(id, data);
         setPost({ ...post, ...data });
-        setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
+       // setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
+    if(!error){
+            setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
+         } else {
+            setNotification({ message: 'שגיאה בעדכון הפוסט', type: 'error' });
+         }
     };
 
     return (
@@ -29,6 +34,7 @@ function ActivePost() {
             <Link to={`/home/users/${userId}/posts`}>← חזרה לרשימת הפוסטים</Link>
             <GenericItem
                 item={post}
+                error={error}
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
                 canEdit={isPostOwner}
@@ -42,7 +48,7 @@ function ActivePost() {
                 )}
             />
 
-            <div style={{marginTop: '1rem'}}>
+            <div style={{ marginTop: '1rem' }}>
                 {location.pathname.endsWith('/comments') ? (
                     <Link to={`/home/users/${userId}/posts/${postId}`}
                         state={{ post, isPostOwner, currentUserEmail }}>

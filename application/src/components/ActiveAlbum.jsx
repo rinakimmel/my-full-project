@@ -6,8 +6,8 @@ import PhotosList from "./PhotosList";
 import Notification from './Notification';
 function ActiveAlbum() {
     const location = useLocation();
-    const {album } = location.state || {};
-    const { deleteItem, updateItem } = useApi("albums")
+    const { album } = location.state || {};
+    const {error, deleteItem, updateItem } = useApi("albums")
     const { userId } = useParams();
     const [notification, setNotification] = useState(null);
 
@@ -29,11 +29,12 @@ function ActiveAlbum() {
                 {album && (
                     <GenericItem
                         item={album}
+                        error={error}
                         onDelete={handleDelete}
                         onUpdate={handleUpdate}
                     />
                 )}
-            <PhotosList />
+                <PhotosList />
             </div>
         </>
     )

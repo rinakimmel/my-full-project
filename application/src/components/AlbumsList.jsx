@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useApi from "../useApi";
 import SearchFilter from './SearchFilter';
 import DynamicForm from './DynamicForm';
 import Notification from './Notification';
 import ConfirmDialog from './ConfirmDialog';
 
-function AlbumsList(){
+function AlbumsList() {
     const { userId } = useParams();
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [notification, setNotification] = useState(null);
     const [deleteAlbumId, setDeleteAlbumId] = useState(null);
-    const { data: albums, getItems, deleteItem, updateItem, addItem } = useApi("albums");
+    const { data: albums, error, getItems, deleteItem, updateItem, addItem } = useApi("albums");
 
     useEffect(() => {
-        const params = {userId};
+        const params = { userId };
 
         if (searchBy && searchValue) {
             params[searchBy] = searchValue;
         }
         getItems(params);
-    }, [userId, searchBy, searchValue, getItems]);
+
+    }, [userId, searchBy, searchValue, getItems,]);
+
+    useEffect(() => {
+        if (error) {
+            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
+        }
+    }, [error])
 
     const handleCreateAlbum = async (formData) => {
         await addItem({
@@ -41,7 +48,12 @@ function AlbumsList(){
     const confirmDelete = () => {
         deleteItem(deleteAlbumId);
         setDeleteAlbumId(null);
-        setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
+        //setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
+        if (!error){
+            setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+         } else {
+            setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+         }
     };
 
     const searchOptions = [
@@ -63,12 +75,12 @@ function AlbumsList(){
                 />
             )}
             <h2>Albums</h2>
-            
+
             <div className="toolbar">
                 <button onClick={() => setShowCreateForm(!showCreateForm)}>
                     {showCreateForm ? '❌ Cancel' : '➕ Create New Album'}
                 </button>
-                <SearchFilter 
+                <SearchFilter
                     searchOptions={searchOptions}
                     searchBy={searchBy}
                     setSearchBy={setSearchBy}
@@ -79,7 +91,7 @@ function AlbumsList(){
 
             {showCreateForm && (
                 <div className="card">
-                    <DynamicForm 
+                    <DynamicForm
                         fields={createFields}
                         onSubmit={handleCreateAlbum}
                         submitButtonText="Create Album"
@@ -99,7 +111,7 @@ function AlbumsList(){
                                 <p>{album.title}</p>
                             </div>
                         </Link>
-                        <button onClick={(e) => handleDeleteClick(e, album.id)} style={{marginTop: '0.5rem'}}>🗑️ מחק אלבום</button>
+                        <button onClick={(e) => handleDeleteClick(e, album.id)} style={{ marginTop: '0.5rem' }}>🗑️ מחק אלבום</button>
                     </div>
                 ))}
             </div>

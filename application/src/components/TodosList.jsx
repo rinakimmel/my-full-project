@@ -13,7 +13,7 @@ function TodosList() {
     const [searchValue, setSearchValue] = useState('');
     const [notification, setNotification] = useState(null);
     const [showAddTodoForm, setShowAddTodoForm] = useState(false);
-    const { data: todos, getItems, deleteItem, updateItem, addItem } = useApi("todos");
+    const { data: todos,error, getItems, deleteItem, updateItem, addItem } = useApi("todos");
 
     useEffect(() => {
         const params = {
@@ -28,6 +28,12 @@ function TodosList() {
         }
         getItems(params);
     }, [userId, sortBy, searchBy, searchValue, getItems]);
+
+     useEffect(() => {
+        if (error) {
+            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
+        }
+    }, [error])
 
     const sortOptions = [
         { value: 'id', label: 'ID' },
@@ -83,7 +89,7 @@ function TodosList() {
             )}
             <div className="list">
                 {todos.map(todo => (
-                    <TodoItem key={todo.id} todo={todo} onDelete={handleDelete} onUpdate={handleUpdate} />
+                    <TodoItem key={todo.id} todo={todo} error={error} onDelete={handleDelete} onUpdate={handleUpdate} />
                 ))}
             </div>
         </div>

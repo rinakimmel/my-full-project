@@ -2,7 +2,7 @@ import { useState } from 'react';
 import GenericItem from './GenericItem';
 import Notification from './Notification';
 
-function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {
+function CommentItem({ comment, error, onDelete, onUpdate, currentUserEmail }) {
     const [notification, setNotification] = useState(null);
     const isOwner = comment.email === currentUserEmail;
 
@@ -30,6 +30,7 @@ function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <GenericItem
                 item={comment}
+                error={error}
                 onDelete={handleDelete}
                 onUpdate={(id, data) => handleUpdate(id, { body: data.body })}
                 canEdit={isOwner}

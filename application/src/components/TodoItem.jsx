@@ -3,7 +3,7 @@ import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 import { useState } from 'react';
 
-function TodoItem({ todo, onDelete, onUpdate }) {
+function TodoItem({ todo,error, onDelete, onUpdate }) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [notification, setNotification] = useState(null);
 
@@ -57,6 +57,7 @@ function TodoItem({ todo, onDelete, onUpdate }) {
             )} */}
             <GenericItem
                 item={todo}
+                error={error}
                 //onDelete={handleDelete}
                 onDelete={onDelete}
                 onUpdate={onUpdate}

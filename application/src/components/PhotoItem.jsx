@@ -3,7 +3,7 @@ import GenericItem from './GenericItem';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 
-function PhotoItem({ photo, deleteItem, updateItem }) {
+function PhotoItem({ photo, error, deleteItem, updateItem }) {
     const [imageError, setImageError] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [notification, setNotification] = useState(null);
@@ -47,11 +47,12 @@ function PhotoItem({ photo, deleteItem, updateItem }) {
             )} */}
             <GenericItem
                 item={photo}
+                error={error}
                 // onDelete={async (id) => {
                 //     const result = await deleteItem(id);
                 //     return result;
                 // }}
-                 onDelete={handleDelete}
+                onDelete={handleDelete}
                 onUpdate={(id, data) => updateItem(id, { title: data.title })}
                 renderView={renderView}
                 editableFields={['title']}

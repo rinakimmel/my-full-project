@@ -15,12 +15,16 @@ function PhotosList() {
     const [showAddForm, setShowAddForm] = useState(false);
     const [notification, setNotification] = useState(null);
 
-    const { data: photos, getItems, deleteItem, updateItem, addItem } = useApi("photos");
+    const { data: photos,error, getItems, deleteItem, updateItem, addItem } = useApi("photos");
 
     useEffect(() => {
         getItems({ albumId: albumId });
     }, [albumId, getItems]);
-
+    useEffect(() => {
+        if (error) {
+            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
+        }
+    }, [error])
     const startIndex = currentPage * photosPerPage;
     const endIndex = startIndex + photosPerPage;
     const currentPhotos = photos.slice(startIndex, endIndex);
@@ -78,6 +82,7 @@ function PhotosList() {
                         <PhotoItem
                             key={photo.id}
                             photo={photo}
+                            error={error}
                             deleteItem={handleDelete}
                             updateItem={handleUpdate}
                         />

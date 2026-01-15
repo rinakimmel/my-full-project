@@ -4,6 +4,7 @@ import Notification from './Notification';
 
 function GenericItem({
     item,
+    error,
     onDelete,
     onUpdate,
     renderView,
@@ -22,6 +23,11 @@ function GenericItem({
     const confirmDelete = () => {
         onDelete(item.id);
         setShowConfirm(false);
+        if (!error){
+            setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+         } else {
+            setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+         }
     };
 
   
@@ -29,7 +35,12 @@ function GenericItem({
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
         console.log(result)
-        if (result.success) {
+        // if (result.success) {
+        //     setNotification({ message: 'נשמר בהצלחה', type: 'success' });
+        // } else {
+        //     setNotification({ message: 'שגיאה בשמירה', type: 'error' });
+        // }
+        if(!error){
             setNotification({ message: 'נשמר בהצלחה', type: 'success' });
         } else {
             setNotification({ message: 'שגיאה בשמירה', type: 'error' });
