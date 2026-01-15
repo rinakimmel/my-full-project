@@ -9,8 +9,14 @@ function LogOut() {
     const { userId } = useParams();
     const { logout } = useAuth();
     const handleLogout = () => {
-        logout();
-        setShowSuccessMessage(true);
+        try {
+            logout();
+            setShowSuccessMessage(true);
+        } catch (error) {
+            console.error('Error during logout:', error);
+            // עדיין מציגים הודעת הצלחה כי המשתמש צריך לצאת
+            setShowSuccessMessage(true);
+        }
     };
 
     const handleCancel = () => {

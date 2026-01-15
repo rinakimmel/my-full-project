@@ -13,7 +13,7 @@ const useApi = (resource) => {
             return response.data;
         } catch (error) {
             console.error("Error fetching data:", error);
-            return [];
+            throw error;
         }
     }, [resource]);
 
@@ -47,7 +47,7 @@ const useApi = (resource) => {
         try {
             const response = await axios.post(`${BASE_URL}/${resource}`, newItem);
             setData(prev => [...prev, response.data]);
-            return { success: true, data: response.data };
+            return response.data;
         } catch (error) {
             console.error("Error adding item:", error);
             return { success: false, error };
