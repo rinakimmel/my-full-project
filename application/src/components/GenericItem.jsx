@@ -4,46 +4,72 @@ import Notification from './Notification';
 
 function GenericItem({
     item,
-    error,
     onDelete,
     onUpdate,
     renderView,
     renderEdit,
     canEdit = true,
-    editableFields = ['title']
+    editableFields = ['title'],
+    deleteSuccessMsg = 'נמחק בהצלחה',    // ← הודעה מותאמת אישית
+    updateSuccessMsg = 'נשמר בהצלחה'   ,  // ← הודעה מותאמת אישית
+    deleteConfirmMsg = 'האם אתה בטוח שברצונך למחוק?'
+
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState(item);
     const [showConfirm, setShowConfirm] = useState(false);
     const [notification, setNotification] = useState(null);
+
+    const confirmDelete =async () => {
+        const result =await onDelete(item.id);
+        setShowConfirm(false);
+        
+        // if (!error){
+        //     setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+        // } else {
+        //     setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+        // }
+        if (result?.success) {
+            setNotification({ 
+                message: deleteSuccessMsg,  // ← משתמש בהודעה המותאמת
+                type: 'success' 
+            });
+        } else {
+            setNotification({ 
+                message: result?.error || 'שגיאה במחיקה', 
+                type: 'error' 
+            });
+        }
+    };
+    
     const handleDelete = () => {
         setShowConfirm(true);
     };
-
-    const confirmDelete = () => {
-        onDelete(item.id);
-        setShowConfirm(false);
-        if (!error){
-            setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
-         } else {
-            setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
-         }
-    };
-
   
     const handleSave = async () => {
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
-        console.log(result)
+       // console.log(result)
         // if (result.success) {
         //     setNotification({ message: 'נשמר בהצלחה', type: 'success' });
         // } else {
         //     setNotification({ message: 'שגיאה בשמירה', type: 'error' });
         // }
-        if(!error){
-            setNotification({ message: 'נשמר בהצלחה', type: 'success' });
+        // if(!error){
+        //     setNotification({ message: 'נשמר בהצלחה', type: 'success' });
+        // } else {
+        //     setNotification({ message: 'שגיאה בשמירה', type: 'error' });
+        // }
+        if (result?.success) {
+            setNotification({ 
+                message: updateSuccessMsg,  // ← משתמש בהודעה המותאמת
+                type: 'success' 
+            });
         } else {
-            setNotification({ message: 'שגיאה בשמירה', type: 'error' });
+            setNotification({ 
+                message: result?.error || 'שגיאה בשמירה', 
+                type: 'error' 
+            });
         }
     };
 

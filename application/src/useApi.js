@@ -6,61 +6,103 @@ const BASE_URL = "http://localhost:3000";
 const useApi = (resource) => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false);
+
     const getItems = useCallback(async (params = {}) => {
+        setError(null)
+        setLoading(true);
         try {
             const response = await axios.get(`${BASE_URL}/${resource}`, { params });
             setData(response.data);
-            return response.data;
+            return {
+                success: true,
+                data: response.data
+            };
         } catch (error) {
             console.error("Error fetching data:", error);
-<<<<<<< HEAD
             // return { success: false, error : "שגיאה בטעינת נתונים"};
-            setError("שגיאה בטעינת נתונים");
-            return [];
-=======
-            throw error;
->>>>>>> e89ff6f6d0b91cdd16eb65ee0c8e73f8feeed502
+            const errorMsg = "שגיאה בטעינת נתונים";
+            setError(errorMsg);
+            setData([]);
+            return {
+                success: false,
+                error: errorMsg
+            };
+        }
+        finally {
+            setLoading(false);
         }
     }, [resource]);
 
     const deleteItem = useCallback(async (id) => {
+        setError(null)
+        setLoading(true);
         try {
             await axios.delete(`${BASE_URL}/${resource}/${id}`);
             setData(prev => prev.filter(item => item.id !== id));
             return { success: true };
         } catch (error) {
             console.error("Error deleting item:", error);
+            const errorMsg = "שגיאה במחיקת הפריט";
             //return { success: false, error };
-            setError("שגיאה במחיקת הפריט")
+            setError(errorMsg)
+            return {
+                success: false,
+                error: errorMsg
+            };
+        } finally {
+            setLoading(false);
         }
     }, [resource]);
 
     const updateItem = useCallback(async (id, updateFields) => {
+        setLoading(true);
+        setError(null);
         try {
             const response = await axios.patch(`${BASE_URL}/${resource}/${id}`, updateFields)
             setData(prev => prev.map(item =>
                 item.id === id ? response.data : item
             ));
-            return { success: true, data: response.data };
+            return {
+                success: true,
+                data: response.data
+            };
         }
-        catch (error) {
-            console.error("Error updating item:", error);
-            setError("שגיאה בעדכון הפריט")
+         catch (error) {
+            const errorMsg = "שגיאה בעדכון הפריט";
+            setError(errorMsg);
+            return { 
+                success: false, 
+                error: errorMsg 
+            };
+        } finally {
+            setLoading(false);
         }
     }, [resource])
 
     const addItem = useCallback(async (newItem) => {
+         setLoading(true);
+        setError(null);
         try {
             const response = await axios.post(`${BASE_URL}/${resource}`, newItem);
             setData(prev => [...prev, response.data]);
-            return response.data;
-        } catch (error) {
-            console.error("Error adding item:", error);
-            return { success: false, error };
+            return { 
+                success: true, 
+                data: response.data 
+            };
+        } catch (err) {
+            const errorMsg =  "שגיאה בהוספת הפריט";
+            setError(errorMsg);
+            return { 
+                success: false, 
+                error: errorMsg 
+            };
+        } finally {
+            setLoading(false);
         }
     }, [resource]);
 
-    return { data, error, getItems, deleteItem, updateItem, addItem };
+    return { data, error,loading, getItems, deleteItem, updateItem, addItem };
 };
 
 export default useApi;

@@ -1,21 +1,21 @@
 import { useState } from 'react';
 import GenericItem from './GenericItem';
 
-function PhotoItem({ photo, error, deleteItem, updateItem }) {
+function PhotoItem({ photo, deleteItem, updateItem }) {
     const [imageError, setImageError] = useState(false);
 
-    const handleDelete = (id) => {
-        deleteItem(id);
-        // setShowConfirm(true);
-        // const result = await deleteItem(id);
-        // return result;
-    };
+    // const handleDelete = (id) => {
+    //     deleteItem(id);
+    //     // setShowConfirm(true);
+    //     // const result = await deleteItem(id);
+    //     // return result;
+    // };
 
-    const confirmDelete = () => {
-        deleteItem(photo.id);
-        // setShowConfirm(false);
-        setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
-    };
+    // const confirmDelete = () => {
+    //     deleteItem(photo.id);
+    //     // setShowConfirm(false);
+    //     setNotification({ message: 'תמונה נמחקה בהצלחה', type: 'success' });
+    // };
 
     const renderView = (item, defaultRender) => (
         <>
@@ -31,6 +31,10 @@ function PhotoItem({ photo, error, deleteItem, updateItem }) {
             {defaultRender(item)}
         </>
     );
+    const handleUpdate = async (id, data) => {
+        return await updateItem(id, { title: data.title });
+    };
+
 
     return (
         <>
@@ -41,7 +45,7 @@ function PhotoItem({ photo, error, deleteItem, updateItem }) {
                     onCancel={() => setShowConfirm(false)}
                 />
             )} */}
-            <GenericItem
+            {/* <GenericItem
                 item={photo}
                 error={error}
                 // onDelete={async (id) => {
@@ -52,6 +56,15 @@ function PhotoItem({ photo, error, deleteItem, updateItem }) {
                 onUpdate={(id, data) => updateItem(id, { title: data.title })}
                 renderView={renderView}
                 editableFields={['title']}
+            /> */}
+            <GenericItem
+                item={photo}
+                onDelete={deleteItem}
+                onUpdate={handleUpdate}
+                renderView={renderView}
+                editableFields={['title']}
+                deleteSuccessMsg="תמונה נמחקה בהצלחה"
+                updateSuccessMsg="תמונה עודכנה בהצלחה"
             />
         </>
     );

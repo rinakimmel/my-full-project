@@ -3,24 +3,26 @@ import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 import { useState } from 'react';
 
-function TodoItem({ todo,error, onDelete, onUpdate }) {
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [notification, setNotification] = useState(null);
+function TodoItem({ todo, onDelete, onUpdate }) {
+    // const [showConfirm, setShowConfirm] = useState(false);
+    // const [notification, setNotification] = useState(null);
 
-    const handleDelete = (id) => {
+    // const handleDelete = (id) => {
        
-       // setShowConfirm(true);
-    };
+    //    // setShowConfirm(true);
+    // };
 
-    const confirmDelete = async () => {
-        const result = await onDelete(todo.id);
-        // setShowConfirm(false);
-        // if (result?.success) {
-        //     setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
-        // } else {
-        //     setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
-        // }
-    };
+    // const confirmDelete = async () => {
+    //     const result = await onDelete(todo.id);
+    //     // setShowConfirm(false);
+    //     // if (result?.success) {
+    //     //     setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+    //     // } else {
+    //     //     setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
+    //     // }
+    // };
+
+
     const renderView = (item, defaultRender) => (
         <>
             <p>ID: {item.id}</p>
@@ -55,7 +57,7 @@ function TodoItem({ todo,error, onDelete, onUpdate }) {
                     onCancel={() => setShowConfirm(false)}
                 />
             )} */}
-            <GenericItem
+            {/* <GenericItem
                 item={todo}
                 error={error}
                 //onDelete={handleDelete}
@@ -64,7 +66,17 @@ function TodoItem({ todo,error, onDelete, onUpdate }) {
                 renderView={renderView}
                 renderEdit={renderEdit}
                 editableFields={['title']}
-            />
+            /> */}
+            <GenericItem
+            item={todo}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+            renderView={renderView}
+            renderEdit={renderEdit}
+            editableFields={['title']}
+            deleteSuccessMsg="משימה נמחקה בהצלחה"
+            updateSuccessMsg="משימה עודכנה בהצלחה"
+        />
         </>
     );
 }

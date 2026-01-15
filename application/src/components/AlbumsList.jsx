@@ -50,9 +50,9 @@ function AlbumsList() {
         setDeleteAlbumId(null);
         //setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
         if (!error){
-            setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+            setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
          } else {
-            setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+            setNotification({ message: 'שגיאה במחיקת האלבום', type: 'error' });
          }
     };
 

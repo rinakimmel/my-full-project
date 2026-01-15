@@ -21,11 +21,11 @@ function ActivePost() {
         await updateItem(id, data);
         setPost({ ...post, ...data });
        // setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
-    if(!error){
-            setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
-         } else {
-            setNotification({ message: 'שגיאה בעדכון הפוסט', type: 'error' });
-         }
+    // if(!error){
+    //         setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
+    //      } else {
+    //         setNotification({ message: 'שגיאה בעדכון הפוסט', type: 'error' });
+    //      }
     };
 
     return (
