@@ -15,50 +15,70 @@ function Register() {
     const { getItems, addItem } = useApi("users");
 
     const handleBasicSubmit = async (formData) => {
-        if (formData.password !== formData.verifyPassword) {
-            setNotification({ message: "Passwords do not match", type: "error" });
-            return;
-        }
+        try {
+            if (formData.password !== formData.verifyPassword) {
+                setNotification({ message: "הסיסמאות לא זהות", type: "error" });
+                return;
+            }
 
-        const foundUsers = await getItems({ username: formData.username });
-        if (foundUsers.length > 0) {
-            setNotification({ message: "Username already exists", type: "error" });
-        } else {
-            setBasicData(formData);
-            setNotification({ message: "שלב ראשון הושלם בהצלחה", type:"success" });
-            setStep(2);
+            const foundUsers = await getItems({ username: formData.username });
+            if (foundUsers.length > 0) {
+                setNotification({ message: "שם משתמש כבר קיים", type: "error" });
+            } else {
+                setBasicData(formData);
+                setNotification({ message: "שלב ראשון הושלם בהצלחה", type:"success" });
+                setStep(2);
+            }
+        } catch (error) {
+            if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+                setNotification({ message: "השרת לא זמין - בדוק שהשרת פועל", type: "error" });
+            } else {
+                setNotification({ message: "שגיאה בבדיקת שם משתמש", type: "error" });
+            }
         }
     };
 
     const handleFinalSubmit = async (formData) => {
-        const finalUserObject = {
-            name: formData.name,
-            username: basicData.username,
-            email: formData.email,
-            address: {
-                street: formData.street,
-                suite: formData.suite,
-                city: formData.city,
-                zipcode: formData.zipcode,
-                geo: {
-                    lat: formData.lat,
-                    lng: formData.lng
+        try {
+            const finalUserObject = {
+                name: formData.name,
+                username: basicData.username,
+                email: formData.email,
+                address: {
+                    street: formData.street,
+                    suite: formData.suite,
+                    city: formData.city,
+                    zipcode: formData.zipcode,
+                    geo: {
+                        lat: formData.lat,
+                        lng: formData.lng
+                    }
+                },
+                phone: formData.phone,
+                website: basicData.password,
+                company: {
+                    name: formData.companyName,
+                    catchPhrase: formData.companyCatchPhrase,
+                    bs: formData.companyBs
                 }
-            },
-            phone: formData.phone,
-            website: basicData.password,
-            company: {
-                name: formData.companyName,
-                catchPhrase: formData.companyCatchPhrase,
-                bs: formData.companyBs
-            }
-        };
+            };
 
-        const newUser = await addItem(finalUserObject);
-        const { website, ...userWithoutPassword } = newUser;
-        login(userWithoutPassword);
-        setNotification({ message: "נרשמת בהצלחה!", type: "success" });
-        setTimeout(() => navigate(`/home/users/${newUser.id}`), 1500);
+            const newUser = await addItem(finalUserObject);
+            if (newUser && newUser.success !== false) {
+                const { website, ...userWithoutPassword } = newUser;
+                login(userWithoutPassword);
+                setNotification({ message: "נרשמת בהצלחה!", type: "success" });
+                setTimeout(() => navigate(`/home/users/${newUser.id}`), 1500);
+            } else {
+                setNotification({ message: "שגיאה ברישום", type: "error" });
+            }
+        } catch (error) {
+            if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+                setNotification({ message: "השרת לא זמין - בדוק שהשרת פועל", type: "error" });
+            } else {
+                setNotification({ message: "שגיאה ברישום", type: "error" });
+            }
+        }
     };
 
     return (

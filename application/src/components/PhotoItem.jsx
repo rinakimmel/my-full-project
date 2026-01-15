@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import GenericItem from './GenericItem';
-import ConfirmDialog from './ConfirmDialog';
-import Notification from './Notification';
 
 function PhotoItem({ photo, error, deleteItem, updateItem }) {
     const [imageError, setImageError] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [notification, setNotification] = useState(null);
 
     const handleDelete = (id) => {
         deleteItem(id);

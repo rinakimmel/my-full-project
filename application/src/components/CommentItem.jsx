@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import GenericItem from './GenericItem';
-import Notification from './Notification';
 
+<<<<<<< HEAD
 function CommentItem({ comment, error, onDelete, onUpdate, currentUserEmail }) {
     const [notification, setNotification] = useState(null);
+=======
+function CommentItem({ comment, onDelete, onUpdate, currentUserEmail }) {
+>>>>>>> e89ff6f6d0b91cdd16eb65ee0c8e73f8feeed502
     const isOwner = comment.email === currentUserEmail;
 
     const handleDelete = async (id) => {
         await onDelete(id);
+
         // setNotification({ message: 'תגובה נמחקה בהצלחה', type: 'success' });
     };
 
@@ -26,6 +30,7 @@ function CommentItem({ comment, error, onDelete, onUpdate, currentUserEmail }) {
     );
 
     return (
+<<<<<<< HEAD
         <>
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <GenericItem
@@ -38,6 +43,16 @@ function CommentItem({ comment, error, onDelete, onUpdate, currentUserEmail }) {
                 editableFields={['body']}
             />
         </>
+=======
+        <GenericItem
+            item={comment}
+            onDelete={handleDelete}
+            onUpdate={(id, data) => handleUpdate(id, { body: data.body })}
+            canEdit={isOwner}
+            renderView={renderView}
+            editableFields={['body']}
+        />
+>>>>>>> e89ff6f6d0b91cdd16eb65ee0c8e73f8feeed502
     );
 }
 

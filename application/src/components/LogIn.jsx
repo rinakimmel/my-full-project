@@ -17,22 +17,30 @@ function LogIn() {
     ];
 
     const handleSubmit = async (formData) => {
-        const foundUsers = await getItems({ username: formData.userName });
-        if (foundUsers.length === 0) {
-            setNotification({ message: 'User not found', type: 'error' });
-            return;
-        }
-        if (foundUsers[0].website === formData.password) {
-            const userId = foundUsers[0].id;
-            const { website, ...userWithoutPassword } = foundUsers[0];
-            login(userWithoutPassword);
-            setNotification({ 
-                message: 'התחברת בהצלחה!', 
-                type: 'success',
-                onClose: () => navigate(`/home/users/${userId}`)
-            });
-        } else {
-            setNotification({ message: 'password is wrong', type: 'error' });
+        try {
+            const foundUsers = await getItems({ username: formData.userName });
+            if (foundUsers.length === 0) {
+                setNotification({ message: 'משתמש לא נמצא', type: 'error' });
+                return;
+            }
+            if (foundUsers[0]?.website === formData.password) {
+                const userId = foundUsers[0].id;
+                const { website, ...userWithoutPassword } = foundUsers[0];
+                login(userWithoutPassword);
+                setNotification({ 
+                    message: 'התחברת בהצלחה!', 
+                    type: 'success',
+                    onClose: () => navigate(`/home/users/${userId}`)
+                });
+            } else {
+                setNotification({ message: 'סיסמה שגויה', type: 'error' });
+            }
+        } catch (error) {
+            if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+                setNotification({ message: 'השרת לא זמין - בדוק שהשרת פועל', type: 'error' });
+            } else {
+                setNotification({ message: 'שגיאה בחיבור לשרת', type: 'error' });
+            }
         }
     };
 
