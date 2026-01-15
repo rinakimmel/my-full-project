@@ -53,18 +53,20 @@ function Register() {
 
         const newUser = await addItem(finalUserObject);
         const { website, ...userWithoutPassword } = newUser;
-        localStorage.setItem("currentUser", JSON.stringify(userWithoutPassword));
-        navigate("/home");
+        localStorage.setItem(newUser.id, JSON.stringify(userWithoutPassword));
+        navigate(`/home/users/${newUser.id}`);
     };
 
     return (
-        <div>
+        <div className="auth-container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
-
+            <h2>הרשמה</h2>
             {step === 1 && <BasicUserInformation onSubmit={handleBasicSubmit} />}
             {step === 2 && <AdditionalUserInformation onSubmit={handleFinalSubmit} />}
 
-            <Link to="/login">login</Link>
+            <div style={{marginTop: '1rem', textAlign: 'center'}}>
+                <Link to="/login">🔑 התחברות</Link>
+            </div>
         </div>
     );
 }

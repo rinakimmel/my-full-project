@@ -2,7 +2,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
     if (totalPages <= 1) return null;
 
     return (
-        <div>
+        <div className="pagination">
             <button
                 onClick={() => onPageChange(Math.max(0, currentPage - 1))}
                 disabled={currentPage === 0}

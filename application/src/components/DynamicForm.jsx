@@ -17,19 +17,20 @@ function DynamicForm({ fields, onSubmit, submitButtonText }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form-group">
             {fields.map((field) => (
-                <input
-                    key={field.name}
-                    name={field.name}
-                    type={field.type || "text"} 
-                    placeholder={field.placeholder}
-                    value={formData[field.name] || ''}
-                    onChange={handleChange}
-                    required={!!field.required} 
-                />
+                <div key={field.name} className="form-group">
+                    <input
+                        name={field.name}
+                        type={field.type || "text"} 
+                        placeholder={field.placeholder}
+                        value={formData[field.name] || ''}
+                        onChange={handleChange}
+                        required={!!field.required} 
+                    />
+                </div>
             ))}
-            <button type="submit">{submitButtonText || "Submit"}</button>
+            <button type="submit" className="primary">{submitButtonText || "Submit"}</button>
         </form>
     );
 }

@@ -1,10 +1,12 @@
 function ConfirmDialog({ message = "האם אתה בטוח שברצונך למחוק?", onConfirm, onCancel }) {
     return (
-        <div >
-            <div>
+        <div className="modal-overlay">
+            <div className="modal">
                 <p>{message}</p>
-                <button onClick={onConfirm}>כן</button>
-                <button  onClick={onCancel}>לא</button>
+                <div className="form-actions">
+                    <button onClick={onConfirm} className="primary">✔️ כן</button>
+                    <button onClick={onCancel}>❌ לא</button>
+                </div>
             </div>
         </div>
     );

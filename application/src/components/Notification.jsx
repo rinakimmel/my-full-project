@@ -8,8 +8,9 @@ function Notification({ message, type = 'info', onClose }) {
 
 
     return (
-        <div>
+        <div className={`notification ${type}`}>
             {message}
+            <button onClick={onClose} style={{marginLeft: '1rem', padding: '0.25rem 0.5rem'}}>×</button>
         </div>
     );
 }

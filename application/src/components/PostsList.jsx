@@ -5,7 +5,7 @@ import SearchFilter from './SearchFilter';
 import Pagination from './Pagination';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
-
+import DynamicForm from './DynamicForm';
 function PostsList() {
     const { userId } = useParams();
     const currentUser = JSON.parse(localStorage.getItem(userId) || '{}');
@@ -17,7 +17,7 @@ function PostsList() {
     const [postsPerPage] = useState(10);
     const [deletePostId, setDeletePostId] = useState(null);
     const [notification, setNotification] = useState(null);
-
+    const [showAddPostForm, setShowAddPostForm] = useState(false);
     const handleDeleteClick = (postId) => {
         setDeletePostId(postId);
     };
@@ -28,7 +28,7 @@ function PostsList() {
         setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
     };
 
-    const { data: posts, getItems, deleteItem, updateItem } = useApi("posts");
+    const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
     useEffect(() => {
         const params = {};
 
@@ -57,7 +57,7 @@ function PostsList() {
     ];
 
     return (
-        <div>
+        <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             {deletePostId && (
                 <ConfirmDialog
@@ -67,41 +67,55 @@ function PostsList() {
             )}
             <h2>פוסטים</h2>
 
-            <div>
+            <div className="toolbar">
                 <button
                     onClick={() => setShowMyPosts(true)}
                     disabled={showMyPosts}
+                    className={showMyPosts ? 'primary' : ''}
                 >
                     הפוסטים שלי
                 </button>
                 <button
                     onClick={() => setShowMyPosts(false)}
                     disabled={!showMyPosts}
+                    className={!showMyPosts ? 'primary' : ''}
                 >
                     פוסטים של אחרים
                 </button>
+                <SearchFilter
+                    searchOptions={searchOptions}
+                    searchBy={searchBy}
+                    setSearchBy={setSearchBy}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                />
+                <button onClick={() => setShowAddPostForm(!showAddPostForm)}>➕ פוסט חדש</button>
             </div>
-
-            <SearchFilter
-                searchOptions={searchOptions}
-                searchBy={searchBy}
-                setSearchBy={setSearchBy}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-            />
-
-            <div className="posts-list">
+            
+            {showAddPostForm && (
+                <div className="card">
+                    <DynamicForm
+                        fields={[{ name: 'title',placeholder: 'post title', required: true }, { name: 'body',placeholder: 'post body', required: true }]}
+                        onSubmit={(data) => {
+                            addItem({ ...data, userId: parseInt(userId) });
+                            setShowAddPostForm(false);
+                        }}
+                    />
+                </div>
+            )}
+            
+            <div className="list">
                 {currentPosts.map(post => {
                     const isPostOwner = post.userId === parseInt(userId);
                     return (
-                        <div key={post.id}>
+                        <div key={post.id} className="card">
                             <p>ID: {post.id}</p>
                             <Link to={`/home/users/${userId}/posts/${post.id}`}
                                 state={{ post, isPostOwner, currentUserEmail }}>
                                 <strong>{post.title}</strong>
                             </Link>
                             {isPostOwner && (
-                                <button onClick={() => handleDeleteClick(post.id)}>מחק פוסט</button>
+                                <button onClick={() => handleDeleteClick(post.id)} style={{marginTop: '0.5rem'}}>🗑️ מחק פוסט</button>
                             )}
                         </div>
                     );

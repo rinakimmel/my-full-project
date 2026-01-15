@@ -46,17 +46,19 @@ function PhotosList() {
     };
 
     return (
-        <div>
+        <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
            
             <h2>Album: {album?.title || 'Loading...'}</h2>
             
-            <div>
+            <div className="toolbar">
                 <button onClick={() => setShowAddForm(!showAddForm)}>
-                    {showAddForm ? 'Cancel' : 'Add Photo'}
+                    {showAddForm ? '❌ Cancel' : '➕ Add Photo'}
                 </button>
+            </div>
 
-                {showAddForm && (
+            {showAddForm && (
+                <div className="card">
                     <DynamicForm 
                         fields={[
                             { name: 'title', placeholder: 'Photo Title', type: 'text' },
@@ -65,10 +67,10 @@ function PhotosList() {
                         onSubmit={handleAddPhoto}
                         submitButtonText="Add Photo"
                     />
-                )}
-            </div>
+                </div>
+            )}
 
-            <div >
+            <div className="grid">
                 {currentPhotos.map(photo => (
                     photo && (
                         <PhotoItem

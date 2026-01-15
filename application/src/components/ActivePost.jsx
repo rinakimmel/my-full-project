@@ -24,7 +24,7 @@ function ActivePost() {
     };
 
     return (
-        <>
+        <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <Link to={`/home/users/${userId}/posts`}>← חזרה לרשימת הפוסטים</Link>
             <GenericItem
@@ -42,19 +42,21 @@ function ActivePost() {
                 )}
             />
 
-            {location.pathname.endsWith('/comments') ? (
-                <Link to={`/home/users/${userId}/posts/${postId}`}
-                    state={{ post, isPostOwner, currentUserEmail }}>
-                    <button>הסתר תגובות</button>
-                </Link>
-            ) : (
-                <Link to="comments"
-                    state={{ post, isPostOwner, currentUserEmail }}>
-                    <button>הצג תגובות</button>
-                </Link>
-            )}
+            <div style={{marginTop: '1rem'}}>
+                {location.pathname.endsWith('/comments') ? (
+                    <Link to={`/home/users/${userId}/posts/${postId}`}
+                        state={{ post, isPostOwner, currentUserEmail }}>
+                        <button>🚫 הסתר תגובות</button>
+                    </Link>
+                ) : (
+                    <Link to="comments"
+                        state={{ post, isPostOwner, currentUserEmail }}>
+                        <button>💬 הצג תגובות</button>
+                    </Link>
+                )}
+            </div>
             <Outlet context={{ postId, currentUserEmail }} />
-        </>
+        </div>
     )
 }
 export default ActivePost;

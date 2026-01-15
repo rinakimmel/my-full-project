@@ -31,15 +31,18 @@ function LogIn() {
     };
 
     return (
-        <>
+        <div className="auth-container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            <h2>התחברות</h2>
             <DynamicForm
                 fields={fields}
                 onSubmit={handleSubmit}
                 submitButtonText="Log In"
             />
-            <Link to="/register">register</Link>
-        </>
+            <div style={{marginTop: '1rem', textAlign: 'center'}}>
+                <Link to="/register">📝 הרשמה</Link>
+            </div>
+        </div>
     );
 }
 export default LogIn;

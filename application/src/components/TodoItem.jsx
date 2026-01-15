@@ -20,7 +20,7 @@ function TodoItem({ todo, onDelete, onUpdate }) {
         <>
             {defaultRender(item)}
             <label>
-                <input type="checkbox" checked={item.completed} readOnly />
+                <input type="checkbox" checked={item.completed||false} disabled />
                 {item.completed ? 'completed' : 'not completed'}
             </label>
         </>
@@ -32,10 +32,10 @@ function TodoItem({ todo, onDelete, onUpdate }) {
             <label>
                 <input
                     type="checkbox"
-                    checked={editData.completed}
+                    checked={editData.completed||false}
                     onChange={(e) => setEditData({ ...editData, completed: e.target.checked })}
                 />
-                completed
+                {editData.completed ? 'completed' : 'not completed'}
             </label>
         </>
     );

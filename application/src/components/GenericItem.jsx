@@ -62,7 +62,7 @@ function GenericItem({
     const finalRenderEdit = renderEdit || defaultRenderEdit;
 
     return (
-        <div>
+        <div className="card">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             {showConfirm && (
                 <ConfirmDialog
@@ -73,16 +73,18 @@ function GenericItem({
             {isEditing ? (
                 <div>
                     {renderEdit ? renderEdit(editData, setEditData, defaultRenderEdit) : finalRenderEdit(editData, setEditData)}
-                    <button onClick={handleSave}>שמור</button>
-                    <button onClick={handleCancel}>ביטול</button>
+                    <div className="form-actions">
+                        <button onClick={handleSave} className="primary">💾 שמור</button>
+                        <button onClick={handleCancel}>❌ ביטול</button>
+                    </div>
                 </div>
             ) : (
                 <div>
                     {renderView ? renderView(item, defaultRenderView) : finalRenderView(item)}
                     {canEdit && (
-                        <div>
-                            <button onClick={() => setIsEditing(true)}>ערוך</button>
-                         <button onClick={handleDelete}>מחק</button>
+                        <div className="form-actions">
+                            <button onClick={() => setIsEditing(true)}>✏️ ערוך</button>
+                         <button onClick={handleDelete}>🗑️ מחק</button>
                         </div>
                     )}
                 </div>

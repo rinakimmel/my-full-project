@@ -54,7 +54,7 @@ function AlbumsList(){
     ];
 
     return (
-        <div>
+        <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             {deleteAlbumId && (
                 <ConfirmDialog
@@ -64,29 +64,32 @@ function AlbumsList(){
             )}
             <h2>Albums</h2>
             
-            <button onClick={() => setShowCreateForm(!showCreateForm)}>
-                {showCreateForm ? 'Cancel' : 'Create New Album'}
-            </button>
+            <div className="toolbar">
+                <button onClick={() => setShowCreateForm(!showCreateForm)}>
+                    {showCreateForm ? '❌ Cancel' : '➕ Create New Album'}
+                </button>
+                <SearchFilter 
+                    searchOptions={searchOptions}
+                    searchBy={searchBy}
+                    setSearchBy={setSearchBy}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                />
+            </div>
 
             {showCreateForm && (
-                <DynamicForm 
-                    fields={createFields}
-                    onSubmit={handleCreateAlbum}
-                    submitButtonText="Create Album"
-                />
+                <div className="card">
+                    <DynamicForm 
+                        fields={createFields}
+                        onSubmit={handleCreateAlbum}
+                        submitButtonText="Create Album"
+                    />
+                </div>
             )}
 
-            <SearchFilter 
-                searchOptions={searchOptions}
-                searchBy={searchBy}
-                setSearchBy={setSearchBy}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-            />
-
-            <div>
+            <div className="list">
                 {albums.map(album => (
-                    <div key={album.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div key={album.id} className="card">
                         <Link
                             to={`/home/users/${userId}/albums/${album.id}/photos`}
                             state={album}
@@ -96,7 +99,7 @@ function AlbumsList(){
                                 <p>{album.title}</p>
                             </div>
                         </Link>
-                        <button onClick={(e) => handleDeleteClick(e, album.id)}>מחק אלבום</button>
+                        <button onClick={(e) => handleDeleteClick(e, album.id)} style={{marginTop: '0.5rem'}}>🗑️ מחק אלבום</button>
                     </div>
                 ))}
             </div>

@@ -5,13 +5,14 @@ import TodoItem from './TodoItem';
 import SortDropdown from './SortDropdown';
 import SearchFilter from './SearchFilter';
 import Notification from './Notification';
-
+import DynamicForm from './DynamicForm';
 function TodosList() {
     const { userId } = useParams();
     const [sortBy, setSortBy] = useState('id');
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [notification, setNotification] = useState(null);
+    const [showAddTodoForm, setShowAddTodoForm] = useState(false);
     const { data: todos, getItems, deleteItem, updateItem, addItem } = useApi("todos");
 
     useEffect(() => {
@@ -48,21 +49,36 @@ function TodosList() {
     };
 
     return (
-        <>
+        <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
-            <SortDropdown sortOptions={sortOptions} sortBy={sortBy} setSortBy={setSortBy} />
-            <SearchFilter
-                searchOptions={searchOptions}
-                searchBy={searchBy}
-                setSearchBy={setSearchBy}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-            />
-
-            {todos.map(todo => (
-                <TodoItem key={todo.id} todo={todo} onDelete={handleDelete} onUpdate={handleUpdate} />
-            ))}
-        </>
+            <div className="toolbar">
+                <SortDropdown sortOptions={sortOptions} sortBy={sortBy} setSortBy={setSortBy} />
+                <SearchFilter
+                    searchOptions={searchOptions}
+                    searchBy={searchBy}
+                    setSearchBy={setSearchBy}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                />
+                <button onClick={() => setShowAddTodoForm(!showAddTodoForm)}>➕ new todo</button>
+            </div>
+            {showAddTodoForm && (
+                <div className="card">
+                    <DynamicForm
+                        fields={[{ name: 'title',placeholder: 'title', required: true }]}
+                        onSubmit={(data) => {
+                            addItem({ ...data, userId: parseInt(userId) });
+                            setShowAddTodoForm(false);
+                        }}
+                    />
+                </div>
+            )}
+            <div className="list">
+                {todos.map(todo => (
+                    <TodoItem key={todo.id} todo={todo} onDelete={handleDelete} onUpdate={handleUpdate} />
+                ))}
+            </div>
+        </div>
     );
 }
 export default TodosList;

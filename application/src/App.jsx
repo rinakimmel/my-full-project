@@ -8,9 +8,7 @@ import ShowUserInformation from './components/ShowUserInformation'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import TodosList from './components/TodosList'
 import PostsList from './components/PostsList'
-// import AlbumItem from './components/AlbumItem'
 import AlbumsList from './components/AlbumsList'
-import PhotosList from './components/PhotosList'
 import CommentsList from './components/CommentsList'
 import ActivePost from './components/ActivePost'
 import ActiveAlbum from './components/ActiveAlbum'
@@ -40,5 +38,4 @@ function App() {
     </>
   )
 }
-
 export default App
