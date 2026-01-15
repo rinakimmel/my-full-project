@@ -4,34 +4,32 @@ import CommentItem from './CommentItem';
 import DynamicForm from './DynamicForm';
 import Notification from './Notification';
 import { useLocation, useParams, useOutletContext } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
-function CommentsList({ postId: propPostId, currentUserEmail: propCurrentUserEmail }) {
+function CommentsList({ postId: propPostId }) {
     const { data: comments, getItems, deleteItem, updateItem, addItem } = useApi("comments");
-    const location = useLocation();
+    const { user } = useAuth();
     const params = useParams();
     const outletContext = useOutletContext() || {};
     const [showAddForm, setShowAddForm] = useState(false);
     const [notification, setNotification] = useState(null);
 
     const postId = propPostId || outletContext.postId || params.postId;
-    const currentUserEmail = propCurrentUserEmail || outletContext.currentUserEmail;
 
     useEffect(() => {
-        console.log('Fetching comments for postId:', postId);
-        getItems({ postId: parseInt(postId) });
+        if (postId) {
+            getItems({ postId: parseInt(postId) });
+        }
     }, [postId, getItems]);
 
-    const storedUser = JSON.parse(localStorage.getItem(params.userId) || '{}');
-    const effectiveEmail = currentUserEmail || location.state?.currentUserEmail || storedUser.email;
-
     const handleAddComment = (formData) => {
-        if (!effectiveEmail) {
+        if (!user?.email) {
             setNotification({ message: 'אנא התחבר כדי לשלוח תגובה', type: 'error' });
             return;
         }
         addItem({
-            name: storedUser.name || 'Anonymous',
-            email: effectiveEmail,
+            name: user.name || 'Anonymous',
+            email: user.email,
             postId: parseInt(postId),
             body: formData.body
         });
@@ -52,7 +50,7 @@ function CommentsList({ postId: propPostId, currentUserEmail: propCurrentUserEma
                         onSubmit={handleAddComment}
                         submitButtonText="שלח תגובה"
                     />
-                    {!effectiveEmail && <p>עליך להיכנס כדי לשלוח תגובות.</p>}
+                    {!user && <p>עליך להיכנס כדי לשלוח תגובות.</p>}
                 </div>
             )}
 
@@ -63,7 +61,7 @@ function CommentsList({ postId: propPostId, currentUserEmail: propCurrentUserEma
                         comment={comment}
                         onDelete={deleteItem}
                         onUpdate={updateItem}
-                        currentUserEmail={effectiveEmail}
+                        currentUserEmail={user?.email}
                     />
                 ))
             ) : (

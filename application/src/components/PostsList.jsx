@@ -6,10 +6,10 @@ import Pagination from './Pagination';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 import DynamicForm from './DynamicForm';
+import { useAuth } from './AuthContext';
 function PostsList() {
     const { userId } = useParams();
-    const currentUser = JSON.parse(localStorage.getItem(userId) || '{}');
-    const currentUserEmail = currentUser.email;
+    const { user } = useAuth();
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [showMyPosts, setShowMyPosts] = useState(true);
@@ -22,10 +22,24 @@ function PostsList() {
         setDeletePostId(postId);
     };
 
-    const confirmDelete = () => {
-        deleteItem(deletePostId);
+    const confirmDelete = async () => {
+        const result = await deleteItem(deletePostId);
         setDeletePostId(null);
-        setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+        if (result?.success) {
+            setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+        } else {
+            setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
+        }
+    };
+
+    const handleAdd = async (data) => {
+        const result = await addItem({ ...data, userId: parseInt(userId) });
+        setShowAddPostForm(false);
+        if (result?.success) {
+            setNotification({ message: 'פוסט נוסף בהצלחה', type: 'success' });
+        } else {
+            setNotification({ message: 'שגיאה בהוספת פוסט', type: 'error' });
+        }
     };
 
     const { data: posts, getItems, deleteItem, updateItem, addItem } = useApi("posts");
@@ -91,31 +105,28 @@ function PostsList() {
                 />
                 <button onClick={() => setShowAddPostForm(!showAddPostForm)}>➕ פוסט חדש</button>
             </div>
-            
+
             {showAddPostForm && (
                 <div className="card">
                     <DynamicForm
-                        fields={[{ name: 'title',placeholder: 'post title', required: true }, { name: 'body',placeholder: 'post body', required: true }]}
-                        onSubmit={(data) => {
-                            addItem({ ...data, userId: parseInt(userId) });
-                            setShowAddPostForm(false);
-                        }}
+                        fields={[{ name: 'title', placeholder: 'post title', required: true }, { name: 'body', placeholder: 'post body', required: true }]}
+                        onSubmit={handleAdd}
                     />
                 </div>
             )}
-            
+
             <div className="list">
                 {currentPosts.map(post => {
-                    const isPostOwner = post.userId === parseInt(userId);
+                    const isPostOwner = post.userId === user?.id; 
                     return (
                         <div key={post.id} className="card">
                             <p>ID: {post.id}</p>
                             <Link to={`/home/users/${userId}/posts/${post.id}`}
-                                state={{ post, isPostOwner, currentUserEmail }}>
+                                state={{ post, isPostOwner, currentUserEmail: user?.email }}>
                                 <strong>{post.title}</strong>
                             </Link>
                             {isPostOwner && (
-                                <button onClick={() => handleDeleteClick(post.id)} style={{marginTop: '0.5rem'}}>🗑️ מחק פוסט</button>
+                                <button onClick={() => handleDeleteClick(post.id)} style={{ marginTop: '0.5rem' }}>🗑️ מחק פוסט</button>
                             )}
                         </div>
                     );

@@ -11,13 +11,18 @@ function TodoItem({ todo, onDelete, onUpdate }) {
         setShowConfirm(true);
     };
 
-    const confirmDelete = () => {
-        onDelete(todo.id);
+    const confirmDelete = async () => {
+        const result = await onDelete(todo.id);
         setShowConfirm(false);
-        setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+        if (result?.success) {
+            setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+        } else {
+            setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
+        }
     };
     const renderView = (item, defaultRender) => (
         <>
+            <p>ID: {item.id}</p>
             {defaultRender(item)}
             <label>
                 <input type="checkbox" checked={item.completed||false} disabled />

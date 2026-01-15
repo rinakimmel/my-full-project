@@ -46,6 +46,17 @@
   box-shadow: 0 1px 3px var(--shadow);
 }
 
+.header h2 a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.header h2 a:hover {
+  color: var(--primary);
+  transform: none;
+}
+
 .nav {
   display: flex;
   gap: 0.5rem;
@@ -250,6 +261,26 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border);
   animation: scaleIn 0.3s ease;
+}
+
+.home-content {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.home-content h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.home-content p {
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
 }
 
 @keyframes scaleIn {

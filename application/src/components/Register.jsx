@@ -1,3 +1,4 @@
+import { useAuth } from './AuthContext';
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
@@ -7,6 +8,7 @@ import Notification from "./Notification";
 
 function Register() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [step, setStep] = useState(1);
     const [notification, setNotification] = useState(null);
     const [basicData, setBasicData] = useState(null);
@@ -23,7 +25,8 @@ function Register() {
             setNotification({ message: "Username already exists", type: "error" });
         } else {
             setBasicData(formData);
-            setStep(2);
+            setNotification({ message: "שלב ראשון הושלם בהצלחה", : "success" });
+            setStep(2);type
         }
     };
 
@@ -53,8 +56,9 @@ function Register() {
 
         const newUser = await addItem(finalUserObject);
         const { website, ...userWithoutPassword } = newUser;
-        localStorage.setItem(newUser.id, JSON.stringify(userWithoutPassword));
-        navigate(`/home/users/${newUser.id}`);
+        login(userWithoutPassword);
+        setNotification({ message: "נרשמת בהצלחה!", type: "success" });
+        setTimeout(() => navigate(`/home/users/${newUser.id}`), 1500);
     };
 
     return (

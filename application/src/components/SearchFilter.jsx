@@ -11,12 +11,20 @@ function SearchFilter({ searchOptions, searchBy, setSearchBy, searchValue, setSe
             </select>
 
             {searchBy && (
-                <input
-                    type="text"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="הכנס ערך לחיפוש"
-                />
+                searchBy === 'completed' ? (
+                    <select value={searchValue} onChange={(e) => setSearchValue(e.target.value)}>
+                        <option value="">בחר מצב</option>
+                        <option value="true">בוצע</option>
+                        <option value="false">לא בוצע</option>
+                    </select>
+                ) : (
+                    <input
+                        type="text"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        placeholder="הכנס ערך לחיפוש"
+                    />
+                )
             )}
         </>
     );

@@ -8,7 +8,7 @@ import Notification from './Notification';
 import DynamicForm from './DynamicForm';
 function TodosList() {
     const { userId } = useParams();
-    const [sortBy, setSortBy] = useState('id');
+    const [sortBy, setSortBy] = useState('');
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [notification, setNotification] = useState(null);
@@ -17,9 +17,12 @@ function TodosList() {
 
     useEffect(() => {
         const params = {
-            userId: userId,
-            _sort: sortBy
+            userId: userId
         };
+        if (sortBy && sortBy !== 'id') {
+            params._sort = sortBy;
+            params._order = 'asc';
+        }
         if (searchBy && searchValue) {
             params[searchBy] = searchValue;
         }
@@ -39,13 +42,21 @@ function TodosList() {
     ];
 
     const handleDelete = async (id) => {
-        await deleteItem(id);
-        setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
+        return await deleteItem(id);
     };
 
     const handleUpdate = async (id, data) => {
-        await updateItem(id, data);
-        setNotification({ message: 'משימה עודכנה בהצלחה', type: 'success' });
+        return await updateItem(id, data);
+    };
+
+    const handleAdd = async (data) => {
+        const result = await addItem({ ...data, userId: parseInt(userId) });
+        setShowAddTodoForm(false);
+        if (result?.success) {
+            setNotification({ message: 'משימה נוספה בהצלחה', type: 'success' });
+        } else {
+            setNotification({ message: 'שגיאה בהוספת משימה', type: 'error' });
+        }
     };
 
     return (
@@ -66,10 +77,7 @@ function TodosList() {
                 <div className="card">
                     <DynamicForm
                         fields={[{ name: 'title',placeholder: 'title', required: true }]}
-                        onSubmit={(data) => {
-                            addItem({ ...data, userId: parseInt(userId) });
-                            setShowAddTodoForm(false);
-                        }}
+                        onSubmit={handleAdd}
                     />
                 </div>
             )}

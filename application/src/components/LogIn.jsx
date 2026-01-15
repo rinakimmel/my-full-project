@@ -3,10 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
 import DynamicForm from './DynamicForm';
 import Notification from './Notification';
+import { useAuth } from './AuthContext';
 
 function LogIn() {
     const navigate = useNavigate();
     const { getItems } = useApi("users");
+    const { login } = useAuth();
     const [notification, setNotification] = useState(null);
 
     const fields = [
@@ -23,8 +25,12 @@ function LogIn() {
         if (foundUsers[0].website === formData.password) {
             const userId = foundUsers[0].id;
             const { website, ...userWithoutPassword } = foundUsers[0];
-            localStorage.setItem(userId, JSON.stringify(userWithoutPassword));
-            navigate(`/home/users/${userId}`);
+            login(userWithoutPassword);
+            setNotification({ 
+                message: 'התחברת בהצלחה!', 
+                type: 'success',
+                onClose: () => navigate(`/home/users/${userId}`)
+            });
         } else {
             setNotification({ message: 'password is wrong', type: 'error' });
         }
@@ -32,14 +38,14 @@ function LogIn() {
 
     return (
         <div className="auth-container">
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {notification && <Notification message={notification.message} type={notification.type} onClose={notification.onClose || (() => setNotification(null))} />}
             <h2>התחברות</h2>
             <DynamicForm
                 fields={fields}
                 onSubmit={handleSubmit}
                 submitButtonText="Log In"
             />
-            <div style={{marginTop: '1rem', textAlign: 'center'}}>
+            <div style={{ marginTop: '1rem', textAlign: 'center' }}>
                 <Link to="/register">📝 הרשמה</Link>
             </div>
         </div>

@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
-
+import { useAuth } from './AuthContext';
 function LogOut() {
     const navigate = useNavigate();
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const { userId } = useParams();
+    const { logout } = useAuth();
     const handleLogout = () => {
-        localStorage.removeItem(userId);
+        logout();
         setShowSuccessMessage(true);
-        setTimeout(() => {
-            navigate('/login');
-        }, 3000);
     };
 
     const handleCancel = () => {
@@ -24,7 +22,7 @@ function LogOut() {
             <Notification 
                 message="יצאת מהמערכת בהצלחה!"
                 type="success"
-                onClose={() => navigate('/login')}
+                onClose={() => navigate('/login', { replace: true })}
             />
         );
     }
@@ -37,5 +35,5 @@ function LogOut() {
         />
     );
 }
-
+           
 export default LogOut;

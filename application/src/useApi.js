@@ -21,21 +21,24 @@ const useApi = (resource) => {
         try {
             await axios.delete(`${BASE_URL}/${resource}/${id}`);
             setData(prev => prev.filter(item => item.id !== id));
+            return { success: true };
         } catch (error) {
             console.error("Error deleting item:", error);
+            return { success: false, error };
         }
     }, [resource]);
 
     const updateItem = useCallback(async (id, updateFields) => {
-
         try {
             const response = await axios.patch(`${BASE_URL}/${resource}/${id}`, updateFields)
             setData(prev => prev.map(item =>
                 item.id === id ? response.data : item
             ));
+            return { success: true, data: response.data };
         }
         catch (error) {
             console.error("Error updating item:", error);
+            return { success: false, error };
         }
     }, [resource])
 
@@ -43,9 +46,10 @@ const useApi = (resource) => {
         try {
             const response = await axios.post(`${BASE_URL}/${resource}`, newItem);
             setData(prev => [...prev, response.data]);
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
             console.error("Error adding item:", error);
+            return { success: false, error };
         }
     }, [resource]);
 

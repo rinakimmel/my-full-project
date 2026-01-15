@@ -24,10 +24,14 @@ function GenericItem({
         setShowConfirm(false);
     };
 
-    const handleSave = () => {
-        onUpdate(editData.id, editData);
+    const handleSave = async () => {
+        const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
-        setNotification({ message: 'נשמר בהצלחה', type: 'success' });
+        if (result?.success) {
+            setNotification({ message: 'נשמר בהצלחה', type: 'success' });
+        } else {
+            setNotification({ message: 'שגיאה בשמירה', type: 'error' });
+        }
     };
 
     const handleCancel = () => {
