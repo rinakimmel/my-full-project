@@ -18,17 +18,26 @@ function LogIn() {
 
     const handleSubmit = async (formData) => {
         try {
-            const foundUsers = await getItems({ username: formData.userName });
-            if (foundUsers.length === 0) {
+            // const foundUsers = await getItems({ username: formData.userName });
+            // if (foundUsers.length === 0) {
+            //     setNotification({ message: 'משתמש לא נמצא', type: 'error' });
+            //     return;
+            // }
+            // if (foundUsers[0]?.website === formData.password) {
+            const response = await getItems({ username: formData.userName });
+            if (!response.success || response.data.length === 0) {
                 setNotification({ message: 'משתמש לא נמצא', type: 'error' });
                 return;
             }
+            const foundUsers = response.data;
             if (foundUsers[0]?.website === formData.password) {
+
+                
                 const userId = foundUsers[0].id;
                 const { website, ...userWithoutPassword } = foundUsers[0];
                 login(userWithoutPassword);
-                setNotification({ 
-                    message: 'התחברת בהצלחה!', 
+                setNotification({
+                    message: 'התחברת בהצלחה!',
                     type: 'success',
                     onClose: () => navigate(`/home/users/${userId}`)
                 });

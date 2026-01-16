@@ -8,7 +8,7 @@ import Notification from "./Notification";
 
 function Register() {
     const navigate = useNavigate();
-    const {login } = useAuth();
+    const { login } = useAuth();
     const [step, setStep] = useState(1);
     const [notification, setNotification] = useState(null);
     const [basicData, setBasicData] = useState(null);
@@ -21,12 +21,19 @@ function Register() {
                 return;
             }
 
-            const foundUsers = await getItems({ username: formData.username });
-            if (foundUsers.length > 0) {
+            // const foundUsers = await getItems({ username: formData.username });
+            // if (foundUsers.length > 0) {
+            //    setNotification({ message: "שם משתמש כבר קיים", type: "error" });
+            const response = await getItems({ username: formData.username });
+            if (!response.success) {
+                setNotification({ message: "שגיאה בבדיקת שם משתמש", type: "error" });
+                return;
+            }
+            if (response.data.length > 0) {
                 setNotification({ message: "שם משתמש כבר קיים", type: "error" });
             } else {
                 setBasicData(formData);
-                setNotification({ message: "שלב ראשון הושלם בהצלחה", type:"success" });
+                setNotification({ message: "שלב ראשון הושלם בהצלחה", type: "success" });
                 setStep(2);
             }
         } catch (error) {
@@ -88,7 +95,7 @@ function Register() {
             {step === 1 && <BasicUserInformation onSubmit={handleBasicSubmit} />}
             {step === 2 && <AdditionalUserInformation onSubmit={handleFinalSubmit} />}
 
-            <div style={{marginTop: '1rem', textAlign: 'center'}}>
+            <div style={{ marginTop: '1rem', textAlign: 'center' }}>
                 <Link to="/login">🔑 התחברות</Link>
             </div>
         </div>

@@ -28,7 +28,7 @@
       "userId": 2,
       "id": "12",
       "title": "חוויה במסעדה חדשה",
-      "body": "אתמול ביקרנו במסעדה חדשה שנפתחה בשכונה. האוכל היה טעים מאוד, השירות מעולה והאווירה נעימה. בהחלט נחזור שוב בקרוב."
+      "body": "אתמול ביקרנו במסעדה חדשה שנפתחה בשכונה. האוכל היה טעים מאוד, השירות מעולה והאווירה נעימה. בהחלט נחזור שוב בקרוב.!!!"
     },
     {
       "userId": 2,
@@ -56,12 +56,6 @@
     },
     {
       "userId": 2,
-      "id": "17",
-      "title": "ערב משחקים עם חברים",
-      "body": "אירחנו ערב משחקים עם חברים. שיחקנו משחקי קופסה, צחקנו הרבה ונהנינו מחטיפים טעימים. זה היה ערב מהנה ומרגיע."
-    },
-    {
-      "userId": 2,
       "id": "18",
       "title": "תחביב חדש - צילום",
       "body": "התחלתי להתעניין בצילום ורכשתי מצלמה חדשה. אני לומד על קומפוזיציה, תאורה ועריכה. זה תחביב מרתק שמאפשר לי לתעד רגעים יפים."
@@ -79,15 +73,9 @@
       "body": "השתתפתי בסדנת בישול מקצועית. למדתי טכניקות חדשות, מתכונים מעניינים וקיבלתי המון השראה. כבר מתכנן את הארוחה הבאה שאכין."
     },
     {
-      "id": "69bc",
-      "title": "יום עבודה פרודוקטיבי",
-      "body": "היום היה יום עבודה מאוד פרודוקטיבי. הצלחתי להשלים את כל המשימות שתכננתי ואפילו התחלתי פרויקט חדש. מרגיש מסופק ומרוצה.",
-      "userId": 2
-    },
-    {
-      "id": "20c3",
-      "title": "סרט מומלץ",
-      "body": "ראיתי סרט מצוין אתמול בערב. העלילה הייתה מרתקת, המשחק מעולה והבימוי מרשים. ממליץ בחום לכל אוהבי הקולנוע.",
+      "id": "a2a4",
+      "title": "הפוסט של שימי",
+      "body": "שימי החמוד",
       "userId": 2
     }
   ],
@@ -194,7 +182,7 @@
       "id": "5b8e",
       "name": "תגובה חדשה",
       "email": "new@example.com",
-      "postId": "17",
+      "postId": null,
       "body": "תוכן מעולה! ממש עזר לי להבין את הנושא."
     },
     {
@@ -226,25 +214,18 @@
       "body": "אני מסכימה עם הדברים שנאמרו כאן."
     },
     {
-      "id": "be2f",
-      "name": "Ervin Howell",
-      "email": "Shanna@melissa.tv",
-      "postId": 11,
-      "body": "פוסט נהדר! ממש אהבתי לקרוא."
-    },
-    {
-      "id": "2ac7",
-      "name": "Ervin Howell",
-      "email": "Shanna@melissa.tv",
-      "postId": 11,
-      "body": "תודה על השיתוף המעניין!"
-    },
-    {
       "id": "07df",
       "name": "Ervin Howell",
       "email": "Shanna@melissa.tv",
       "postId": 11,
-      "body": "מעולה!"
+      "body": "מעולה!!!!"
+    },
+    {
+      "id": "0e27",
+      "name": "Ervin Howell",
+      "email": "Shanna@melissa.tv",
+      "postId": 12,
+      "body": "hello, very nice post!"
     }
   ],
   "albums": [
@@ -300,11 +281,6 @@
     },
     {
       "userId": 2,
-      "id": "12",
-      "title": "consequatur autem doloribus natus consectetur"
-    },
-    {
-      "userId": 2,
       "id": "13",
       "title": "ab rerum non rerum consequatur ut ea unde"
     },
@@ -320,23 +296,8 @@
     },
     {
       "userId": 2,
-      "id": "16",
-      "title": "voluptatem aut maxime inventore autem magnam atque repellat"
-    },
-    {
-      "userId": 2,
-      "id": "17",
-      "title": "aut minima voluptatem ut velit"
-    },
-    {
-      "userId": 2,
       "id": "18",
       "title": "nesciunt quia et doloremque"
-    },
-    {
-      "userId": 2,
-      "id": "19",
-      "title": "velit pariatur quaerat similique libero omnis quia"
     },
     {
       "userId": 2,
@@ -357,6 +318,11 @@
       "id": "4b77",
       "title": "11111",
       "userId": 1
+    },
+    {
+      "id": "cc1e",
+      "title": "התמונות שלי",
+      "userId": null
     }
   ],
   "photos": [
@@ -1202,38 +1168,10 @@
     },
     {
       "albumId": 11,
-      "id": "122",
-      "title": "Photo 122 from album 11",
-      "url": "https://picsum.photos/600/400?random=122",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=122"
-    },
-    {
-      "albumId": 11,
-      "id": "123",
-      "title": "Photo 123 from album 11",
-      "url": "https://picsum.photos/600/400?random=123",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=123"
-    },
-    {
-      "albumId": 11,
       "id": "125",
       "title": "Photo 125 from album 11",
       "url": "https://picsum.photos/600/400?random=125",
       "thumbnailUrl": "https://picsum.photos/150/150?random=125"
-    },
-    {
-      "albumId": 11,
-      "id": "126",
-      "title": "Photo 126 from album 11",
-      "url": "https://picsum.photos/600/400?random=126",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=126"
-    },
-    {
-      "albumId": 11,
-      "id": "127",
-      "title": "Photo 127 from album 11",
-      "url": "https://picsum.photos/600/400?random=127",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=127"
     },
     {
       "albumId": 11,
@@ -1262,20 +1200,6 @@
       "title": "Photo 131 from album 11",
       "url": "https://picsum.photos/600/400?random=131",
       "thumbnailUrl": "https://picsum.photos/150/150?random=131"
-    },
-    {
-      "albumId": 12,
-      "id": "132",
-      "title": "Photo 132 from album 12",
-      "url": "https://picsum.photos/600/400?random=132",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=132"
-    },
-    {
-      "albumId": 12,
-      "id": "133",
-      "title": "Photo 133 from album 12",
-      "url": "https://picsum.photos/600/400?random=133",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=133"
     },
     {
       "albumId": 12,
@@ -1335,80 +1259,10 @@
     },
     {
       "albumId": 13,
-      "id": "142",
-      "title": "Photo 142 from album 13",
-      "url": "https://picsum.photos/600/400?random=142",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=142"
-    },
-    {
-      "albumId": 13,
-      "id": "143",
-      "title": "Photo 143 from album 13",
-      "url": "https://picsum.photos/600/400?random=143",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=143"
-    },
-    {
-      "albumId": 13,
-      "id": "144",
-      "title": "Photo 144 from album 13",
-      "url": "https://picsum.photos/600/400?random=144",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=144"
-    },
-    {
-      "albumId": 13,
-      "id": "145",
-      "title": "Photo 145 from album 13",
-      "url": "https://picsum.photos/600/400?random=145",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=145"
-    },
-    {
-      "albumId": 13,
-      "id": "146",
-      "title": "Photo 146 from album 13",
-      "url": "https://picsum.photos/600/400?random=146",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=146"
-    },
-    {
-      "albumId": 13,
-      "id": "147",
-      "title": "Photo 147 from album 13",
-      "url": "https://picsum.photos/600/400?random=147",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=147"
-    },
-    {
-      "albumId": 13,
-      "id": "148",
-      "title": "Photo 148 from album 13",
-      "url": "https://picsum.photos/600/400?random=148",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=148"
-    },
-    {
-      "albumId": 13,
-      "id": "149",
-      "title": "Photo 149 from album 13",
-      "url": "https://picsum.photos/600/400?random=149",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=149"
-    },
-    {
-      "albumId": 13,
-      "id": "150",
-      "title": "Photo 150 from album 13",
-      "url": "https://picsum.photos/600/400?random=150",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=150"
-    },
-    {
-      "albumId": 13,
       "id": "151",
       "title": "Photo 151 from album 13",
       "url": "https://picsum.photos/600/400?random=151",
       "thumbnailUrl": "https://picsum.photos/150/150?random=151"
-    },
-    {
-      "albumId": 13,
-      "id": "152",
-      "title": "Photo 152 from album 13",
-      "url": "https://picsum.photos/600/400?random=152",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=152"
     },
     {
       "albumId": 14,
@@ -1430,20 +1284,6 @@
       "title": "Photo 155 from album 14",
       "url": "https://picsum.photos/600/400?random=155",
       "thumbnailUrl": "https://picsum.photos/150/150?random=155"
-    },
-    {
-      "albumId": 14,
-      "id": "156",
-      "title": "Photo 156 from album 14",
-      "url": "https://picsum.photos/600/400?random=156",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=156"
-    },
-    {
-      "albumId": 14,
-      "id": "157",
-      "title": "Photo 157 from album 14",
-      "url": "https://picsum.photos/600/400?random=157",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=157"
     },
     {
       "albumId": 14,
@@ -1493,20 +1333,6 @@
       "title": "Photo 164 from album 14",
       "url": "https://picsum.photos/600/400?random=164",
       "thumbnailUrl": "https://picsum.photos/150/150?random=164"
-    },
-    {
-      "albumId": 14,
-      "id": "165",
-      "title": "Photo 165 from album 14",
-      "url": "https://picsum.photos/600/400?random=165",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=165"
-    },
-    {
-      "albumId": 14,
-      "id": "166",
-      "title": "Photo 166 from album 14",
-      "url": "https://picsum.photos/600/400?random=166",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=166"
     },
     {
       "albumId": 15,
@@ -1615,20 +1441,6 @@
     },
     {
       "albumId": 16,
-      "id": "182",
-      "title": "Photo 182 from album 16",
-      "url": "https://picsum.photos/600/400?random=182",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=182"
-    },
-    {
-      "albumId": 16,
-      "id": "183",
-      "title": "Photo 183 from album 16",
-      "url": "https://picsum.photos/600/400?random=183",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=183"
-    },
-    {
-      "albumId": 16,
       "id": "184",
       "title": "Photo 184 from album 16",
       "url": "https://picsum.photos/600/400?random=184",
@@ -1689,13 +1501,6 @@
       "title": "Photo 192 from album 17",
       "url": "https://picsum.photos/600/400?random=192",
       "thumbnailUrl": "https://picsum.photos/150/150?random=192"
-    },
-    {
-      "albumId": 17,
-      "id": "193",
-      "title": "Photo 193 from album 17",
-      "url": "https://picsum.photos/600/400?random=193",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=193"
     },
     {
       "albumId": 17,
@@ -2111,57 +1916,10 @@
       "completed": true
     },
     {
-      "userId": 2,
-      "id": "21",
-      "title": "לסיים את הפרויקט החדש",
-      "completed": true
-    },
-    {
-      "userId": 2,
-      "id": "22",
-      "title": "ללמוד טכנולוגיה חדשה",
-      "completed": false
-    },
-    {
-      "userId": 2,
-      "id": "23",
-      "title": "להשתתף בקורס אונליין",
-      "completed": true
-    },
-    {
-      "userId": 2,
-      "id": "24",
-      "title": "לעדכן את הקורות החיים",
-      "completed": false
-    },
-    {
-      "userId": 2,
-      "id": "25",
-      "title": "לתכנן טיול לסוף השבוע",
-      "completed": true
-    },
-    {
-      "userId": 2,
-      "id": "26",
-      "title": "לרכוש צמחים חדשים",
-      "completed": true
-    },
-    {
-      "userId": 2,
-      "id": "27",
-      "title": "להשתתף באירוע קהילתי",
-      "completed": true
-    },
-    {
-      "id": "be38",
-      "title": "לסיים את הפרויקט הסופי",
-      "userId": 2,
-      "completed": true
-    },
-    {
       "id": "109a",
       "title": "לסיים את הפרויקט בפול סטאק וריאקט. ההגשה עוד פחות משבוע ",
-      "userId": 2
+      "userId": 2,
+      "completed": true
     }
   ],
   "users": [
@@ -2653,6 +2411,98 @@
         "name": "נעיחילש",
         "catchPhrase": "דגנישדטון",
         "bs": "דגחטו"
+      }
+    },
+    {
+      "id": "56d8",
+      "name": "1",
+      "username": "1",
+      "email": "5000335@gmail.com",
+      "address": {
+        "street": "המ\"ג 34",
+        "suite": "12",
+        "city": "ירושלים",
+        "zipcode": "9744030",
+        "geo": {
+          "lat": "1",
+          "lng": "1"
+        }
+      },
+      "phone": "025000335",
+      "website": "1",
+      "company": {
+        "name": "0527622704",
+        "catchPhrase": "0527622704",
+        "bs": "0527622704"
+      }
+    },
+    {
+      "id": "d8c7",
+      "name": "3",
+      "username": "3",
+      "email": "50003355@gmail.com",
+      "address": {
+        "street": "34 המ\"ג 34",
+        "suite": "3",
+        "city": "3",
+        "zipcode": "3",
+        "geo": {
+          "lat": "3",
+          "lng": "3"
+        }
+      },
+      "phone": "3",
+      "website": "3",
+      "company": {
+        "name": "3",
+        "catchPhrase": "33",
+        "bs": "3"
+      }
+    },
+    {
+      "id": "2767",
+      "name": "4",
+      "username": "4",
+      "email": "5000335@gmail.com",
+      "address": {
+        "street": "המ\"ג 34",
+        "suite": "12",
+        "city": "ירושלים",
+        "zipcode": "9744030",
+        "geo": {
+          "lat": "4",
+          "lng": "4"
+        }
+      },
+      "phone": "025000335",
+      "website": "4",
+      "company": {
+        "name": "0527622704",
+        "catchPhrase": "0527622704",
+        "bs": "0527622704"
+      }
+    },
+    {
+      "id": "003f",
+      "name": "יהודית חדש",
+      "username": "שימי",
+      "email": "5000335@gmail.com",
+      "address": {
+        "street": "המ\"ג 34",
+        "suite": "12",
+        "city": "ירושלים",
+        "zipcode": "9744030",
+        "geo": {
+          "lat": "ש",
+          "lng": "ש"
+        }
+      },
+      "phone": "025000335",
+      "website": "שימי",
+      "company": {
+        "name": "0527622704",
+        "catchPhrase": "0527622704",
+        "bs": "0527622704"
       }
     }
   ]

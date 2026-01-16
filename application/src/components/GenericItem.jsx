@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ConfirmDialog from './ConfirmDialog';
 import Notification from './Notification';
 
@@ -19,19 +19,17 @@ function GenericItem({
     const [editData, setEditData] = useState(item);
     const [showConfirm, setShowConfirm] = useState(false);
     const [notification, setNotification] = useState(null);
+    
+    useEffect(() => {
+        setEditData(item);
+    }, [item]);
 
     const confirmDelete =async () => {
         const result =await onDelete(item.id);
         setShowConfirm(false);
-        
-        // if (!error){
-        //     setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
-        // } else {
-        //     setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
-        // }
         if (result?.success) {
             setNotification({ 
-                message: deleteSuccessMsg,  // ← משתמש בהודעה המותאמת
+                message: deleteSuccessMsg, 
                 type: 'success' 
             });
         } else {
@@ -49,20 +47,9 @@ function GenericItem({
     const handleSave = async () => {
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
-       // console.log(result)
-        // if (result.success) {
-        //     setNotification({ message: 'נשמר בהצלחה', type: 'success' });
-        // } else {
-        //     setNotification({ message: 'שגיאה בשמירה', type: 'error' });
-        // }
-        // if(!error){
-        //     setNotification({ message: 'נשמר בהצלחה', type: 'success' });
-        // } else {
-        //     setNotification({ message: 'שגיאה בשמירה', type: 'error' });
-        // }
         if (result?.success) {
             setNotification({ 
-                message: updateSuccessMsg,  // ← משתמש בהודעה המותאמת
+                message: updateSuccessMsg, 
                 type: 'success' 
             });
         } else {

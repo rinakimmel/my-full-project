@@ -45,16 +45,26 @@ function AlbumsList() {
         setDeleteAlbumId(albumId);
     };
 
-    const confirmDelete = () => {
-        deleteItem(deleteAlbumId);
+    // const confirmDelete = () => {
+    //     deleteItem(deleteAlbumId);
+    //     setDeleteAlbumId(null);
+    //     //setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
+    //     if (!error){
+    //         setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
+    //      } else {
+    //         setNotification({ message: 'שגיאה במחיקת האלבום', type: 'error' });
+    //      }
+    // };
+    const confirmDelete = async () => {
+        const result = await deleteItem(deleteAlbumId);
         setDeleteAlbumId(null);
-        //setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
-        if (!error){
+        if (result?.success) {
             setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
-         } else {
+        } else {
             setNotification({ message: 'שגיאה במחיקת האלבום', type: 'error' });
-         }
+        }
     };
+
 
     const searchOptions = [
         { value: 'id', label: 'חיפוש לפי ID' },

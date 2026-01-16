@@ -1,36 +1,34 @@
 import { useState } from "react";
-import { Link, useLocation, useParams, Outlet } from "react-router-dom";
+import { Link, useLocation, useParams, Outlet, useNavigate } from "react-router-dom";
 import GenericItem from "./GenericItem";
 import useApi from "../useApi";
 import Notification from './Notification';
+import { useAuth } from './AuthContext';
 
 function ActivePost() {
     const { userId, postId } = useParams();
-    const { error, deletePost, updateItem } = useApi("posts");
+    const { error, deleteItem, updateItem } = useApi("posts");
     const location = useLocation();
-    const { post: initialPost, isPostOwner, currentUserEmail } = location.state || {};
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { post: initialPost, currentUserEmail } = location.state || {};
     const [post, setPost] = useState(initialPost);
+    const isPostOwner = post && user && parseInt(post.userId) === parseInt(user.id);
     const [notification, setNotification] = useState(null);
 
     const handleDelete = async (id) => {
-        await deletePost(id);
+        await deleteItem(id);
         setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+        navigate(`/home/users/${userId}/posts`);
     };
 
     const handleUpdate = async (id, data) => {
-        await updateItem(id, data);
+      return  await updateItem(id, data);
         setPost({ ...post, ...data });
-       // setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
-    // if(!error){
-    //         setNotification({ message: 'פוסט עודכן בהצלחה', type: 'success' });
-    //      } else {
-    //         setNotification({ message: 'שגיאה בעדכון הפוסט', type: 'error' });
-    //      }
     };
 
     return (
         <div className="container">
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <Link to={`/home/users/${userId}/posts`}>← חזרה לרשימת הפוסטים</Link>
             <GenericItem
                 item={post}
@@ -47,7 +45,6 @@ function ActivePost() {
                     </div>
                 )}
             />
-
             <div style={{ marginTop: '1rem' }}>
                 {location.pathname.endsWith('/comments') ? (
                     <Link to={`/home/users/${userId}/posts/${postId}`}

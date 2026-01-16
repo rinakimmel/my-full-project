@@ -25,12 +25,7 @@ function PostsList() {
     const confirmDelete = async () => {
         const result = await deleteItem(deletePostId);
         setDeletePostId(null);
-        // if (result?.success) {
-        //     setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
-        // } else {
-        //     setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });
-        // }
-        if (!error){
+        if (result?.success){
             setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
          } else {
             setNotification({ message: 'שגיאה במחיקת הפוסט', type: 'error' });

@@ -4,25 +4,6 @@ import Notification from './Notification';
 import { useState } from 'react';
 
 function TodoItem({ todo, onDelete, onUpdate }) {
-    // const [showConfirm, setShowConfirm] = useState(false);
-    // const [notification, setNotification] = useState(null);
-
-    // const handleDelete = (id) => {
-       
-    //    // setShowConfirm(true);
-    // };
-
-    // const confirmDelete = async () => {
-    //     const result = await onDelete(todo.id);
-    //     // setShowConfirm(false);
-    //     // if (result?.success) {
-    //     //     setNotification({ message: 'משימה נמחקה בהצלחה', type: 'success' });
-    //     // } else {
-    //     //     setNotification({ message: 'שגיאה במחיקת המשימה', type: 'error' });
-    //     // }
-    // };
-
-
     const renderView = (item, defaultRender) => (
         <>
             <p>ID: {item.id}</p>
@@ -50,23 +31,6 @@ function TodoItem({ todo, onDelete, onUpdate }) {
 
     return (
         <>
-            {/* {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />} */}
-            {/* {showConfirm && (
-                <ConfirmDialog
-                    onConfirm={confirmDelete}
-                    onCancel={() => setShowConfirm(false)}
-                />
-            )} */}
-            {/* <GenericItem
-                item={todo}
-                error={error}
-                //onDelete={handleDelete}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                renderView={renderView}
-                renderEdit={renderEdit}
-                editableFields={['title']}
-            /> */}
             <GenericItem
             item={todo}
             onDelete={onDelete}

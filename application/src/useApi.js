@@ -20,7 +20,6 @@ const useApi = (resource) => {
             };
         } catch (error) {
             console.error("Error fetching data:", error);
-            // return { success: false, error : "שגיאה בטעינת נתונים"};
             const errorMsg = "שגיאה בטעינת נתונים";
             setError(errorMsg);
             setData([]);
@@ -44,7 +43,6 @@ const useApi = (resource) => {
         } catch (error) {
             console.error("Error deleting item:", error);
             const errorMsg = "שגיאה במחיקת הפריט";
-            //return { success: false, error };
             setError(errorMsg)
             return {
                 success: false,

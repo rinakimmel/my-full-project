@@ -29,7 +29,6 @@ function ActiveAlbum() {
                 {album && (
                     <GenericItem
                         item={album}
-                        error={error}
                         onDelete={handleDelete}
                         onUpdate={handleUpdate}
                     />
