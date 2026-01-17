@@ -6,6 +6,7 @@ import Notification from './Notification';
 import { useAuth } from './AuthContext';
 
 function ActivePost() {
+
     const { userId, postId } = useParams();
     const { error, deleteItem, updateItem } = useApi("posts");
     const location = useLocation();
@@ -18,12 +19,12 @@ function ActivePost() {
 
     const handleDelete = async (id) => {
         await deleteItem(id);
-        setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
+      //  setNotification({ message: 'פוסט נמחק בהצלחה', type: 'success' });
         navigate(`/home/users/${userId}/posts`);
     };
 
     const handleUpdate = async (id, data) => {
-      return  await updateItem(id, data);
+        return await updateItem(id, data);
         setPost({ ...post, ...data });
     };
 
