@@ -48,8 +48,9 @@ function PhotosList() {
     };
 
     const handleUpdate = async (id, data) => {
-        return  await updateItem(id, data);
+        return await updateItem(id, data);
     };
+
  return (
         <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
