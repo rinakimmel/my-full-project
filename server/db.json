@@ -1678,13 +1678,6 @@
     },
     {
       "albumId": 20,
-      "id": "228",
-      "title": "Photo 228 from album 20",
-      "url": "https://picsum.photos/600/400?random=228",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=228"
-    },
-    {
-      "albumId": 20,
       "id": "229",
       "title": "Photo 229 from album 20",
       "url": "https://picsum.photos/600/400?random=229",
@@ -1790,6 +1783,16 @@
       "title": "לסיים את הפרויקט בפול סטאק וריאקט. ההגשה עוד פחות משבוע ",
       "userId": 2,
       "completed": true
+    },
+    {
+      "id": "f8ae",
+      "title": "לנקות את הבית ולהשקות את העציצים",
+      "userId": 2
+    },
+    {
+      "id": "4b1b",
+      "title": "לסיים לעבור על החומר למבחן",
+      "userId": 2
     }
   ],
   "users": [
