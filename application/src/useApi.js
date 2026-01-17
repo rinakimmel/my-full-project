@@ -14,9 +14,13 @@ const useApi = (resource) => {
         try {
             const response = await axios.get(`${BASE_URL}/${resource}`, { params });
             setData(response.data);
+            const totalHeader = response.headers['x-total-count'];
+            const totalCount = totalHeader ? parseInt(totalHeader, 10) : response.data.length;
+          setData(response.data);
             return {
                 success: true,
-                data: response.data
+                data: response.data,
+                total: totalCount
             };
         } catch (error) {
             console.error("Error fetching data:", error);
