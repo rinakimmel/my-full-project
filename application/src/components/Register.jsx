@@ -21,9 +21,7 @@ function Register() {
                 return;
             }
 
-            // const foundUsers = await getItems({ username: formData.username });
-            // if (foundUsers.length > 0) {
-            //    setNotification({ message: "שם משתמש כבר קיים", type: "error" });
+           
             const response = await getItems({ username: formData.username });
             if (!response.success) {
                 setNotification({ message: "שגיאה בבדיקת שם משתמש", type: "error" });

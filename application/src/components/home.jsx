@@ -5,26 +5,30 @@ function Home() {
     const { userId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
-    const { user } = useAuth(); 
-    
+    const { user, isLoading } = useAuth()
     const isHomePage = location.pathname === `/home/users/${userId}`;
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         navigate('/login', { replace: true });
-    //     }
-    // }, [user, navigate]);
-
+    useEffect(() => {
+    if (!user) {
+        replace: true;
+        navigate('/login', { replace: true });
+    }
+}, [user, navigate]);
+   
     return (
         <div className="container">
             <div className="header">
                 <h2>
                     <Link to={`/home/users/${userId}`}>בית</Link>
                 </h2>
-                <div className="user-info">
-                    <div>שם משתמש: {user?.username || 'אין נתוני משתמש'}</div>
-                    <div>מזהה משתמש: {userId}</div>
-                </div>
+                {isLoading ? (
+                    <div>טוען נתונים...</div>
+                ) : (
+                    <div className="user-info">
+                        <div>שם משתמש: {user?.username || 'אין נתוני משתמש'}</div>
+                        <div>מזהה משתמש: {userId}</div>
+                    </div>
+                )}
                 <nav className="nav">
                     <Link to="albums"> Albums</Link>
                     <Link to="posts"> Posts</Link>

@@ -12,44 +12,28 @@ function LogIn() {
     const [notification, setNotification] = useState(null);
 
     const fields = [
-        { name: "userName", placeholder: "user name", required: true },
+        { name: "username", placeholder: "user name", required: true },
         { name: "password", placeholder: "password", type: "password", required: true }
     ];
 
     const handleSubmit = async (formData) => {
-        try {
-            // const foundUsers = await getItems({ username: formData.userName });
-            // if (foundUsers.length === 0) {
-            //     setNotification({ message: 'משתמש לא נמצא', type: 'error' });
-            //     return;
-            // }
-            // if (foundUsers[0]?.website === formData.password) {
-            const response = await getItems({ username: formData.userName });
-            if (!response.success || response.data.length === 0) {
-                setNotification({ message: 'משתמש לא נמצא', type: 'error' });
-                return;
-            }
-            const foundUsers = response.data;
-            if (foundUsers[0]?.website === formData.password) {
-
-                
-                const userId = foundUsers[0].id;
-                const { website, ...userWithoutPassword } = foundUsers[0];
-                login(userWithoutPassword);
-                setNotification({
-                    message: 'התחברת בהצלחה!',
-                    type: 'success',
-                    onClose: () => navigate(`/home/users/${userId}`)
-                });
-            } else {
-                setNotification({ message: 'סיסמה שגויה', type: 'error' });
-            }
-        } catch (error) {
-            if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-                setNotification({ message: 'השרת לא זמין - בדוק שהשרת פועל', type: 'error' });
-            } else {
-                setNotification({ message: 'שגיאה בחיבור לשרת', type: 'error' });
-            }
+        const result = await getItems({ username: formData.username });
+        if (!result.success || !result.data || result.data.length === 0) {
+            setNotification({ message: 'משתמש לא נמצא', type: 'error' });
+            return;
+        }
+        const foundUser = result.data[0];
+        if (foundUser?.website === formData.password) {
+            const userId = foundUser.id;
+            const { website, ...userWithoutPassword } = foundUser;
+            login(userWithoutPassword);
+            setNotification({
+                message: 'התחברת בהצלחה!',
+                type: 'success',
+                onClose: () => navigate(`/home/users/${userId}`)
+            });
+        } else {
+            setNotification({ message: 'סיסמה שגויה', type: 'error' });
         }
     };
 

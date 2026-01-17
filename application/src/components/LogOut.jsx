@@ -14,7 +14,6 @@ function LogOut() {
             setShowSuccessMessage(true);
         } catch (error) {
             console.error('Error during logout:', error);
-            // עדיין מציגים הודעת הצלחה כי המשתמש צריך לצאת
             setShowSuccessMessage(true);
         }
     };

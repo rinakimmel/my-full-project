@@ -10,9 +10,8 @@ function GenericItem({
     renderEdit,
     canEdit = true,
     editableFields = ['title'],
-    deleteSuccessMsg = 'נמחק בהצלחה',    // ← הודעה מותאמת אישית
-    updateSuccessMsg = 'נשמר בהצלחה'   ,  // ← הודעה מותאמת אישית
-    deleteConfirmMsg = 'האם אתה בטוח שברצונך למחוק?'
+    deleteSuccessMsg = 'נמחק בהצלחה',   
+    updateSuccessMsg = 'נשמר בהצלחה'   , 
 
 }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -93,7 +92,7 @@ function GenericItem({
 
     return (
         <div className="card">
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {notification && <Notification onClose={() => setNotification(null)} />}
             {showConfirm && (
                 <ConfirmDialog
                     onConfirm={confirmDelete}
