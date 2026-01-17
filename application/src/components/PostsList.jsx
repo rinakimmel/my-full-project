@@ -58,10 +58,7 @@ function PostsList() {
     return (
         <GenericList
             title="פוסטים"
-            items={posts.map(post => ({
-                ...post,
-                canEdit: post.userId === user?.id
-            }))}
+            items={posts}
             onDelete={handleDelete}
             onUpdate={handleUpdate}
             onAddClick={() => setShowAddPostForm(!showAddPostForm)}

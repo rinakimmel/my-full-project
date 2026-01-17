@@ -8,7 +8,7 @@ function GenericItem({
     onUpdate,
     renderView,
     renderEdit,
-    canEdit = item.canEdit !== undefined ? item.canEdit : true,
+    canEdit = true,
     editableFields = ['title'],
     displayFields = ['title'],
     itemName = 'פריט'

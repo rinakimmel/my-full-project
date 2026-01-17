@@ -3,10 +3,12 @@ import { useParams, Link } from "react-router-dom";
 import useApi from "../useApi";
 import GenericList from './GenericList';
 import DynamicForm from './DynamicForm';
+import { useNotification } from './NotificationContext';
 
 function AlbumsList() {
     const { userId } = useParams();
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const { showNotification } = useNotification();
     const { data: albums, error, getItems, deleteItem, updateItem, addItem } = useApi("albums");
 
     useEffect(() => {
@@ -14,11 +16,16 @@ function AlbumsList() {
     }, [userId, getItems]);
 
     const handleCreateAlbum = async (formData) => {
-        await addItem({
+        const result = await addItem({
             title: formData.title,
             userId: parseInt(userId)
         });
         setShowCreateForm(false);
+        if (result?.success) {
+            showNotification(`אלבום נוצר בהצלחה`, 'success');
+        } else {
+            showNotification(`שגיאה ביצירת אלבום`, 'error');
+        }
     };
 
     const handleUpdate = async (id, data) => {

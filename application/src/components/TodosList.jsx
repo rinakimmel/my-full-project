@@ -9,8 +9,6 @@ function TodosList() {
     const { userId } = useParams();
     const [sortBy, setSortBy] = useState('');
     const [showAddTodoForm, setShowAddTodoForm] = useState(false);
-    const [searchBy, setSearchBy] = useState('');
-    const [searchValue, setSearchValue] = useState('');
     const { data: todos, error, getItems, deleteItem, updateItem, addItem } = useApi("todos");
 
     useEffect(() => {
@@ -19,16 +17,8 @@ function TodosList() {
             params._sort = sortBy;
             params._order = 'asc';
         }
-        if (searchBy && searchValue) {
-            params[searchBy] = searchValue;
-        }
         getItems(params);
-    }, [userId, sortBy, searchBy, searchValue, getItems]);
-
-    const handleFilterChange = ({ searchBy: newSearchBy, searchValue: newSearchValue }) => {
-        setSearchBy(newSearchBy);
-        setSearchValue(newSearchValue);
-    };
+    }, [userId, sortBy, getItems]);
 
     const renderTodoView = (item, defaultRender) => (
         <>
@@ -89,7 +79,6 @@ function TodosList() {
             onUpdate={handleUpdate}
             onAddClick={() => setShowAddTodoForm(!showAddTodoForm)}
             searchOptions={searchOptions}
-            onFilterChange={handleFilterChange}
             useGenericItem={true}
             itemName="משימה"
             renderView={renderTodoView}

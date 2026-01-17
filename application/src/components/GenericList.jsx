@@ -88,7 +88,7 @@ function GenericList({
                 )}
                 
                 {onAddClick && (
-                    <button onClick={onAddClick}>➕ הוסף חדש</button>
+                    <button onClick={onAdd ? () => { onAddClick(); handleGenericAdd(); } : onAddClick}>➕ הוסף חדש</button>
                 )}
             </div>
 

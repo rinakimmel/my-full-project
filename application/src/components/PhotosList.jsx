@@ -4,37 +4,17 @@ import useApi from '../useApi';
 import GenericList from './GenericList';
 import DynamicForm from './DynamicForm';
 
-function PhotosList({ albumId: propAlbumId, album: propAlbum }) {
-    const { albumId: paramAlbumId } = useParams();
+function PhotosList() {
+    const { albumId } = useParams();
     const location = useLocation();
-    const { album: stateAlbum } = location.state || {};
-    
-    // Use props first, then params, then state
-    const albumId = propAlbumId || paramAlbumId;
-    const album = propAlbum || stateAlbum;
+    const { album } = location.state || {};
     
     const [showAddForm, setShowAddForm] = useState(false);
     const { data: photos, error, getItems, deleteItem, updateItem, addItem } = useApi("photos");
 
     useEffect(() => {
-        if (albumId) {
-            getItems({ albumId });
-        }
+        getItems({ albumId });
     }, [albumId, getItems]);
-
-    const renderPhotoView = (item, defaultRender) => (
-        <>
-            <img
-                src={item.thumbnailUrl || item.url}
-                alt={item.title}
-                onError={(e) => { e.target.style.display = 'none'; }}
-            />
-            <div>
-                <p>id: {item.id}</p>
-                <p>{item.title}</p>
-            </div>
-        </>
-    );
 
     const handleAddPhoto = async (formData) => {
         await addItem({ ...formData, albumId: parseInt(albumId) });
@@ -48,6 +28,7 @@ function PhotosList({ albumId: propAlbumId, album: propAlbum }) {
     const handleUpdate = async (id, data) => {
         return await updateItem(id, data);
     };
+
     return (
         <GenericList
             title={`Album: ${album?.title || 'Loading...'}`}
@@ -59,7 +40,6 @@ function PhotosList({ albumId: propAlbumId, album: propAlbum }) {
             useGrid={true}
             useGenericItem={true}
             itemName="תמונה"
-            renderView={renderPhotoView}
         >
             {showAddForm && (
                 <div className="card">

@@ -36,10 +36,7 @@ function CommentsList({ postId: propPostId }) {
     return (
         <GenericList
             title="תגובות"
-            items={comments.map(comment => ({
-                ...comment,
-                canEdit: comment.email === user?.email
-            }))}
+            items={comments}
             onDelete={deleteItem}
             onUpdate={updateItem}
             onAddClick={() => setShowAddForm(!showAddForm)}
