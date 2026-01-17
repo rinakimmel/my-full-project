@@ -4,41 +4,41 @@ import { useNavigate, Link } from "react-router-dom";
 import useApi from "../useApi";
 import BasicUserInformation from "./BasicUserInformation";
 import AdditionalUserInformation from "./AdditionalUserInformation";
-import Notification from "./Notification";
+import { useNotification } from './NotificationContext';
 
 function Register() {
     const navigate = useNavigate();
     const { login } = useAuth();
     const [step, setStep] = useState(1);
-    const [notification, setNotification] = useState(null);
+    const { showNotification } = useNotification();
     const [basicData, setBasicData] = useState(null);
     const { getItems, addItem } = useApi("users");
 
     const handleBasicSubmit = async (formData) => {
         try {
             if (formData.password !== formData.verifyPassword) {
-                setNotification({ message: "הסיסמאות לא זהות", type: "error" });
+                showNotification("הסיסמאות לא זהות", "error");
                 return;
             }
 
            
             const response = await getItems({ username: formData.username });
             if (!response.success) {
-                setNotification({ message: "שגיאה בבדיקת שם משתמש", type: "error" });
+                showNotification("שגיאה בבדיקת שם משתמש", "error");
                 return;
             }
             if (response.data.length > 0) {
-                setNotification({ message: "שם משתמש כבר קיים", type: "error" });
+                showNotification("שם משתמש כבר קיים", "error");
             } else {
                 setBasicData(formData);
-                setNotification({ message: "שלב ראשון הושלם בהצלחה", type: "success" });
+                showNotification("שלב ראשון הושלם בהצלחה", "success");
                 setStep(2);
             }
         } catch (error) {
             if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-                setNotification({ message: "השרת לא זמין - בדוק שהשרת פועל", type: "error" });
+                showNotification("השרת לא זמין - בדוק שהשרת פועל", "error");
             } else {
-                setNotification({ message: "שגיאה בבדיקת שם משתמש", type: "error" });
+                showNotification("שגיאה בבדיקת שם משתמש", "error");
             }
         }
     };
@@ -72,23 +72,22 @@ function Register() {
             if (newUser && newUser.success !== false) {
                 const { website, ...userWithoutPassword } = newUser;
                 login(userWithoutPassword);
-                setNotification({ message: "נרשמת בהצלחה!", type: "success" });
+                showNotification("נרשמת בהצלחה!", "success");
                 setTimeout(() => navigate(`/home/users/${newUser.id}`), 1500);
             } else {
-                setNotification({ message: "שגיאה ברישום", type: "error" });
+                showNotification("שגיאה ברישום", "error");
             }
         } catch (error) {
             if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-                setNotification({ message: "השרת לא זמין - בדוק שהשרת פועל", type: "error" });
+                showNotification("השרת לא זמין - בדוק שהשרת פועל", "error");
             } else {
-                setNotification({ message: "שגיאה ברישום", type: "error" });
+                showNotification("שגיאה ברישום", "error");
             }
         }
     };
 
     return (
         <div className="auth-container">
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <h2>הרשמה</h2>
             {step === 1 && <BasicUserInformation onSubmit={handleBasicSubmit} />}
             {step === 2 && <AdditionalUserInformation onSubmit={handleFinalSubmit} />}

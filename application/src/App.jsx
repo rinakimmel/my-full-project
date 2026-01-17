@@ -13,11 +13,13 @@ import CommentsList from './components/CommentsList'
 import ActivePost from './components/ActivePost'
 import ActiveAlbum from './components/ActiveAlbum'
 import {AuthProvider} from './components/AuthContext'
+import { NotificationProvider } from './components/NotificationContext';
 function App() {
 
   return (
     <>
       <AuthProvider>
+        <NotificationProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/logIn" replace />} />
@@ -36,6 +38,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter >
+        </NotificationProvider>
       </AuthProvider>
     </>
   )

@@ -1,59 +1,54 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useApi from '../useApi';
-import SearchFilter from './SearchFilter';
-import Pagination from './Pagination';
+import GenericList from './GenericList';
 import DynamicForm from './DynamicForm';
 import { useAuth } from './AuthContext';
 
 function PostsList() {
     const { userId } = useParams();
     const { user } = useAuth();
-    const [searchBy, setSearchBy] = useState('');
-    const [searchValue, setSearchValue] = useState('');
     const [showMyPosts, setShowMyPosts] = useState(true);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [postsPerPage] = useState(10);
     const [showAddPostForm, setShowAddPostForm] = useState(false);
-    const { data: posts, error, getItems, addItem } = useApi("posts");
+    const { data: posts, error, getItems, deleteItem, updateItem, addItem } = useApi("posts");
 
     const handleAdd = async (data) => {
-        const result = await addItem({ ...data, userId: parseInt(userId) });
+        await addItem({ ...data, userId: parseInt(userId) });
         setShowAddPostForm(false);
-        if (result?.success) {
-            setNotification({ message: 'פוסט נוסף בהצלחה', type: 'success' });
-        } else {
-            setNotification({ message: 'שגיאה בהוספת פוסט', type: 'error' });
-        }
+    };
+
+    const handleDelete = async (id) => {
+        return await deleteItem(id);
+    };
+
+    const handleUpdate = async (id, data) => {
+        return await updateItem(id, data);
     };
 
     useEffect(() => {
         const params = {};
-
         if (showMyPosts) {
             params.userId = userId;
         } else {
             params.userId_ne = userId;
         }
-
-        if (searchBy && searchValue) {
-            params[searchBy] = searchValue;
-        }
-
         getItems(params);
-        setCurrentPage(0);
-    }, [showMyPosts, searchBy, searchValue, getItems]);
+    }, [showMyPosts, getItems]);
 
-    useEffect(() => {
-        if (error) {
-            setNotification({ message: 'שגיאה בטעינת הנתונים', type: 'error' });
-        }
-    }, [error])
-
-    const startIndex = currentPage * postsPerPage;
-    const endIndex = startIndex + postsPerPage;
-    const currentPosts = posts.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(posts.length / postsPerPage);
+    const renderPostView = (item, defaultRender) => {
+        const isPostOwner = item.userId === user?.id;
+        return (
+            <>
+                <Link to={`/home/users/${userId}/posts/${item.id}`}
+                    state={{ post: item, isPostOwner, currentUserEmail: user?.email }}>
+                    <div>
+                        <p>ID: {item.id}</p>
+                        <strong>{item.title}</strong>
+                    </div>
+                </Link>
+            </>
+        );
+    };
 
     const searchOptions = [
         { value: 'id', label: 'חיפוש לפי ID' },
@@ -61,35 +56,34 @@ function PostsList() {
     ];
 
     return (
-        <div className="container">
-
-            <h2>פוסטים</h2>
-
-            <div className="toolbar">
-                <button
-                    onClick={() => setShowMyPosts(true)}
-                    disabled={showMyPosts}
-                    className={showMyPosts ? 'primary' : ''}
-                >
-                    הפוסטים שלי
-                </button>
-                <button
-                    onClick={() => setShowMyPosts(false)}
-                    disabled={!showMyPosts}
-                    className={!showMyPosts ? 'primary' : ''}
-                >
-                    פוסטים של אחרים
-                </button>
-                <SearchFilter
-                    searchOptions={searchOptions}
-                    searchBy={searchBy}
-                    setSearchBy={setSearchBy}
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                />
-                <button onClick={() => setShowAddPostForm(!showAddPostForm)}>➕ פוסט חדש</button>
-            </div>
-
+        <GenericList
+            title="פוסטים"
+            items={posts.map(post => ({
+                ...post,
+                canEdit: post.userId === user?.id
+            }))}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
+            onAddClick={() => setShowAddPostForm(!showAddPostForm)}
+            searchOptions={searchOptions}
+            useGenericItem={true}
+            itemName="פוסט"
+            renderView={renderPostView}
+        >
+            <button
+                onClick={() => setShowMyPosts(true)}
+                disabled={showMyPosts}
+                className={showMyPosts ? 'primary' : ''}
+            >
+                הפוסטים שלי
+            </button>
+            <button
+                onClick={() => setShowMyPosts(false)}
+                disabled={!showMyPosts}
+                className={!showMyPosts ? 'primary' : ''}
+            >
+                פוסטים של אחרים
+            </button>
             {showAddPostForm && (
                 <div className="card">
                     <DynamicForm
@@ -98,30 +92,7 @@ function PostsList() {
                     />
                 </div>
             )}
-
-            <div className="list">
-                {currentPosts.map(post => {
-                    const isPostOwner = post.userId === user?.id;
-                    return (
-                        <div key={post.id} className="card">
-                            <Link to={`/home/users/${userId}/posts/${post.id}`}
-                                state={{ post, isPostOwner, currentUserEmail: user?.email }}>
-                                <p>ID: {post.id}</p>
-                                <strong>{post.title}</strong>
-                            </Link>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {totalPages > 1 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                />
-            )}
-        </div>
+        </GenericList>
     );
 }
 

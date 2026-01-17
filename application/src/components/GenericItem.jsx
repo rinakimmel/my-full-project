@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ConfirmDialog from './ConfirmDialog';
-import Notification from './Notification';
+import { useNotification } from './NotificationContext';
 
 function GenericItem({
     item,
@@ -8,54 +8,41 @@ function GenericItem({
     onUpdate,
     renderView,
     renderEdit,
-    canEdit = true,
+    canEdit = item.canEdit !== undefined ? item.canEdit : true,
     editableFields = ['title'],
-    deleteSuccessMsg = 'נמחק בהצלחה',   
-    updateSuccessMsg = 'נשמר בהצלחה'   , 
-
+    displayFields = ['title'],
+    itemName = 'פריט'
 }) {
+    const { showNotification } = useNotification();
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState(item);
     const [showConfirm, setShowConfirm] = useState(false);
-    const [notification, setNotification] = useState(null);
-    
+
     useEffect(() => {
         setEditData(item);
     }, [item]);
 
-    const confirmDelete =async () => {
-        const result =await onDelete(item.id);
+    const confirmDelete = async () => {
+        const result = await onDelete(item.id);
         setShowConfirm(false);
         if (result?.success) {
-            setNotification({ 
-                message: deleteSuccessMsg, 
-                type: 'success' 
-            });
+            showNotification(`${itemName} נמחק בהצלחה`, 'success');
         } else {
-            setNotification({ 
-                message: result?.error || 'שגיאה במחיקה', 
-                type: 'error' 
-            });
+            showNotification(result?.error || `שגיאה במחיקת ${itemName}`, 'error');
         }
-    };
-    
+    }
+
     const handleDelete = () => {
         setShowConfirm(true);
     };
-  
+
     const handleSave = async () => {
         const result = await onUpdate(editData.id, editData);
         setIsEditing(false);
         if (result?.success) {
-            setNotification({ 
-                message: updateSuccessMsg, 
-                type: 'success' 
-            });
+            showNotification(`${itemName} עודכן בהצלחה`, 'success');
         } else {
-            setNotification({ 
-                message: result?.error || 'שגיאה בשמירה', 
-                type: 'error' 
-            });
+            showNotification(result?.error || `שגיאה בעדכון ${itemName}`, 'error');
         }
     };
 
@@ -66,7 +53,7 @@ function GenericItem({
 
     const defaultRenderView = (item) => (
         <div>
-            {editableFields.map(field => (
+            {displayFields.map(field => (
                 <div key={field}>
                     <strong>{field}:</strong> {item[field]}
                 </div>
@@ -92,7 +79,6 @@ function GenericItem({
 
     return (
         <div className="card">
-            {notification && <Notification onClose={() => setNotification(null)} />}
             {showConfirm && (
                 <ConfirmDialog
                     onConfirm={confirmDelete}

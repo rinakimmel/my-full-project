@@ -4,23 +4,20 @@ const AuthContext = createContext(null);
 const USER_STORAGE_KEY = 'user';
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
+    // שינוי 1: קריאה מה-Storage ישירות באתחול
+    // זה מבטיח שהמשתמש קיים בזיכרון כבר מהרגע הראשון
+    const [user, setUser] = useState(() => {
         try {
             const storedUser = localStorage.getItem(USER_STORAGE_KEY);
-            if (storedUser) {
-                const parsedUser = JSON.parse(storedUser);
-                setUser(parsedUser);
-            }
+            return storedUser ? JSON.parse(storedUser) : null;
         } catch (error) {
-            console.error('Error loading user from localStorage:', error);
-            localStorage.removeItem(USER_STORAGE_KEY);
-        } finally {
-            setIsLoading(false);
+            console.error('Error parsing user from local storage:', error);
+            return null;
         }
-    }, []);
+    });
+
+    // אין צורך ב-isLoading בשביל המצב ההתחלתי, כי אנחנו טוענים מיד
+    // (אפשר להשאיר אם את משתמשת בזה לדברים אחרים, אבל לרוב לא צריך כאן)
 
     const login = (userData) => {
         try {
@@ -43,8 +40,7 @@ export const AuthProvider = ({ children }) => {
     const value = {
         user,
         login,
-        logout,
-        isLoading
+        logout
     };
 
     return (

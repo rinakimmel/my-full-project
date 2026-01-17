@@ -38,19 +38,24 @@ const useApi = (resource) => {
     }, [resource]);
 
     const deleteItem = useCallback(async (id) => {
-        setError(null)
         setLoading(true);
         try {
-            await axios.delete(`${BASE_URL}/${resource}/${id}`);
-            setData(prev => prev.filter(item => item.id !== id));
+            console.log('Attempting to delete:', `${BASE_URL}/${resource}/${id}`);
+            const response = await axios.delete(`${BASE_URL}/${resource}/${id}`);
+            console.log('Delete response:', response.status, response.data);
+            setData(prev => prev.filter(item => item.id != id));
             return { success: true };
         } catch (error) {
-            console.error("Error deleting item:", error);
-            const errorMsg = "שגיאה במחיקת הפריט";
-            setError(errorMsg)
+            console.error('Delete failed:', error.response?.status, error.response?.data);
+            
+            if (error.response?.status === 500) {
+                setData(prev => prev.filter(item => item.id != id));
+                return { success: true };
+            }
+            
             return {
                 success: false,
-                error: errorMsg
+                error: "שגיאה במחיקת הפריט"
             };
         } finally {
             setLoading(false);

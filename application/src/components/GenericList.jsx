@@ -2,22 +2,43 @@ import { useState, useEffect } from 'react';
 import SearchFilter from './SearchFilter';
 import Pagination from './Pagination';
 import ConfirmDialog from './ConfirmDialog';
+import GenericItem from './GenericItem';
+import { useNotification } from './NotificationContext';
 
 function GenericList({
     title,             
     items,              
     renderItem,         
-    onDelete,           
+    onDelete,
+    onUpdate,
+    onAdd,           
     onAddClick,         
     searchOptions,      
     onFilterChange,     
     itemsPerPage = 10,  
-    children            
+    children,
+    useGrid = false,
+    useGenericItem = false,
+    itemName = 'פריט',
+    renderView,
+    renderEdit
 }) {
+    const { showNotification } = useNotification();
     const [searchBy, setSearchBy] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [deleteId, setDeleteId] = useState(null);
+
+    const handleGenericAdd = async (data) => {
+        if (onAdd) {
+            const result = await onAdd(data);
+            if (result?.success) {
+                showNotification(`${itemName} נוסף בהצלחה`, 'success');
+            } else {
+                showNotification(`שגיאה בהוספת ${itemName}`, 'error');
+            }
+        }
+    };
 
     useEffect(() => {
         if (onFilterChange) {
@@ -71,11 +92,24 @@ function GenericList({
                 )}
             </div>
 
-            <div className="list">
+            <div className={useGrid ? "grid" : "list"}>
                 {currentItems.length > 0 ? (
                     currentItems.map((item) => (
-                        <div key={item.id} className="list-item-wrapper">
-                            {renderItem(item, () => handleDeleteClick(item.id))}
+                        <div key={item.id} className={useGrid ? "" : "list-item-wrapper"}>
+                            {useGenericItem ? (
+                                <GenericItem
+                                    item={item}
+                                    onDelete={onDelete}
+                                    onUpdate={onUpdate}
+                                    editableFields={['title']}
+                                    displayFields={['id', 'title']}
+                                    itemName={itemName}
+                                    renderView={renderView}
+                                    renderEdit={renderEdit}
+                                />
+                            ) : (
+                                renderItem(item, () => handleDeleteClick(item.id))
+                            )}
                         </div>
                     ))
                 ) : (
