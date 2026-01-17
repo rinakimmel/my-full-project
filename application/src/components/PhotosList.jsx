@@ -15,12 +15,29 @@ function PhotosList() {
     const [photosPerPage] = useState(6); 
     const [showAddForm, setShowAddForm] = useState(false);
     const [notification, setNotification] = useState(null);
+    const [totalPhotos, setTotalPhotos] = useState(0);
 
     const { data: photos, error, getItems, deleteItem, updateItem, addItem } = useApi("photos");
 
+    // שימוש ב-useEffect אחד בלבד!
     useEffect(() => {
-        getItems({ albumId: albumId });
-    }, [albumId, getItems]);
+        const loadPhotos = async () => {
+            const result = await getItems({ 
+                albumId: albumId,
+                _page: currentPage + 1,
+                _limit: photosPerPage
+            });
+            
+            if (result?.success) {
+                // עדכון המספר הכולל שמגיע מה-useApi החדש
+                if (result.total !== undefined) {
+                    setTotalPhotos(result.total);
+                }
+            }
+        };
+        loadPhotos();
+        // הסרנו את getItems מהתלויות למניעת לופ אינסופי
+    }, [albumId, currentPage, photosPerPage]);
 
     useEffect(() => {
         if (error) {
@@ -28,30 +45,53 @@ function PhotosList() {
         }
     }, [error]);
 
-    const startIndex = currentPage * photosPerPage;
-    const endIndex = startIndex + photosPerPage;
-    const currentPhotos = photos.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(photos.length / photosPerPage);
+    const totalPages = Math.ceil(totalPhotos / photosPerPage);
 
     const handleAddPhoto = async (formData) => {
         const result = await addItem({ ...formData, albumId: parseInt(albumId) });
         setShowAddForm(false);
         if (result?.success) {
             setNotification({ message: 'תמונה נוספה בהצלחה', type: 'success' });
+            
+            // רענון הרשימה כדי לראות את השינוי ולעדכן את הספירה
+            const refresh = await getItems({ 
+                albumId: albumId,
+                _page: currentPage + 1,
+                _limit: photosPerPage
+            });
+            if (refresh?.total) setTotalPhotos(refresh.total);
+            
         } else {
             setNotification({ message: 'שגיאה בהוספת תמונה', type: 'error' });
         }
     };
 
     const handleDelete = async (id) => {
-        return await deleteItem(id);
+        const result = await deleteItem(id);
+        if (result.success) {
+            // עדכון הספירה ידנית כדי לחסוך קריאה, או קריאה מחדש לשרת
+            setTotalPhotos(prev => Math.max(0, prev - 1));
+            
+            // בדיקה אם מחקנו את התמונה האחרונה בעמוד
+            if (photos.length === 1 && currentPage > 0) {
+                 setCurrentPage(prev => prev - 1);
+            } else {
+                 // רענון העמוד הנוכחי
+                 getItems({ 
+                    albumId: albumId,
+                    _page: currentPage + 1,
+                    _limit: photosPerPage
+                });
+            }
+        }
+        return result;
     };
 
     const handleUpdate = async (id, data) => {
         return await updateItem(id, data);
     };
 
- return (
+    return (
         <div className="container">
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
            
@@ -90,13 +130,15 @@ function PhotosList() {
                 ))}
             </div>
 
-            {photos.length === 0 && <p>No photos to show</p>}
+            {photos.length === 0 && !error && <p>No photos to show</p>}
 
-            <Pagination 
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-            />
+            {totalPages > 0 && (
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
+            )}
         </div>
     );
 }
