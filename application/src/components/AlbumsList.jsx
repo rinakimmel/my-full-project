@@ -65,7 +65,6 @@ function AlbumsList() {
         }
     };
 
-
     const searchOptions = [
         { value: 'id', label: 'חיפוש לפי ID' },
         { value: 'title', label: 'חיפוש לפי כותרת' }
@@ -112,10 +111,8 @@ function AlbumsList() {
             <div className="list">
                 {albums.map(album => (
                     <div key={album.id} className="card">
-                        <Link
-                            to={`/home/users/${userId}/albums/${album.id}/photos`}
-                            state={album}
-                        >
+                        <Link to={`/home/users/${userId}/albums/${album.id}/photos`}
+                            state={{ album }}>
                             <div>
                                 <p>id: {album.id}</p>
                                 <p>{album.title}</p>

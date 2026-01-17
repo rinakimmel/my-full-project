@@ -6,11 +6,11 @@ import PhotosList from "./PhotosList";
 import Notification from './Notification';
 function ActiveAlbum() {
     const location = useLocation();
-    const { album } = location.state || {};
-    const {error, deleteItem, updateItem } = useApi("albums")
+    const { error, deleteItem, updateItem } = useApi("albums")
     const { userId } = useParams();
     const [notification, setNotification] = useState(null);
-
+    const { album: initiaAlbum } = location.state || {};
+    const [album, setAlbum] = useState(initiaAlbum);
     const handleDelete = async (id) => {
         await deleteItem(id);
         setNotification({ message: 'אלבום נמחק בהצלחה', type: 'success' });
@@ -20,19 +20,20 @@ function ActiveAlbum() {
         await updateItem(id, data);
         setNotification({ message: 'אלבום עודכן בהצלחה', type: 'success' });
     };
-
+    console.log(album)
     return (
         <>
             {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
             <div >
                 <Link to={`/home/users/${userId}/albums`}>← Back to Albums</Link>
-                {album && (
-                    <GenericItem
-                        item={album}
-                        onDelete={handleDelete}
-                        onUpdate={handleUpdate}
-                    />
-                )}
+                {/* {album && ( */}
+                {/* )} */}
+                <GenericItem
+                    item={album}
+                    onDelete={handleDelete}
+                    onUpdate={handleUpdate}
+                    canEdit={true}
+                />
                 <PhotosList />
             </div>
         </>
