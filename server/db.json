@@ -2,15 +2,9 @@
   "posts": [
     {
       "userId": 1,
-      "id": "7",
-      "title": "טיול משפחתי בצפון",
-      "body": "השבוע יצאנו לטיול משפחתי נהדר בצפון הארץ. ביקרנו בכנרת, טיילנו בשמורת הטבע וגם נהנינו מארוחה טעימה במסעדה מקומית. הילדים נהנו מאוד והם כבר מבקשים לחזור."
-    },
-    {
-      "userId": 1,
       "id": "8",
       "title": "מתכון לעוגת שוקולד",
-      "body": "היום הכנתי עוגת שוקולד מדהימה לפי מתכון של סבתא. העוגה יצאה רכה ועסיסית, והשוקולד היה עשיר ומפנק. כל המשפחה אהבה והם ביקשו עוד."
+      "body": "היום הכנתי עוגת שוקולד מדהימה לפי מתכון של סבתא. העוגה יצאה רכה ועסיסית, והשוקולד היה עשיר ומפנק. כל המשפחה אה ווו  וו בה והם ביקשו עוד."
     },
     {
       "userId": 1,
@@ -214,18 +208,20 @@
       "body": "אני מסכימה עם הדברים שנאמרו כאן."
     },
     {
-      "id": "07df",
-      "name": "Ervin Howell",
-      "email": "Shanna@melissa.tv",
-      "postId": 11,
-      "body": "מעולה!!!!"
-    },
-    {
       "id": "0e27",
       "name": "Ervin Howell",
       "email": "Shanna@melissa.tv",
       "postId": 12,
       "body": "hello, very nice post!"
+    },
+    {
+      "name": "Leanne Graham",
+      "email": "Sincere@april.biz",
+      "postId": 8,
+      "body": "מה הכתובת?",
+      "id": "l42VITl",
+      "canEdit": true,
+      "title": "עעעטא"
     }
   ],
   "albums": [
@@ -265,16 +261,6 @@
       "title": "qui fuga est a eum"
     },
     {
-      "userId": 1,
-      "id": "9",
-      "title": "saepe unde necessitatibus rem"
-    },
-    {
-      "userId": 1,
-      "id": "10",
-      "title": "distinctio laborum qui"
-    },
-    {
       "userId": 2,
       "id": "11",
       "title": "quam nostrum impedit mollitia quod et dolor"
@@ -305,21 +291,6 @@
       "title": "voluptas rerum iure ut enim"
     },
     {
-      "id": "0451",
-      "title": "",
-      "userId": 1
-    },
-    {
-      "id": "627a",
-      "title": "",
-      "userId": 1
-    },
-    {
-      "id": "4b77",
-      "title": "11111",
-      "userId": 1
-    },
-    {
       "id": "cc1e",
       "title": "התמונות שלי",
       "userId": null
@@ -329,7 +300,7 @@
     {
       "albumId": 1,
       "id": "2",
-      "title": "Photo 2 from album 1",
+      "title": "Photo 2 from album 11",
       "url": "https://picsum.photos/600/400?random=2",
       "thumbnailUrl": "https://picsum.photos/150/150?random=2"
     },
@@ -353,13 +324,6 @@
       "title": "Photo 5 from album 1",
       "url": "https://picsum.photos/600/400?random=5",
       "thumbnailUrl": "https://picsum.photos/150/150?random=5"
-    },
-    {
-      "albumId": 1,
-      "id": "6",
-      "title": "Photo 6 from album 1",
-      "url": "https://picsum.photos/600/400?random=6",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=6"
     },
     {
       "albumId": 1,
@@ -392,7 +356,7 @@
     {
       "albumId": 1,
       "id": "11",
-      "title": "Photo 11 from album 1",
+      "title": "Photo 11 from album ",
       "url": "https://picsum.photos/600/400?random=11",
       "thumbnailUrl": "https://picsum.photos/150/150?random=11"
     },
@@ -622,13 +586,6 @@
     },
     {
       "albumId": 5,
-      "id": "44",
-      "title": "Photo 44 from album 5",
-      "url": "https://picsum.photos/600/400?random=44",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=44"
-    },
-    {
-      "albumId": 5,
       "id": "45",
       "title": "Photo 45 from album 5",
       "url": "https://picsum.photos/600/400?random=45",
@@ -647,27 +604,6 @@
       "title": "Photo 47 from album 5",
       "url": "https://picsum.photos/600/400?random=47",
       "thumbnailUrl": "https://picsum.photos/150/150?random=47"
-    },
-    {
-      "albumId": 5,
-      "id": "48",
-      "title": "Photo 48 from album 5",
-      "url": "https://picsum.photos/600/400?random=48",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=48"
-    },
-    {
-      "albumId": 5,
-      "id": "49",
-      "title": "Photo 49 from album 5",
-      "url": "https://picsum.photos/600/400?random=49",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=49"
-    },
-    {
-      "albumId": 5,
-      "id": "50",
-      "title": "Photo 50 from album 5",
-      "url": "https://picsum.photos/600/400?random=50",
-      "thumbnailUrl": "https://picsum.photos/150/150?random=50"
     },
     {
       "albumId": 5,
@@ -1822,19 +1758,13 @@
     {
       "userId": 1,
       "id": "2",
-      "title": "לסיים את הדוח השבועי",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": "3",
-      "title": "לקנות מצרכים לבית",
+      "title": "לסיים את הדוח השבועי!!!!",
       "completed": false
     },
     {
       "userId": 1,
       "id": "4",
-      "title": "להתקשר לשירות הלקוחות",
+      "title": "להתקשר לשירות הלקוחות!",
       "completed": true
     },
     {
@@ -1847,73 +1777,13 @@
       "userId": 1,
       "id": "6",
       "title": "לקבוע פגישה עם המנהל",
-      "completed": false
+      "completed": true
     },
     {
       "userId": 1,
       "id": "7",
       "title": "לעדכן את המצגת",
       "completed": false
-    },
-    {
-      "userId": 1,
-      "id": "8",
-      "title": "לשלוח מיילים חשובים",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "9",
-      "title": "להכין את הפרויקט",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": "11",
-      "title": "לקרוא את הספר החדש",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": "14",
-      "title": "לעשות ספורט בבוקר",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "15",
-      "title": "להזמין מתנה ליום הולדת",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "16",
-      "title": "לתקן את המחשב",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "17",
-      "title": "לשלם חשבונות",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "18",
-      "title": "לנקות את הבית",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": "19",
-      "title": "להכין ארוחת ערב",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": "20",
-      "title": "להתקשר לחברים",
-      "completed": true
     },
     {
       "id": "109a",
